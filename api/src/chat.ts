@@ -1,7 +1,11 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { anthropic, CHAT_MODEL, AGENT_NAME, AGENT_TAGLINE } from "./anthropic.js";
-import { listings, suburbNames, searchListings } from "./data.js";
+import { listings, searchListings } from "./data.js";
 import { saveLead } from "./leads.js";
+
+// Suburbs Manifest actually has stock in right now — derived from live listings
+// so the concierge stays accurate as the listing set changes.
+const activeSuburbs = [...new Set(listings.map((l) => l.suburb))];
 
 // Light RAG: the listing book is small enough to inject directly as context,
 // so the model can answer most questions without a tool round-trip and uses
@@ -17,7 +21,7 @@ const SYSTEM = `You are the AI Buyer Concierge for ${AGENT_NAME}, an independent
 
 Style: warm, concise, genuinely helpful — like a sharp local agent, not a chatbot. Use Australian spelling and AUD. Keep replies short; use a tight list when showing properties.
 
-Service suburbs: ${suburbNames.join(", ")}.
+Suburbs with current stock: ${activeSuburbs.join(", ")}.
 
 Current listings (your live knowledge — never invent properties beyond these):
 ${listingDigest}

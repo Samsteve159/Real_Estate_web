@@ -132,7 +132,14 @@ export async function streamChat(
     signal,
   });
   if (!res.ok || !res.body) {
-    onEvent({ type: "error", message: "The concierge is unavailable right now." });
+    let message = "The concierge is unavailable right now.";
+    try {
+      const body = (await res.json()) as { error?: string };
+      if (body.error) message = body.error;
+    } catch {
+      /* non-JSON body */
+    }
+    onEvent({ type: "error", message });
     return;
   }
 

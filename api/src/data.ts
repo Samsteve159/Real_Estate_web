@@ -96,8 +96,11 @@ export function searchListings(filters: {
     if (filters.suburb && l.suburb.toLowerCase() !== filters.suburb.toLowerCase())
       return false;
     if (filters.minBeds && l.beds < filters.minBeds) return false;
-    if (filters.maxPrice && l.priceNumeric > filters.maxPrice) return false;
-    if (filters.minPrice && l.priceNumeric < filters.minPrice) return false;
+    // priceNumeric === 0 means "Contact agent" (price unknown) — exclude from
+    // budget-constrained searches rather than falsely matching every limit.
+    const priceKnown = l.priceNumeric > 0;
+    if (filters.maxPrice && (!priceKnown || l.priceNumeric > filters.maxPrice)) return false;
+    if (filters.minPrice && (!priceKnown || l.priceNumeric < filters.minPrice)) return false;
     if (filters.type && l.type.toLowerCase() !== filters.type.toLowerCase())
       return false;
     return true;

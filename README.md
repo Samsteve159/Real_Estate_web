@@ -24,13 +24,25 @@ A local-first companion site for **Manifest Real Estate** (manifestre.com.au) sh
 │       ├── chat.ts          concierge tool-use loop
 │       ├── data.ts          loads seeded listings/suburbs/sold
 │       └── leads.ts         SQLite read/write
-├── data/       Seed data + leads DB
-│   ├── listings.json        current for-sale listings
-│   ├── suburbs.json         suburb medians + context
-│   ├── sold.json            recently-sold comparables
+├── data/       Listing/suburb data + leads DB
+│   ├── listings.json        REAL current listings (scraped from his public site)
+│   ├── listings.seed.json   original representative fallback
+│   ├── suburbs.json         suburb medians + context (valuation service area)
+│   ├── sold.json            recently-sold comparables (valuation grounding)
 │   └── leads.db             SQLite (gitignored)
+├── scripts/
+│   └── scrape-listings.mjs  one-off public-site scraper (pure fetch, no LLM, $0)
 ├── pitch.html / one-pager.html   existing infographics
 └── plan.md / CLAUDE.md
+```
+
+## Refreshing listings
+
+`data/listings.json` is scraped from Manifest's **public** pages. To re-sync the
+current stock (no API cost — plain HTML parsing, polite rate):
+
+```bash
+node scripts/scrape-listings.mjs   # rewrites data/listings.json; restart the API after
 ```
 
 ## Run locally

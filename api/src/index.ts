@@ -7,6 +7,8 @@ import { listings, suburbs, suburbNames } from "./data.js";
 import { valuate, type ValuationRequest } from "./valuation.js";
 import { saveLead } from "./leads.js";
 import { runConcierge, type ChatMessage } from "./chat.js";
+import { rateLimit } from "./ratelimit.js";
+import { track, stats } from "./analytics.js";
 
 const app = new Hono();
 
@@ -14,7 +16,13 @@ const app = new Hono();
 // case where the front-end is served from a different origin.
 app.use("/api/*", cors());
 
+// Cap the Claude-backed endpoints per IP — guards against abuse and cost runaway.
+app.use("/api/valuation", rateLimit("valuation", 8, 60_000));
+app.use("/api/chat", rateLimit("chat", 15, 60_000));
+app.use("/api/lead", rateLimit("lead", 20, 60_000));
+
 app.get("/api/health", (c) => c.json({ ok: true }));
+app.get("/api/stats", (c) => c.json(stats()));
 
 // Public data the front-end renders (real listings + suburb context).
 app.get("/api/listings", (c) => c.json({ listings }));
@@ -43,9 +51,11 @@ app.post("/api/valuation", async (c) => {
       cars: Number(body.cars ?? 0),
       landSize: body.landSize != null ? Number(body.landSize) : undefined,
     });
+    track("valuation");
     return c.json(result);
   } catch (err) {
     console.error("[valuation] error", err);
+    track("valuation_error");
     return c.json({ error: "Could not generate a valuation right now." }, 502);
   }
 });
@@ -76,6 +86,7 @@ app.post("/api/lead", async (c) => {
     estimateMid: body.estimateMid != null ? Number(body.estimateMid) : undefined,
     message: body.message ? String(body.message) : undefined,
   });
+  track("lead");
   return c.json({ ok: true, leadId: id });
 });
 
@@ -95,8 +106,10 @@ app.post("/api/chat", async (c) => {
     return c.json({ error: "messages required" }, 400);
   }
 
+  track("chat");
   return streamSSE(c, async (stream) => {
     await runConcierge(history, (event) => {
+      if (event.type === "error") track("chat_error");
       // Fire-and-forget write; streamSSE serialises these in order.
       void stream.writeSSE({ data: JSON.stringify(event) });
     });

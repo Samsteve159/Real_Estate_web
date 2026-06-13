@@ -18,7 +18,7 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - [x] Distinctive "inner-west editorial" design system (bone/navy/teal/terracotta, Instrument Serif + Archivo)
 - [x] Seed data: `listings.json`, `suburbs.json`, `sold.json` (representative)
 - [x] Real `ListingCard`s rendered from `/api/listings`
-- [ ] 🔭 Replace representative seed data with a one-off scrape of his **public** site
+- [x] ✅ Real listings scraped from his **public** site — 20 live listings via `scripts/scrape-listings.mjs` (pure HTML parsing, no LLM, $0); representative data kept as `data/listings.seed.json`
 
 ## Phase 2 — Instant Home Valuation ✅
 *Teaches: Claude API, prompt engineering, structured JSON. Milestone: address → range + rationale → lead saved.*
@@ -40,11 +40,13 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - [x] SSE token streaming to the UI
 - [x] ✅ **Live test (Opus 4.8):** "3-beds under $1M near Newport" → `search_listings` ×2 → accurate matches; "inspect 31 The Avenue, I'm Jordan…" → `capture_lead` wrote the lead row
 
-## Phase 4 — Polish + decide deployment ⬜
+## Phase 4 — Polish + decide deployment 🟡
 *Teaches: deployment.*
 
-- [ ] Mobile pass + loading/empty/error states audit
-- [ ] Basic API rate-limiting + simple analytics
+- [x] ✅ Basic API rate-limiting — per-IP sliding window on `/api/valuation` (8/min), `/api/chat` (15/min), `/api/lead` (20/min); returns 429 + Retry-After
+- [x] ✅ Simple analytics — in-memory counters at `GET /api/stats`
+- [x] ✅ Loading/empty/error states + global `ErrorBoundary` + 404 route + rate-limit (429) messaging surfaced in UI
+- [ ] Final mobile QA pass on a real device
 - [ ] **security-review** (handles PII + server-side API key) — run before any live link
 - [ ] **code-review** of the full diff
 - [ ] Set Anthropic spend cap before sharing any deployed link
@@ -63,6 +65,6 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - `ANTHROPIC_API_KEY` lives in repo-root `.env` (gitignored). Never commit it; `.env.example` stays a placeholder. Both AI flows verified live on Opus 4.8.
 
 ## Immediate next up
-1. Decide: real public-site scrape vs keep representative seed data.
-2. Phase 4 polish: mobile pass + loading/empty/error audit, basic rate-limiting.
-3. Run security-review before any shared link; set Anthropic spend cap.
+1. Final mobile QA on a real device.
+2. Run **security-review** + **code-review** before any shared link; set Anthropic spend cap.
+3. Note: valuation `suburbs.json`/`sold.json` are still representative inner-west data — real listings now span the outer-west/north growth corridors (Sunbury, Beveridge, Keilor East…). Decide whether to extend the valuation service area to match.
