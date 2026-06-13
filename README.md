@@ -57,7 +57,7 @@ cp .env.example .env        # then edit ANTHROPIC_API_KEY
 
 ## Models
 
-- `claude-sonnet-4-6` — valuation reasoning + concierge chat (see `api/src/anthropic.ts`).
+- `claude-opus-4-8` — valuation reasoning + concierge chat (see `api/src/anthropic.ts`). Capability floor is Opus 4.8.
 
 ## Inspecting leads
 

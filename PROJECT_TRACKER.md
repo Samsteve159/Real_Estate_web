@@ -3,7 +3,7 @@
 Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how to run.
 
 **Repo:** `git@github.com:Samsteve159/Real_Estate_web.git` · **Branch:** `main`
-**Last updated:** 2026-06-13
+**Last updated:** 2026-06-13 · **Models:** `claude-opus-4-8` (valuation + concierge)
 
 **Status legend:** ✅ done · 🟡 in progress / needs live test · ⬜ not started · 🔭 backlog
 
@@ -20,17 +20,17 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - [x] Real `ListingCard`s rendered from `/api/listings`
 - [ ] 🔭 Replace representative seed data with a one-off scrape of his **public** site
 
-## Phase 2 — Instant Home Valuation 🟡
+## Phase 2 — Instant Home Valuation ✅
 *Teaches: Claude API, prompt engineering, structured JSON. Milestone: address → range + rationale → lead saved.*
 
 - [x] `ValuationForm` — suburb dropdown, street, type, bed/bath/car steppers, land size
 - [x] `POST /api/valuation` — Claude over comps → `{low, high, midpoint, confidence, rationale, comparables_used}`
 - [x] Result UI: range, confidence badge, rationale, comparables, "indicative estimate" labelling
 - [x] `POST /api/lead` persists name/contact/address + estimate to SQLite
-- [ ] 🟡 **Live end-to-end test** (needs `ANTHROPIC_API_KEY` in `.env`): submit → range renders → row lands in `data/leads.db`
+- [x] ✅ **Live test (Opus 4.8):** Newport 3bd → $1.18M–$1.32M, high confidence, cited same-street comp; seller lead row landed in `data/leads.db`
 - [ ] 🔭 Optional: email the agent on new lead (free tier)
 
-## Phase 3 — AI Buyer Concierge Chatbot 🟡
+## Phase 3 — AI Buyer Concierge Chatbot ✅
 *Teaches: system prompts, tool use, light RAG, streaming. Milestone: listing question → matches stream → inspection booked → lead captured.*
 
 - [x] `ConciergeWidget` — floating bubble + panel, streamed responses, suggestion chips
@@ -38,7 +38,7 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - [x] Tool: `search_listings(filters)` → live filtered matches
 - [x] Tool: `capture_lead(name, contact, intent)` → writes to leads store
 - [x] SSE token streaming to the UI
-- [ ] 🟡 **Live end-to-end test** (needs key): "3-beds under $1M near Newport" → matches → books inspection → lead row
+- [x] ✅ **Live test (Opus 4.8):** "3-beds under $1M near Newport" → `search_listings` ×2 → accurate matches; "inspect 31 The Avenue, I'm Jordan…" → `capture_lead` wrote the lead row
 
 ## Phase 4 — Polish + decide deployment ⬜
 *Teaches: deployment.*
@@ -60,9 +60,9 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 
 ## Known constraints
 - Installed `@anthropic-ai/sdk@0.68.0` doesn't type `output_config` (structured outputs); valuation requests strict JSON and parses it tolerantly. Revisit if the SDK is upgraded.
-- The two AI flows are **unverified live** until an `ANTHROPIC_API_KEY` is set (`cp .env.example .env`).
+- `ANTHROPIC_API_KEY` lives in repo-root `.env` (gitignored). Never commit it; `.env.example` stays a placeholder. Both AI flows verified live on Opus 4.8.
 
 ## Immediate next up
-1. Add `ANTHROPIC_API_KEY` → live-test valuation + concierge (closes the 🟡 items).
-2. Decide: real public-site scrape vs keep representative seed data.
-3. Run security-review before any shared link.
+1. Decide: real public-site scrape vs keep representative seed data.
+2. Phase 4 polish: mobile pass + loading/empty/error audit, basic rate-limiting.
+3. Run security-review before any shared link; set Anthropic spend cap.

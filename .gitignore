@@ -7,3 +7,4 @@ data/leads.db
 data/leads.db-*
 *.log
 .DS_Store
+.claude/settings.local.json
