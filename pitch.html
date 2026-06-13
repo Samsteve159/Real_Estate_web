@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manifest RE — AI Companion · Business Pitch</title>
+<style>
+  :root{
+    --ink:#0f1b2d; --ink2:#1c2c45; --paper:#f7f4ee; --card:#ffffff;
+    --accent:#c8643c; --accent2:#e3a857; --teal:#1f7a6e; --line:#e3ddd0;
+    --muted:#5d6b7e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 80px}
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--ink) 0%,var(--ink2) 60%,#26405f 100%);
+    color:#fff;padding:64px 0 72px;position:relative;overflow:hidden}
+  .hero:after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;
+    border-radius:50%;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.35}
+  .hero .wrap{position:relative;z-index:2}
+  .eyebrow{display:inline-block;letter-spacing:.18em;text-transform:uppercase;font-size:12px;
+    font-weight:700;color:var(--accent2);border:1px solid rgba(227,168,87,.4);padding:6px 14px;border-radius:40px;margin-bottom:22px}
+  h1{font-size:48px;line-height:1.05;font-weight:800;letter-spacing:-.02em;max-width:760px}
+  h1 .em{color:var(--accent2)}
+  .sub{margin-top:18px;font-size:19px;color:#cdd7e4;max-width:680px}
+  .tagline{margin-top:28px;font-style:italic;font-size:15px;color:#9fb0c4}
+  /* SECTION */
+  section{margin-top:64px}
+  .kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px}
+  h2{font-size:30px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+  .lead{color:var(--muted);font-size:17px;max-width:760px}
+  /* GRID CARDS */
+  .grid{display:grid;gap:20px;margin-top:28px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;
+    box-shadow:0 1px 0 rgba(15,27,45,.03)}
+  .card h3{font-size:19px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+  .card p{color:var(--muted);font-size:15px}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;
+    background:var(--ink);color:#fff;font-size:14px;font-weight:700;flex:none}
+  /* PROBLEM/SOLUTION split */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
+  .panel{border-radius:16px;padding:28px}
+  .prob{background:#fbeee9;border:1px solid #f0d3c7}
+  .sol{background:#eaf4f2;border:1px solid #c9e3dd}
+  .panel h3{font-size:17px;margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em;font-size:13px}
+  .panel ul{list-style:none}
+  .panel li{padding:9px 0 9px 26px;position:relative;font-size:15px;border-bottom:1px dashed rgba(0,0,0,.07)}
+  .panel li:last-child{border-bottom:0}
+  .prob li:before{content:"✕";position:absolute;left:0;color:var(--accent);font-weight:700}
+  .sol li:before{content:"✓";position:absolute;left:0;color:var(--teal);font-weight:700}
+  /* STATS */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px}
+  .stat{background:var(--ink);color:#fff;border-radius:16px;padding:28px;text-align:center}
+  .stat .big{font-size:42px;font-weight:800;color:var(--accent2);letter-spacing:-.02em}
+  .stat .lbl{font-size:13px;color:#aebccd;margin-top:6px}
+  /* TOOLS */
+  .tool{display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:start;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:18px}
+  .tool .ic{width:64px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+    font-size:30px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+  .tool h3{font-size:21px;margin-bottom:6px}
+  .tool .who{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--teal);background:#eaf4f2;padding:3px 10px;border-radius:30px;margin-bottom:10px}
+  .tool p{color:var(--muted);font-size:15px}
+  /* TIMELINE */
+  .timeline{margin-top:28px;border-left:2px solid var(--line);padding-left:28px}
+  .step{position:relative;padding-bottom:26px}
+  .step:before{content:"";position:absolute;left:-37px;top:2px;width:16px;height:16px;border-radius:50%;
+    background:var(--accent);border:3px solid var(--paper)}
+  .step h4{font-size:16px;margin-bottom:3px}
+  .step span{font-size:13px;color:var(--accent);font-weight:700;letter-spacing:.04em}
+  .step p{color:var(--muted);font-size:14px;margin-top:3px}
+  /* COST + ASK */
+  .ask{margin-top:64px;background:linear-gradient(135deg,var(--ink),#26405f);color:#fff;border-radius:20px;padding:44px}
+  .ask h2{color:#fff}
+  .ask .lead{color:#cdd7e4}
+  .pricetag{display:inline-flex;align-items:baseline;gap:8px;margin-top:18px}
+  .pricetag .p{font-size:40px;font-weight:800;color:var(--accent2)}
+  .pricetag .q{color:#aebccd;font-size:15px}
+  footer{margin-top:48px;text-align:center;color:var(--muted);font-size:13px}
+  @media(max-width:760px){.g2,.g3,.split,.stats{grid-template-columns:1fr}h1{font-size:34px}.tool{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Business Pitch · Manifest Real Estate</span>
+    <h1>Turn a generic agent website into an <span class="em">AI-powered lead machine.</span></h1>
+    <p class="sub">A self-funded companion build that gives Manifest Real Estate two tools its competitors don't have — an instant home-valuation lead magnet and a 24/7 AI buyer concierge — for near-zero cost.</p>
+    <p class="tagline">"Where dreams meet reality" — now with the technology to back it up.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="kicker">The Situation</div>
+    <h2>A solid agent, held back by a template</h2>
+    <p class="lead">Manifest Real Estate serves Melbourne's inner- and outer-west (Altona North, South Kingsville, Newport, Sunbury). The current site does the basics — but it's a locked WordPress template with zero differentiation, and the agent can't even edit it yet.</p>
+    <div class="split">
+      <div class="panel prob">
+        <h3>Today's website</h3>
+        <ul>
+          <li>Generic template look — indistinguishable from every other agency</li>
+          <li>No AI features; nothing that captures or qualifies leads automatically</li>
+          <li>Listings &amp; theme controlled by a provider — owner can't make changes</li>
+          <li>Visitors browse, then leave. No reason to hand over their details.</li>
+        </ul>
+      </div>
+      <div class="panel sol">
+        <h3>The companion build</h3>
+        <ul>
+          <li>A striking, custom-designed experience that stands out instantly</li>
+          <li>Two AI tools that actively generate &amp; qualify seller and buyer leads</li>
+          <li>Built separately on our own domain — no need for site rights today</li>
+          <li>Designed to drop into the real site later, or become the new site</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">The Market</div>
+    <h2>AI in real estate isn't coming — it's here</h2>
+    <p class="lead">Independent agents who adopt early win listings. The high-end tools are expensive and built for big franchises; the affordable, agent-personal end is wide open.</p>
+    <div class="stats">
+      <div class="stat"><div class="big">87–97%</div><div class="lbl">of agencies now use AI tools daily (2026)</div></div>
+      <div class="stat"><div class="big">#1</div><div class="lbl">lead magnet in real estate: "What's my home worth?"</div></div>
+      <div class="stat"><div class="big">$0</div><div class="lbl">hosting cost — free global CDN, pay only cents for AI</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">The Product</div>
+    <h2>Two tools that earn their keep</h2>
+    <div class="tool">
+      <div class="ic">🏡</div>
+      <div>
+        <span class="who">Seller lead magnet</span>
+        <h3>Instant Home Valuation</h3>
+        <p>A visitor enters their address and gets an instant, indicative price range — generated by AI reasoning over Manifest's own recently-sold comparables. The estimate is the hook; capturing a hot seller's contact details is the prize. Every valuation becomes a qualified appraisal opportunity in the agent's inbox.</p>
+      </div>
+    </div>
+    <div class="tool">
+      <div class="ic">💬</div>
+      <div>
+        <span class="who">Buyer engagement · 24/7</span>
+        <h3>AI Buyer Concierge</h3>
+        <p>A chat assistant that knows every current listing and suburb, answers buyer questions any hour, searches properties in plain English ("3-bed under $900k near a train station"), and books inspections — capturing each enquiry as a lead automatically.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Why It Wins</div>
+    <h2>Low risk, high upside</h2>
+    <div class="grid g3">
+      <div class="card"><h3><span class="num">1</span>No permission needed</h3><p>Built on our own domain, so we start today — no waiting on the website provider to grant rights.</p></div>
+      <div class="card"><h3><span class="num">2</span>Nothing wasted</h3><p>Engineered to embed into the real site later, or become the new site outright once rights come through.</p></div>
+      <div class="card"><h3><span class="num">3</span>A live demo</h3><p>It's a working showcase the agent can see and trial — not a slide deck. Seeing real leads land changes the conversation.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">The Plan</div>
+    <h2>From localhost to live in four phases</h2>
+    <div class="timeline">
+      <div class="step"><span>PHASE 1</span><h4>Design &amp; scaffold</h4><p>A distinctive microsite running locally, seeded with real listings.</p></div>
+      <div class="step"><span>PHASE 2</span><h4>Instant Home Valuation</h4><p>AI estimate + seller lead capture.</p></div>
+      <div class="step"><span>PHASE 3</span><h4>AI Buyer Concierge</h4><p>Chat over listings with inspection booking + lead capture.</p></div>
+      <div class="step"><span>PHASE 4</span><h4>Polish &amp; go live</h4><p>Deploy free to Cloudflare; trial on a subdomain; package as embeds for the real site.</p></div>
+    </div>
+  </section>
+
+  <div class="ask">
+    <div class="kicker" style="color:var(--accent2)">The Investment</div>
+    <h2>Effectively free to find out if it works</h2>
+    <p class="lead">Hosting is $0. The only running cost is the AI itself — a few dollars a month at trial volume, with a hard spend cap so it can never surprise anyone. The build is self-funded effort.</p>
+    <div class="pricetag"><span class="p">~$0–5</span><span class="q">/ month all-in during the trial · hosting free forever</span></div>
+  </div>
+
+  <footer>
+    Prepared as a working proposal · Manifest Real Estate AI Companion · Local-first build, deploys to Cloudflare Pages
+  </footer>
+
+</div>
+</body>
+</html>

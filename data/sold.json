@@ -1,0 +1,31 @@
+[
+  { "address": "9 Maddox Road, Newport", "suburb": "Newport", "beds": 3, "baths": 1, "cars": 1, "landSize": 360, "type": "House", "soldPrice": 1120000, "soldDate": "2026-04-18" },
+  { "address": "52 Mason Street, Newport", "suburb": "Newport", "beds": 3, "baths": 2, "cars": 2, "landSize": 390, "type": "House", "soldPrice": 1245000, "soldDate": "2026-03-21" },
+  { "address": "4/16 Hall Street, Newport", "suburb": "Newport", "beds": 2, "baths": 1, "cars": 1, "landSize": 0, "type": "Townhouse", "soldPrice": 712000, "soldDate": "2026-05-02" },
+  { "address": "88 Victoria Street, Newport", "suburb": "Newport", "beds": 4, "baths": 2, "cars": 2, "landSize": 480, "type": "House", "soldPrice": 1410000, "soldDate": "2026-02-14" },
+
+  { "address": "21 Sussex Street, Altona North", "suburb": "Altona North", "beds": 3, "baths": 1, "cars": 1, "landSize": 405, "type": "House", "soldPrice": 805000, "soldDate": "2026-04-27" },
+  { "address": "7 McArthurs Road, Altona North", "suburb": "Altona North", "beds": 4, "baths": 2, "cars": 2, "landSize": 575, "type": "House", "soldPrice": 940000, "soldDate": "2026-03-08" },
+  { "address": "63 Kyle Road, Altona North", "suburb": "Altona North", "beds": 3, "baths": 2, "cars": 2, "landSize": 430, "type": "House", "soldPrice": 880000, "soldDate": "2026-05-16" },
+  { "address": "2/40 Blackshaws Road, Altona North", "suburb": "Altona North", "beds": 2, "baths": 1, "cars": 1, "landSize": 0, "type": "Townhouse", "soldPrice": 635000, "soldDate": "2026-04-05" },
+
+  { "address": "11 Vernon Street, South Kingsville", "suburb": "South Kingsville", "beds": 3, "baths": 1, "cars": 1, "landSize": 440, "type": "House", "soldPrice": 1065000, "soldDate": "2026-03-29" },
+  { "address": "5 Wests Road, South Kingsville", "suburb": "South Kingsville", "beds": 3, "baths": 2, "cars": 2, "landSize": 410, "type": "House", "soldPrice": 1150000, "soldDate": "2026-02-22" },
+  { "address": "26 Hudsons Road, South Kingsville", "suburb": "South Kingsville", "beds": 4, "baths": 2, "cars": 1, "landSize": 465, "type": "House", "soldPrice": 1235000, "soldDate": "2026-05-09" },
+
+  { "address": "39 Hyde Street, Yarraville", "suburb": "Yarraville", "beds": 3, "baths": 1, "cars": 1, "landSize": 310, "type": "House", "soldPrice": 1185000, "soldDate": "2026-04-12" },
+  { "address": "14 Powell Street, Yarraville", "suburb": "Yarraville", "beds": 3, "baths": 2, "cars": 1, "landSize": 330, "type": "House", "soldPrice": 1305000, "soldDate": "2026-03-15" },
+  { "address": "8/72 Anderson Street, Yarraville", "suburb": "Yarraville", "beds": 2, "baths": 1, "cars": 1, "landSize": 0, "type": "Apartment", "soldPrice": 655000, "soldDate": "2026-05-23" },
+  { "address": "55 Severn Street, Yarraville", "suburb": "Yarraville", "beds": 4, "baths": 2, "cars": 2, "landSize": 420, "type": "House", "soldPrice": 1520000, "soldDate": "2026-02-28" },
+
+  { "address": "6 Booker Street, Spotswood", "suburb": "Spotswood", "beds": 3, "baths": 2, "cars": 1, "landSize": 305, "type": "House", "soldPrice": 1110000, "soldDate": "2026-04-19" },
+  { "address": "22 Hall Street, Spotswood", "suburb": "Spotswood", "beds": 2, "baths": 1, "cars": 1, "landSize": 280, "type": "House", "soldPrice": 940000, "soldDate": "2026-03-11" },
+
+  { "address": "17 Cole Street, Williamstown", "suburb": "Williamstown", "beds": 4, "baths": 2, "cars": 2, "landSize": 510, "type": "House", "soldPrice": 1690000, "soldDate": "2026-04-08" },
+  { "address": "3 Aitken Street, Williamstown", "suburb": "Williamstown", "beds": 3, "baths": 1, "cars": 1, "landSize": 360, "type": "House", "soldPrice": 1395000, "soldDate": "2026-03-02" },
+  { "address": "9/1 The Strand, Williamstown", "suburb": "Williamstown", "beds": 2, "baths": 2, "cars": 1, "landSize": 0, "type": "Apartment", "soldPrice": 845000, "soldDate": "2026-05-12" },
+
+  { "address": "33 Charles Street, Seddon", "suburb": "Seddon", "beds": 3, "baths": 1, "cars": 0, "landSize": 270, "type": "House", "soldPrice": 1150000, "soldDate": "2026-04-25" },
+  { "address": "12 Belair Street, Seddon", "suburb": "Seddon", "beds": 3, "baths": 2, "cars": 1, "landSize": 300, "type": "House", "soldPrice": 1265000, "soldDate": "2026-03-18" },
+  { "address": "1/9 Stephen Street, Seddon", "suburb": "Seddon", "beds": 2, "baths": 1, "cars": 1, "landSize": 0, "type": "Townhouse", "soldPrice": 720000, "soldDate": "2026-05-06" }
+]

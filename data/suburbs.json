@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Altona North",
+    "postcode": "3025",
+    "medianHouse": 905000,
+    "medianUnit": 620000,
+    "trend12mo": "+3.1%",
+    "blurb": "An affordable, fast-improving family pocket between the city and the bay. Big blocks, new development around the Circle precinct, and strong buyer demand from priced-out inner-west families.",
+    "lifestyle": "Parklands, the new Altona North town centre, easy West Gate access.",
+    "transport": "Buses to Newport & Yarraville stations; ~14km to the CBD by car."
+  },
+  {
+    "name": "South Kingsville",
+    "postcode": "3015",
+    "medianHouse": 1075000,
+    "medianUnit": 690000,
+    "trend12mo": "+2.4%",
+    "blurb": "A small, tightly-held enclave of period homes with a genuine village feel. Rarely-traded streets and a loyal local community keep competition high.",
+    "lifestyle": "The South Kingsville shops, Donald McLean Reserve, cafe culture.",
+    "transport": "Walk to Spotswood station; quick run to the West Gate."
+  },
+  {
+    "name": "Newport",
+    "postcode": "3015",
+    "medianHouse": 1140000,
+    "medianUnit": 705000,
+    "trend12mo": "+2.8%",
+    "blurb": "One of the inner west's most liveable suburbs — period homes, Newport Lakes, and a thriving cafe scene. Consistently strong family and downsizer demand.",
+    "lifestyle": "Newport Lakes Reserve, Hall Street village, the Substation arts hub.",
+    "transport": "Newport station on the Williamstown & Werribee lines; ~10km to the CBD."
+  },
+  {
+    "name": "Yarraville",
+    "postcode": "3013",
+    "medianHouse": 1210000,
+    "medianUnit": 645000,
+    "trend12mo": "+3.4%",
+    "blurb": "The poster child of the inner west — the iconic Sun Theatre, leafy streets and a buzzing village. Premium prices for renovated period homes near the strip.",
+    "lifestyle": "Yarraville Village, the Sun Theatre, weekend farmers' markets.",
+    "transport": "Yarraville station; ~8km to the CBD."
+  },
+  {
+    "name": "Spotswood",
+    "postcode": "3015",
+    "medianHouse": 1095000,
+    "medianUnit": 660000,
+    "trend12mo": "+2.9%",
+    "blurb": "A compact riverside suburb with Scienceworks, growing dining options and quick city access. Increasingly popular with young families and professionals.",
+    "lifestyle": "Scienceworks, the Hobsons Bay Coastal Trail, riverside walks.",
+    "transport": "Spotswood station; minutes to the West Gate Bridge."
+  },
+  {
+    "name": "Williamstown",
+    "postcode": "3016",
+    "medianHouse": 1480000,
+    "medianUnit": 760000,
+    "trend12mo": "+2.1%",
+    "blurb": "The bayside jewel of the west — historic streetscapes, a working harbour and beachfront lifestyle. The premium end of the Manifest service area.",
+    "lifestyle": "The Strand, Williamstown Beach, Nelson Place dining, the ferry to the city.",
+    "transport": "Williamstown station; seasonal ferry to Docklands."
+  },
+  {
+    "name": "Seddon",
+    "postcode": "3011",
+    "medianHouse": 1185000,
+    "medianUnit": 640000,
+    "trend12mo": "+3.0%",
+    "blurb": "A village-scale suburb wedged between Footscray and Yarraville, beloved for its Victorian cottages and its tight, walkable shopping strip.",
+    "lifestyle": "Charles Street village, Bibby Street cafes, easy reach of Footscray Market.",
+    "transport": "Seddon station; ~7km to the CBD."
+  }
+]

@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ *  Manifest RE — design tokens
+ *  Inner-west editorial: bone paper, navy ink, teal brand, terracotta. *
+ * ------------------------------------------------------------------ */
+@theme {
+  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+
+  --color-bone: #f6f2e9;
+  --color-bone-deep: #ece4d4;
+  --color-paper: #fbf9f3;
+  --color-ink: #15202e;
+  --color-navy: #0d1b2a;
+  --color-navy-soft: #1c2c40;
+
+  --color-teal: #1f7a6e;
+  --color-teal-bright: #2e9b8c;
+  --color-teal-pale: #cfe6e0;
+
+  --color-terra: #c8643c;
+  --color-terra-soft: #e08a5f;
+  --color-amber: #e3a857;
+
+  --color-muted: #5a6678;
+  --color-line: #ddd3bf;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bone);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv01";
+    -webkit-font-smoothing: antialiased;
+    /* Fine paper grain so flat fills read as printed stock, not screen. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background: var(--color-terra);
+    color: var(--color-paper);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bone-deep);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-teal);
+    border: 2px solid var(--color-bone-deep);
+    border-radius: 999px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ *  Utilities & motifs
+ * ------------------------------------------------------------------ */
+@layer utilities {
+  /* Wide-tracked uppercase label — the editorial eyebrow. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-weight: 600;
+    font-size: 0.7rem;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+  }
+
+  /* Topographic contour backdrop — a nod to suburb maps. */
+  .contours {
+    background-image: radial-gradient(
+        ellipse 80% 60% at 70% 20%,
+        rgba(31, 122, 110, 0.06),
+        transparent 60%
+      ),
+      repeating-radial-gradient(
+        circle at 78% 12%,
+        transparent 0,
+        transparent 38px,
+        rgba(13, 27, 42, 0.05) 38px,
+        rgba(13, 27, 42, 0.05) 39px
+      );
+  }
+
+  .hairline {
+    border-color: var(--color-line);
+  }
+
+  .link-underline {
+    background-image: linear-gradient(var(--color-terra), var(--color-terra));
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s ease;
+  }
+  .link-underline:hover {
+    background-size: 100% 2px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ *  Motion
+ * ------------------------------------------------------------------ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.rise {
+  opacity: 0;
+  animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.marquee-track {
+  animation: marquee 34s linear infinite;
+}
+.pop {
+  animation: pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .marquee-track,
+  .pop {
+    animation: none;
+    opacity: 1;
+  }
+}
