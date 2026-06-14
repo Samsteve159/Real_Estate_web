@@ -46,9 +46,9 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - [x] ✅ Basic API rate-limiting — per-IP sliding window on `/api/valuation` (8/min), `/api/chat` (15/min), `/api/lead` (20/min); returns 429 + Retry-After
 - [x] ✅ Simple analytics — in-memory counters at `GET /api/stats`
 - [x] ✅ Loading/empty/error states + global `ErrorBoundary` + 404 route + rate-limit (429) messaging surfaced in UI
+- [x] ✅ **security-review** — hardened public API: input size/numeric caps + `validate.ts` (stops Claude input-token cost runaway + DB bloat), CORS locked to `ALLOWED_ORIGINS` in prod, `/api/stats` gated behind `STATS_TOKEN`, email/NaN validation. Verified live (400s, 401/200, both AI happy paths, oversized/trailing-assistant histories clean).
+- [x] ✅ **code-review** of the diff — caught + fixed a chat-history truncation bug (was dropping the newest turn / could send an Opus-rejected trailing-assistant prefill); now keeps recent turns and trims leading/trailing assistant turns.
 - [ ] Final mobile QA pass on a real device
-- [ ] **security-review** (handles PII + server-side API key) — run before any live link
-- [ ] **code-review** of the full diff
 - [ ] Set Anthropic spend cap before sharing any deployed link
 - [ ] Deploy: `web/` → Cloudflare Pages · `api/` → Workers · `leads.db` → D1
 - [ ] Package the two tools as embeddable iframe/script widgets for manifestre.com.au
@@ -64,7 +64,11 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - Installed `@anthropic-ai/sdk@0.68.0` doesn't type `output_config` (structured outputs); valuation requests strict JSON and parses it tolerantly. Revisit if the SDK is upgraded.
 - `ANTHROPIC_API_KEY` lives in repo-root `.env` (gitignored). Never commit it; `.env.example` stays a placeholder. Both AI flows verified live on Opus 4.8.
 
+## New env vars (set on deploy)
+- `ALLOWED_ORIGINS` — comma-separated front-end origins; locks CORS in prod (unset = open, for local dev).
+- `STATS_TOKEN` — required to read `GET /api/stats` when set (send as `x-stats-token` header or `?token=`).
+
 ## Immediate next up
 1. Final mobile QA on a real device.
-2. Run **security-review** + **code-review** before any shared link; set Anthropic spend cap.
+2. Set Anthropic spend cap before any shared link.
 3. Note: valuation `suburbs.json`/`sold.json` are still representative inner-west data — real listings now span the outer-west/north growth corridors (Sunbury, Beveridge, Keilor East…). Decide whether to extend the valuation service area to match.
