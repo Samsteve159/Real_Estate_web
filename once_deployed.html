@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Once Deployed — How the AI tools look on manifestre.com.au</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:ital,wght@0,400..800;1,400..600&display=swap" rel="stylesheet" />
+<style>
+  /* ---- Manifest editorial tokens (match the real tools) ---- */
+  :root{
+    --bone:#f6f2e9; --bone-deep:#ece4d4; --paper:#fbf9f3;
+    --ink:#15202e; --navy:#0d1b2a; --navy-soft:#1c2c40;
+    --teal:#1f7a6e; --teal-bright:#2e9b8c; --teal-pale:#cfe6e0;
+    --terra:#c8643c; --amber:#e3a857; --muted:#5a6678; --line:#ddd3bf;
+    /* generic WordPress-template palette (deliberately bland) */
+    --wp-blue:#1b3a5b; --wp-blue2:#27568a; --wp-grey:#f1f3f6; --wp-line:#dfe3e8; --wp-text:#33414f;
+    --display:"Instrument Serif",Georgia,serif; --sans:"Archivo",system-ui,sans-serif;
+    --wp-font:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#cfd4da;font-family:var(--wp-font);color:var(--wp-text);-webkit-font-smoothing:antialiased;line-height:1.5}
+
+  /* ---- explainer strip at very top ---- */
+  .explain{max-width:1180px;margin:0 auto;padding:22px 24px 6px}
+  .explain .tag{display:inline-block;background:var(--navy);color:var(--amber);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:5px 12px;border-radius:30px;font-family:var(--sans)}
+  .explain h1{font-family:var(--display);font-weight:400;font-size:30px;color:var(--navy);margin-top:12px;letter-spacing:-.01em}
+  .explain p{max-width:760px;margin-top:6px;font-size:14.5px;color:#3c4654}
+  .explain code{background:#e7ebf0;padding:1px 6px;border-radius:5px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+
+  /* ---- browser frame ---- */
+  .browser{max-width:1180px;margin:18px auto 60px;border-radius:14px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(13,27,42,.5);border:1px solid #b9c0c9;background:#fff}
+  .chrome{display:flex;align-items:center;gap:14px;background:#e6e9ed;border-bottom:1px solid #d3d8de;padding:11px 16px}
+  .dots{display:flex;gap:7px}
+  .dots i{width:12px;height:12px;border-radius:50%;display:block}
+  .dots i:nth-child(1){background:#ff5f57}.dots i:nth-child(2){background:#febc2e}.dots i:nth-child(3){background:#28c840}
+  .url{flex:1;background:#fff;border:1px solid #d3d8de;border-radius:7px;padding:6px 12px;font-size:12.5px;color:#5a6573;display:flex;align-items:center;gap:8px}
+  .url svg{flex:none}
+
+  /* ---- the simulated site ---- */
+  .site{position:relative;background:#fff}
+
+  /* generic WP top bar + header */
+  .wp-top{background:var(--wp-blue);color:#cdd8e6;font-size:12.5px}
+  .wp-top .in{max-width:1100px;margin:0 auto;padding:7px 28px;display:flex;justify-content:space-between;align-items:center}
+  .wp-top a{color:#cdd8e6;text-decoration:none;margin-left:18px}
+  .wp-head{border-bottom:1px solid var(--wp-line);background:#fff}
+  .wp-head .in{max-width:1100px;margin:0 auto;padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
+  .wp-logo{display:flex;align-items:center;gap:11px}
+  .wp-logo .mk{width:38px;height:38px;background:var(--wp-blue);color:#fff;border-radius:5px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;font-family:Georgia,serif}
+  .wp-logo b{font-size:18px;color:var(--wp-blue);letter-spacing:.02em;line-height:1}
+  .wp-logo span{display:block;font-size:10px;letter-spacing:.22em;color:#8a97a6;text-transform:uppercase;margin-top:3px}
+  .wp-nav{display:flex;gap:24px;font-size:13.5px;font-weight:600;color:var(--wp-text)}
+  .wp-nav a{text-decoration:none;color:var(--wp-text)}
+  .wp-nav a.on{color:var(--wp-blue2)}
+  .wp-cta{background:var(--wp-blue2);color:#fff;font-size:13px;font-weight:700;padding:9px 16px;border-radius:4px}
+
+  /* generic hero with template search */
+  .wp-hero{background:linear-gradient(rgba(20,38,60,.66),rgba(20,38,60,.66)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%23355072'/%3E%3Cpath d='M0 39h40M39 0v40' stroke='%23456486' stroke-width='1'/%3E%3C/svg%3E");color:#fff;text-align:center;padding:54px 24px 60px}
+  .wp-hero h2{font-size:30px;font-weight:800;letter-spacing:-.01em}
+  .wp-hero p{margin-top:8px;color:#d4deea;font-size:14.5px}
+  .wp-search{max-width:760px;margin:24px auto 0;background:#fff;border-radius:7px;padding:10px;display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;box-shadow:0 16px 40px -16px rgba(0,0,0,.5)}
+  .wp-search input,.wp-search select{border:1px solid var(--wp-line);border-radius:5px;padding:10px;font-size:13px;color:var(--wp-text);font-family:var(--wp-font)}
+  .wp-search button{background:var(--wp-blue2);color:#fff;border:0;border-radius:5px;padding:0 20px;font-weight:700;font-size:13px;cursor:default}
+  .badge-generic{display:inline-block;margin-top:14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9fb1c4}
+
+  /* ===== AI SECTION (editorial, our tools) ===== */
+  .ai-band{background:var(--bone);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");border-top:3px solid var(--teal)}
+  .ai-band .in{max-width:1100px;margin:0 auto;padding:46px 28px 56px}
+  .ai-flag{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);background:var(--teal-pale);padding:6px 13px;border-radius:30px}
+  .ai-flag i{width:7px;height:7px;border-radius:50%;background:var(--teal);display:block}
+  .ai-grid{display:grid;grid-template-columns:5fr 7fr;gap:40px;margin-top:22px;align-items:start}
+  .ai-intro .eye{font-family:var(--sans);text-transform:uppercase;letter-spacing:.28em;font-size:11px;font-weight:600;color:var(--terra)}
+  .ai-intro h3{font-family:var(--display);font-weight:400;font-size:46px;line-height:.98;color:var(--ink);margin-top:14px;letter-spacing:-.01em}
+  .ai-intro h3 em{font-style:italic;color:var(--terra)}
+  .ai-intro p{margin-top:16px;color:var(--muted);font-size:15.5px;max-width:380px}
+  .ai-intro ul{list-style:none;margin-top:20px;display:grid;gap:11px}
+  .ai-intro li{display:flex;gap:11px;font-size:14px;color:var(--ink)}
+  .ai-intro li b{flex:none;width:20px;height:20px;border-radius:50%;background:var(--teal);color:var(--paper);font-size:11px;display:flex;align-items:center;justify-content:center}
+  .annot{margin-top:22px;font-family:var(--sans);font-size:12.5px;color:var(--teal);border-left:2px dashed var(--teal);padding-left:12px}
+  .annot code{background:var(--bone-deep);padding:1px 6px;border-radius:5px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--ink)}
+
+  /* the valuation RESULT card (faithful to the real tool) */
+  .tool{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:0 30px 60px -30px rgba(13,27,42,.35);position:relative}
+  .tool .recap{font-family:var(--sans);font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:18px}
+  .tool .recap b{color:var(--ink)}
+  .rangewrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  .rlabel{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .conf{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);background:var(--teal-pale);padding:4px 11px;border-radius:30px}
+  .range{font-family:var(--display);font-size:54px;color:var(--navy);line-height:1;margin-top:8px;letter-spacing:-.01em}
+  .mid{font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:8px}
+  .ration{margin-top:18px;font-size:14.5px;line-height:1.6;color:var(--ink);border-top:1px solid var(--line);padding-top:18px}
+  .comps-h{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:20px 0 10px}
+  .comp{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+  .comp:last-child{border-bottom:0}
+  .comp .a{color:var(--ink)}
+  .comp .a small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+  .comp .p{color:var(--teal);font-weight:700;white-space:nowrap}
+  .lead{margin-top:22px;background:var(--navy);border-radius:14px;padding:22px;color:var(--bone)}
+  .lead h4{font-family:var(--display);font-size:24px;font-weight:400}
+  .lead p{font-size:13px;color:#aebccd;margin-top:4px}
+  .lead .row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+  .lead input{background:#11283b;border:1px solid #2a4055;border-radius:7px;padding:10px;color:#eaf1f7;font-size:13px;font-family:var(--wp-font)}
+  .lead input::placeholder{color:#7d93a8}
+  .lead .full{grid-column:1/3}
+  .lead button{margin-top:12px;width:100%;background:var(--teal);color:var(--paper);border:0;border-radius:30px;padding:13px;font-weight:700;font-size:14px;font-family:var(--sans);cursor:default}
+  .disc{margin-top:12px;font-size:11.5px;color:var(--muted);text-align:center}
+
+  /* generic listings strip below, to feel like a full site */
+  .wp-list{max-width:1100px;margin:0 auto;padding:44px 28px}
+  .wp-list h3{font-size:20px;color:var(--wp-blue);font-weight:800;margin-bottom:4px}
+  .wp-list .sub{font-size:13px;color:#8a97a6;margin-bottom:20px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .pc{border:1px solid var(--wp-line);border-radius:8px;overflow:hidden;background:#fff}
+  .pc .img{height:130px;background:linear-gradient(135deg,#9fb1c4,#c2cdd9);display:flex;align-items:flex-end;justify-content:flex-start}
+  .pc .img span{background:var(--wp-blue2);color:#fff;font-size:11px;font-weight:700;padding:4px 9px;margin:8px}
+  .pc .body{padding:13px}
+  .pc .pr{color:var(--wp-blue);font-weight:800;font-size:16px}
+  .pc .ad{font-size:13px;color:var(--wp-text);margin-top:3px}
+  .pc .ft{font-size:12px;color:#8a97a6;margin-top:8px;display:flex;gap:12px}
+
+  /* generic footer */
+  .wp-foot{background:var(--wp-blue);color:#aebfcf;font-size:12.5px;text-align:center;padding:22px}
+
+  /* ===== floating concierge (open) ===== */
+  .concierge{position:absolute;bottom:26px;right:26px;width:330px;z-index:9}
+  .cpanel{height:430px;display:flex;flex-direction:column;background:var(--bone);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 40px 80px -20px rgba(13,27,42,.55)}
+  .chead{display:flex;align-items:center;gap:11px;background:var(--navy);color:var(--bone);padding:13px 16px}
+  .chead .m{width:34px;height:34px;border-radius:50%;background:var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:18px}
+  .chead p{font-size:13.5px;font-weight:700}.chead small{font-size:11px;color:rgba(246,242,233,.6)}
+  .cbody{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:12px}
+  .b{max-width:86%;font-size:13px;line-height:1.5;padding:9px 13px;border-radius:15px;white-space:pre-line}
+  .b.bot{align-self:flex-start;background:var(--paper);border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px}
+  .b.usr{align-self:flex-end;background:var(--navy);color:var(--bone);border-bottom-right-radius:4px}
+  .note{align-self:flex-start;font-size:11.5px;font-style:italic;color:var(--teal);margin-left:2px}
+  .cfoot{display:flex;gap:8px;align-items:center;border-top:1px solid var(--line);background:var(--paper);padding:11px}
+  .cfoot input{flex:1;border:1px solid var(--line);background:var(--bone);border-radius:30px;padding:9px 14px;font-size:13px;color:var(--ink);font-family:var(--wp-font)}
+  .cfoot .send{width:38px;height:38px;border-radius:50%;background:var(--teal);color:var(--paper);border:0;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .clauncher{margin-top:12px;float:right;display:inline-flex;align-items:center;gap:9px;background:var(--teal);color:var(--paper);padding:12px 18px;border-radius:30px;font-family:var(--sans);font-size:13px;font-weight:700;box-shadow:0 20px 40px -12px rgba(31,122,110,.7)}
+  .clauncher .dot{width:10px;height:10px;border-radius:50%;background:var(--amber)}
+
+  /* callout pins */
+  .pin{position:absolute;font-family:var(--sans);font-size:11.5px;font-weight:700;background:var(--terra);color:#fff;padding:6px 11px;border-radius:30px;box-shadow:0 8px 20px -6px rgba(200,100,60,.7);z-index:12}
+  .pin.p1{top:8px;right:355px}
+  .pin.p2{left:50%;transform:translateX(-50%);}
+
+  .foot-note{max-width:1180px;margin:0 auto 50px;padding:0 24px;font-size:13px;color:#46505c}
+  .foot-note code{background:#e7ebf0;padding:1px 6px;border-radius:5px;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+
+  @media(max-width:900px){.ai-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.concierge{position:fixed}.pin.p1{display:none}}
+</style>
+</head>
+<body>
+
+  <div class="explain">
+    <span class="tag">Preview · once deployed</span>
+    <h1>How the two AI tools look once they're live on manifestre.com.au</h1>
+    <p>This is an illustrative mock of his existing site (a generic agency template) with the companion build's two AI tools dropped in. On the real site each one embeds with a single <code>&lt;div&gt;</code> + <code>&lt;script&gt;</code> tag — the working version is <code>embed-demo.html</code>. The plain blue chrome is "his site today"; the warm editorial pieces are the AI tools.</p>
+  </div>
+
+  <div class="browser">
+    <div class="chrome">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="url">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 1a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V6a5 5 0 0 0-5-5Zm3 8H9V6a3 3 0 0 1 6 0v3Z" fill="%231f7a6e"/></svg>
+        https://www.manifestre.com.au
+      </div>
+    </div>
+
+    <div class="site">
+
+      <!-- ===== generic WP chrome (his site today) ===== -->
+      <div class="wp-top"><div class="in"><span>📞 0400 000 000 · hello@manifestre.com.au</span><span><a href="#">Book an appraisal</a><a href="#">Login</a></span></div></div>
+      <div class="wp-head"><div class="in">
+        <div class="wp-logo"><div class="mk">M</div><div><b>MANIFEST</b><span>Real Estate</span></div></div>
+        <nav class="wp-nav"><a class="on" href="#">Buy</a><a href="#">Sell</a><a href="#">Rent</a><a href="#">Sold</a><a href="#">Suburbs</a><a href="#">Contact</a></nav>
+        <div class="wp-cta">Property Search</div>
+      </div></div>
+
+      <div class="wp-hero">
+        <h2>Find your next property in Melbourne's west</h2>
+        <p>Where dreams meet reality.</p>
+        <div class="wp-search">
+          <input placeholder="Suburb or postcode" />
+          <select><option>Any type</option></select>
+          <select><option>Any price</option></select>
+          <button>Search</button>
+        </div>
+        <div class="badge-generic">— standard template, same as every other agency —</div>
+      </div>
+
+      <!-- ===== AI TOOL 1: Instant Home Valuation (embedded) ===== -->
+      <span class="pin p2" style="top:0">↓ Embedded AI tool #1 · added by the companion build</span>
+      <div class="ai-band"><div class="in">
+        <span class="ai-flag"><i></i>New · AI-powered</span>
+        <div class="ai-grid">
+          <div class="ai-intro">
+            <p class="eye">Instant home valuation</p>
+            <h3>What's your home <em>really</em> worth?</h3>
+            <p>A seller enters their address; Claude reasons over Manifest's recently-sold comparables and returns an honest indicative range in seconds — then captures the lead.</p>
+            <ul>
+              <li><b>✓</b><span>Grounded in real recently-sold sales nearby</span></li>
+              <li><b>✓</b><span>A clear low–high range with the reasoning shown</span></li>
+              <li><b>✓</b><span>Every estimate becomes a qualified seller lead</span></li>
+            </ul>
+            <div class="annot">Drops into any page with<br><code>&lt;div data-manifest-embed="valuation"&gt;&lt;/div&gt;</code></div>
+          </div>
+
+          <div class="tool">
+            <div class="recap">Your property · <b>4-bed House</b> · Sunbury · 560m²</div>
+            <div class="rangewrap">
+              <span class="rlabel">Indicative range</span>
+              <span class="conf">High confidence</span>
+            </div>
+            <div class="range">$670,000 – $740,000</div>
+            <div class="mid">Midpoint estimate <b style="color:var(--ink)">$705,000</b></div>
+            <p class="ration">Recent four-bedroom sales in Sunbury have landed between $700k and $740k, with your 560m² block and double garage sitting at the upper-middle of that band. The suburb's +2.7% twelve-month trend and strong house-and-land demand support a firm range rather than a wide one.</p>
+            <div class="comps-h">Comparable sales used</div>
+            <div class="comp"><span class="a">9 Redgum Drive, Sunbury<small>4bd / 2ba / 2car · sold Mar 2026 · same size bracket</small></span><span class="p">$705,000</span></div>
+            <div class="comp"><span class="a">27 Mitchells Lane, Sunbury<small>4bd / 2ba · 640m² · sold Feb 2026 · larger block</small></span><span class="p">$740,000</span></div>
+            <div class="comp"><span class="a">14 Marigold Crescent, Sunbury<small>3bd / 2ba · sold Apr 2026 · smaller, anchors the low end</small></span><span class="p">$615,000</span></div>
+
+            <div class="lead">
+              <h4>Get an accurate appraisal from Manifest</h4>
+              <p>The most accurate figure comes from a local agent seeing the home. No obligation.</p>
+              <div class="row">
+                <input class="full" placeholder="Your name" />
+                <input placeholder="Email" />
+                <input placeholder="Phone" />
+              </div>
+              <button>Book my free appraisal →</button>
+            </div>
+            <p class="disc">Indicative estimate, not a formal valuation.</p>
+          </div>
+        </div>
+      </div></div>
+
+      <!-- ===== back to generic site (listings) ===== -->
+      <div class="wp-list">
+        <h3>Featured listings</h3>
+        <div class="sub">— back to his standard template below —</div>
+        <div class="cards">
+          <div class="pc"><div class="img"><span>FOR SALE</span></div><div class="body"><div class="pr">$1.35M – $1.45M</div><div class="ad">41 Woorite Place, Keilor East</div><div class="ft"><span>4 bed</span><span>3 bath</span><span>2 car</span></div></div></div>
+          <div class="pc"><div class="img"><span>FOR SALE</span></div><div class="body"><div class="pr">$900k – $990k</div><div class="ad">5/90 Blackshaws Road, South Kingsville</div><div class="ft"><span>2 bed</span><span>2 bath</span><span>1 car</span></div></div></div>
+          <div class="pc"><div class="img"><span>FOR SALE</span></div><div class="body"><div class="pr">Contact agent</div><div class="ad">205 Whiteside Street, Beveridge</div><div class="ft"><span>3 bed</span><span>2 bath</span><span>6 car</span></div></div></div>
+        </div>
+      </div>
+
+      <div class="wp-foot">© 2026 Manifest Real Estate · Altona North · Newport · Sunbury · Werribee — standard footer</div>
+
+      <!-- ===== AI TOOL 2: Buyer Concierge (floating, open) ===== -->
+      <span class="pin p1">AI tool #2 · 24/7 buyer concierge →</span>
+      <div class="concierge">
+        <div class="cpanel">
+          <div class="chead"><span class="m">M</span><div><p>Buyer Concierge</p><small>Manifest Real Estate · live</small></div></div>
+          <div class="cbody">
+            <div class="b bot">Hi! I'm Manifest's buyer concierge. Ask me about listings, suburbs or budgets — and I can book you an inspection.</div>
+            <div class="b usr">Any 3-bed houses under $1M near Newport?</div>
+            <div class="b bot">Two strong fits right now:
+
+• 9 Maddox Road, Newport — 3bd/1ba, ~$1.12M
+• 21 Sussex Street, Altona North — 3bd/1ba, $805k
+
+Want to inspect either one?</div>
+            <div class="b usr">Yes — the Altona North one. I'm Jordan, 0400 123 456.</div>
+            <div class="note">✦ Lead captured — the agent will follow up</div>
+            <div class="b bot">Done, Jordan — I've passed your details to the team and they'll call to lock in an inspection. 🎉</div>
+          </div>
+          <div class="cfoot"><input placeholder="Ask about a listing or suburb…" /><button class="send">→</button></div>
+        </div>
+        <div class="clauncher"><span class="dot"></span>Close</div>
+      </div>
+
+    </div><!-- /site -->
+  </div><!-- /browser -->
+
+  <p class="foot-note">Illustrative preview only — no live data. The two tools embed into his real WordPress theme with one script tag each; the working, clickable version is <code>embed-demo.html</code> (run the local app first). Tool styling matches the live build exactly (same fonts + colour tokens).</p>
+
+</body>
+</html>
