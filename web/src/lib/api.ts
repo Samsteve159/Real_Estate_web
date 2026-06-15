@@ -150,6 +150,17 @@ export async function streamChat(
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
+  let sawTerminal = false;
+
+  const handle = (raw: string) => {
+    try {
+      const e = JSON.parse(raw) as ChatEvent;
+      if (e.type === "done" || e.type === "error") sawTerminal = true;
+      onEvent(e);
+    } catch {
+      /* ignore keep-alive / malformed frame */
+    }
+  };
 
   while (true) {
     const { value, done } = await reader.read();
@@ -161,12 +172,17 @@ export async function streamChat(
     buffer = frames.pop() ?? "";
     for (const frame of frames) {
       const line = frame.split("\n").find((l) => l.startsWith("data:"));
-      if (!line) continue;
-      try {
-        onEvent(JSON.parse(line.slice(5).trim()) as ChatEvent);
-      } catch {
-        /* ignore keep-alive / malformed frame */
-      }
+      if (line) handle(line.slice(5).trim());
     }
   }
+
+  // Flush a trailing frame the stream may have closed on without a blank line.
+  const tail = buffer.split("\n").find((l) => l.startsWith("data:"));
+  if (tail) handle(tail.slice(5).trim());
+
+  // The server writes its final `done` fire-and-forget, so the stream can close
+  // before that event flushes (and any connection can drop mid-stream). Without
+  // a terminal event the UI stays stuck in the streaming state — so synthesise
+  // one. Idempotent when a real `done`/`error` already arrived.
+  if (!sawTerminal) onEvent({ type: "done" });
 }
