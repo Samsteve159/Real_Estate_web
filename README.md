@@ -5,7 +5,7 @@ A local-first companion site for **Manifest Real Estate** (manifestre.com.au) sh
 1. **Instant Home Valuation** — address + attributes → indicative price range (Claude over recently-sold comps) → captures a seller lead.
 2. **AI Buyer Concierge** — a streaming chatbot over real listings + suburbs, with tool use to search listings and capture buyer leads.
 
-> Indicative estimates only — the CTA drives to a real appraisal. See `plan.md` for the full plan and `CLAUDE.md` for working guidance.
+> Indicative estimates only — the CTA drives to a real appraisal. See `docs/plan.md` for the full plan and `CLAUDE.md` for working guidance.
 
 ## Structure
 
@@ -32,8 +32,16 @@ A local-first companion site for **Manifest Real Estate** (manifestre.com.au) sh
 │   └── leads.db             SQLite (gitignored)
 ├── scripts/
 │   └── scrape-listings.mjs  one-off public-site scraper (pure fetch, no LLM, $0)
-├── pitch.html / one-pager.html   existing infographics
-└── plan.md / CLAUDE.md
+├── docs/       Documentation & shareable artifacts
+│   ├── plan.md              full build plan
+│   ├── PROJECT_TRACKER.md   phased delivery tracker
+│   ├── pitch.html           business pitch (infographic)
+│   ├── one-pager.html       technical one-pager
+│   ├── progress.html        build-status dashboard
+│   ├── once_deployed.html   preview: the AI tools embedded on the live site
+│   └── embed-demo.html      working embeddable-widgets demo
+├── README.md
+└── CLAUDE.md   working guidance for Claude Code
 ```
 
 ## Refreshing listings
@@ -79,4 +87,7 @@ sqlite3 data/leads.db "select * from leads order by id desc;"
 
 ## Deploy (later)
 
-`web/` → Cloudflare Pages · `api/` (Hono) → Cloudflare Workers · `leads.db` → D1. The Hono API runs unchanged on Node locally and on Workers.
+Target is a **VM** (local-first until the owner is happy). The Node + Hono + SQLite
+stack ports directly — needs a process manager + a reverse proxy with SPA fallback
+(including the `/embed/*` routes) and the env vars `ALLOWED_ORIGINS` / `STATS_TOKEN`.
+See `docs/PROJECT_TRACKER.md` for the current status.

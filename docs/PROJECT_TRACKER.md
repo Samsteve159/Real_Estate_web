@@ -1,9 +1,9 @@
 # Project Tracker — Manifest RE AI Companion
 
-Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how to run.
+Phased delivery tracker. See `plan.md` (same folder) for the full plan and the repo-root `README.md` for how to run.
 
 **Repo:** `git@github.com:Samsteve159/Real_Estate_web.git` · **Branch:** `main`
-**Last updated:** 2026-06-13 · **Models:** `claude-opus-4-8` (valuation + concierge)
+**Last updated:** 2026-06-15 · **Models:** `claude-opus-4-8` (valuation + concierge)
 
 **Status legend:** ✅ done · 🟡 in progress / needs live test · ⬜ not started · 🔭 backlog
 

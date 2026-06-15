@@ -1,6 +1,6 @@
 # CLAUDE.md — Manifest Real Estate AI Companion
 
-Guidance for Claude Code working in this repo. See `plan.md` for the full plan.
+Guidance for Claude Code working in this repo. See `docs/plan.md` for the full plan (and `docs/PROJECT_TRACKER.md` for status).
 
 ## What this is
 A local-first companion site for **Manifest Real Estate** (manifestre.com.au) showcasing two AI tools the agent's WordPress template can't provide:
@@ -30,7 +30,7 @@ Always invoke the relevant skill rather than working from memory. Required and b
 | **verify** | To confirm a change actually works end-to-end (e.g. valuation returns a range and a lead lands in the DB) before declaring it done. |
 | **code-review** | To review a diff for correctness bugs and cleanups after a meaningful change. |
 | **security-review** | Before going live — this app handles PII (names, contacts, addresses, chat transcripts) and a server-side API key. Run a security review of the changes. |
-| **presentation-deck** | If the owner later wants a slide/pitch deck (beyond the existing `pitch.html` infographic). |
+| **presentation-deck** | If the owner later wants a slide/pitch deck (beyond the existing `docs/pitch.html` infographic). |
 | **context-mode** | When processing large command/test/scrape output, so raw data stays out of context. |
 | **init** | If the project structure changes enough to warrant regenerating this CLAUDE.md. |
 
