@@ -51,9 +51,9 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - [x] ✅ **Extended valuation data to the real footprint** — added the 7 outer-west/north corridor suburbs that had listings but no median/comp data (Keilor East, Sunbury, Beveridge, Wallan, Werribee, Weir Views, Winter Valley) to `suburbs.json` (medians) + `sold.json` (~25 comps). Now 14 suburbs / 47 comps; **every listing suburb is covered**. Valuation SYSTEM-prompt service-area copy broadened. Live-verified: Sunbury 4bd → $670k–$740k (high) citing the new Sunbury comps; Newport unchanged (no regression).
 - [x] ✅ **Embeddable widgets (iframe approach)** — chrome-less `/embed/valuation` + `/embed/concierge` routes (bare layout in `App.tsx`), `inline` mode on `ConciergeWidget`, `web/public/embed.js` loader + `embed-demo.html`, postMessage auto-resize for the valuation iframe, `VITE_API_BASE` indirection in `lib/api.ts`. Served same-origin so `/api` keeps working with no CORS. `tsc -b` + `vite build` green; `embed.js` ships to `dist/`.
 - [x] ✅ **Mobile/responsive fixes** (code audit) — clamped concierge panel height (`min(34rem,75svh)`) + tighter mobile width/position, abbreviated launcher & Nav-CTA text on small screens, bumped Nav CTA tap target, reduced valuation-form padding/stepper gap at 360px.
-- [ ] Final mobile QA on a **real device** (owner)
-- [ ] Set Anthropic spend cap before sharing any link (owner — Anthropic console)
-- [ ] Deploy on a **VM** (owner's chosen target — not Cloudflare): Node + Hono + SQLite stack ports directly; needs a process manager + reverse proxy with SPA fallback (incl. `/embed/*`) + env vars `ALLOWED_ORIGINS` / `STATS_TOKEN`. Revisit once happy with local.
+- [x] ✅ **Mobile/responsive QA** — driven live with Playwright at 390px (mobile) + 768px (tablet): nav/launcher text abbreviates correctly, concierge panel fits the viewport (212→756 of 844, no clip), no horizontal/form overflow, valuation runs end-to-end for a **new** suburb (Sunbury 3bd → $545k–$615k citing the new comps), concierge streams, and both `/embed/*` routes render chrome-less. Screenshots captured. *(Optional: a quick spot-check on a physical handset.)*
+- [x] ✅ **Anthropic spend cap set** (owner — monthly cap in the Anthropic console).
+- [ ] Deploy on a **VM** — **deferred: running local-first** per owner ("let's see how it functions local first"). When ready: Node + Hono + SQLite stack ports directly; needs a process manager + reverse proxy with SPA fallback (incl. `/embed/*`) + env vars `ALLOWED_ORIGINS` / `STATS_TOKEN`.
 
 ---
 
