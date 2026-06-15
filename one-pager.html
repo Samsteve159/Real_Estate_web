@@ -66,7 +66,7 @@
     </div>
     <div class="meta">
       Local-first · deploys to Cloudflare<br>
-      Status: <b>pre-build / design review</b><br>
+      Status: <b>built &amp; live-tested · Phase 4 (deploy)</b><br>
       Looking for: data-source &amp; modelling feedback
     </div>
   </div>
@@ -79,11 +79,58 @@
   </section>
 
   <section>
+    <h2>Build status <span class="pill" style="background:#e7f4f0;color:var(--accent2);border-color:#c7e6dd">Phases 1–3 live · Phase 4 in progress</span></h2>
+    <div class="row c3">
+      <div class="box" style="border-top:4px solid var(--accent2)">
+        <h3>✅ Phase 1 — Microsite</h3>
+        <ul>
+          <li>Vite + React + TS + Tailwind front-end; Hono API (Node-local, Workers-ready).</li>
+          <li><b>20 real listings</b> scraped from his <b>public</b> site (pure HTML parse, no LLM, $0).</li>
+        </ul>
+      </div>
+      <div class="box" style="border-top:4px solid var(--accent2)">
+        <h3>✅ Phase 2 — Valuation</h3>
+        <ul>
+          <li>Structured-JSON estimate + lead capture to SQLite.</li>
+          <li><b>Live test:</b> Newport 3bd → $1.18M–$1.32M, cited a same-street comp; seller lead landed.</li>
+        </ul>
+      </div>
+      <div class="box" style="border-top:4px solid var(--accent2)">
+        <h3>✅ Phase 3 — Concierge</h3>
+        <ul>
+          <li>Streamed chat, <code>search_listings</code> + <code>capture_lead</code> tool use, light RAG.</li>
+          <li><b>Live test:</b> "3-beds under $1M near Newport" → accurate matches → inspection lead captured.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row c2" style="margin-top:16px">
+      <div class="box" style="border-top:4px solid var(--warn)">
+        <h3>🟡 Phase 4 — Hardening (done so far)</h3>
+        <ul>
+          <li>Per-IP rate-limiting on valuation / chat / lead (429 + Retry-After); <code>/api/stats</code> analytics.</li>
+          <li>Loading / empty / error states + global ErrorBoundary + 404.</li>
+          <li><b>security-review</b>: input size/numeric caps (<code>validate.ts</code>), CORS locked to <code>ALLOWED_ORIGINS</code>, <code>/api/stats</code> gated by <code>STATS_TOKEN</code>, email/NaN validation.</li>
+          <li><b>code-review</b>: fixed a chat-history truncation bug (kept newest turn; trims leading/trailing assistant turns).</li>
+        </ul>
+      </div>
+      <div class="box" style="border-top:4px solid var(--warn)">
+        <h3>⬜ Phase 4 — Remaining</h3>
+        <ul>
+          <li>Final mobile QA on a real device.</li>
+          <li><b>Set Anthropic spend cap</b> before sharing any deployed link.</li>
+          <li>Deploy: <code>web/</code> → Pages · <code>api/</code> → Workers · <code>leads.db</code> → D1.</li>
+          <li>Package both tools as embeddable iframe/script widgets for manifestre.com.au.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <h2>Architecture</h2>
     <div class="flow">
 <pre>  Browser (React SPA)                 Hono API  <span class="hl2">(Node local → Cloudflare Worker)</span>          External
   ─────────────────                   ─────────────────────────────────────          ────────
-  ValuationForm ───POST /api/valuation──▶ build prompt(attrs + comps) ──▶ <span class="hl">Claude (sonnet-4-6)</span>
+  ValuationForm ───POST /api/valuation──▶ build prompt(attrs + comps) ──▶ <span class="hl">Claude (opus-4-8)</span>
                  ◀── {low,high,rationale} ◀── parse structured JSON ◀─────────────────┘
                   ───POST /api/lead ───────▶ <span class="hl3">SQLite leads</span> (→ Cloudflare D1)  ──(opt)──▶ email (free tier)
 
@@ -104,7 +151,7 @@
         <dl class="stack">
           <dt>Front-end</dt><dd>Vite + React + TS + Tailwind (static SPA)</dd>
           <dt>API / AI</dt><dd>Hono + <code>@anthropic-ai/sdk</code> — runs on Node locally, Cloudflare Workers in prod</dd>
-          <dt>Models</dt><dd><code>claude-sonnet-4-6</code> (valuation, chat reasoning); <code>claude-haiku-4-5</code> (cheap chat)</dd>
+          <dt>Models</dt><dd><code>claude-opus-4-8</code> (valuation + chat reasoning, live); <code>claude-haiku-4-5</code> (cheap-chat option)</dd>
           <dt>Lead store</dt><dd>SQLite (local) → Cloudflare <b>D1</b> (prod)</dd>
           <dt>Hosting</dt><dd>Cloudflare Pages (static) + Workers (API) + D1</dd>
           <dt>Secrets</dt><dd><code>ANTHROPIC_API_KEY</code> server-side only; never in client bundle</dd>
@@ -159,12 +206,12 @@
     </div>
     <div class="q">
       <h3><b>Q4</b> Lead data &amp; privacy</h3>
-      <p>We're storing PII (name, contact, address) + chat transcripts. Anything we should bake in now re: <b>retention, consent copy, and Australian Privacy Principles</b> before it goes live?</p>
+      <p>We're storing PII (name, contact, address) + chat transcripts. <b>Partly addressed in the security review</b> (input caps + validation, CORS allowlist, stats gating, server-side key). Still open before go-live: <b>retention policy, consent copy, and Australian Privacy Principles</b> compliance.</p>
     </div>
   </section>
 
   <footer>
-    Manifest Real Estate — AI Companion · Technical one-pager for review. Companion docs: <code>plan.md</code> (full build plan), <code>pitch.html</code> (business pitch). No code committed yet — this is a design-stage review.
+    Manifest Real Estate — AI Companion · Technical one-pager for review. Companion docs: <code>plan.md</code> (full build plan), <code>PROJECT_TRACKER.md</code> (phase tracker), <code>pitch.html</code> (business pitch), <code>progress.html</code> (build-status dashboard). Phases 1–3 built &amp; live-tested on Opus 4.8; Phase 4 (deploy) in progress.
   </footer>
 
 </div>

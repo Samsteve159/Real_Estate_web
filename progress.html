@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manifest RE — AI Companion · Build Progress</title>
+<style>
+  :root{
+    --ink:#0f1b2d; --ink2:#1c2c45; --paper:#f7f4ee; --card:#ffffff;
+    --accent:#c8643c; --accent2:#e3a857; --teal:#1f7a6e; --line:#e3ddd0;
+    --muted:#5d6b7e; --good:#1f7a6e; --wip:#c8643c; --todo:#8a94a3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 80px}
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--ink) 0%,var(--ink2) 60%,#26405f 100%);
+    color:#fff;padding:56px 0 60px;position:relative;overflow:hidden}
+  .hero:after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;
+    border-radius:50%;background:radial-gradient(circle,var(--teal) 0%,transparent 70%);opacity:.4}
+  .hero .wrap{position:relative;z-index:2}
+  .eyebrow{display:inline-block;letter-spacing:.18em;text-transform:uppercase;font-size:12px;
+    font-weight:700;color:var(--accent2);border:1px solid rgba(227,168,87,.4);padding:6px 14px;border-radius:40px;margin-bottom:20px}
+  h1{font-size:42px;line-height:1.06;font-weight:800;letter-spacing:-.02em;max-width:760px}
+  h1 .em{color:var(--accent2)}
+  .sub{margin-top:16px;font-size:18px;color:#cdd7e4;max-width:700px}
+  .meta{margin-top:22px;font-size:13px;color:#9fb0c4;display:flex;gap:20px;flex-wrap:wrap}
+  .meta b{color:#cdd7e4}
+  /* PROGRESS BAR */
+  .barwrap{margin-top:30px;max-width:620px}
+  .barlbl{display:flex;justify-content:space-between;font-size:13px;color:#9fb0c4;margin-bottom:8px}
+  .bar{height:12px;background:rgba(255,255,255,.12);border-radius:30px;overflow:hidden}
+  .bar>span{display:block;height:100%;width:82%;border-radius:30px;
+    background:linear-gradient(90deg,var(--teal),var(--accent2))}
+  /* SECTION */
+  section{margin-top:56px}
+  .kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px}
+  h2{font-size:28px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+  .lead{color:var(--muted);font-size:16px;max-width:780px}
+  /* SNAPSHOT STATS */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;text-align:center}
+  .stat .big{font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+  .stat .lbl{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.4}
+  /* PHASE CARDS */
+  .phases{display:grid;gap:18px;margin-top:26px}
+  .phase{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 26px;
+    border-left:5px solid var(--good);position:relative}
+  .phase.wip{border-left-color:var(--wip)}
+  .phase-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .phase-head .ph{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .phase-head h3{font-size:20px;font-weight:800}
+  .badge{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    padding:4px 11px;border-radius:30px}
+  .badge.done{background:#e7f4f0;color:var(--good);border:1px solid #c7e6dd}
+  .badge.wip{background:#fbeee9;color:var(--wip);border:1px solid #f0d3c7}
+  .teaches{font-size:12.5px;color:var(--muted);font-style:italic;margin-bottom:12px}
+  .phase ul{list-style:none;display:grid;gap:7px}
+  .phase li{padding-left:26px;position:relative;font-size:14.5px;color:#384458}
+  .phase li.d:before{content:"✓";position:absolute;left:0;color:var(--good);font-weight:700}
+  .phase li.t:before{content:"○";position:absolute;left:1px;color:var(--todo);font-weight:700}
+  .proof{margin-top:14px;background:#f4f1ea;border:1px dashed var(--line);border-radius:12px;
+    padding:12px 16px;font-size:13.5px;color:#384458}
+  .proof b{color:var(--teal)}
+  /* NEXT UP */
+  .next{margin-top:26px;display:grid;gap:14px;grid-template-columns:1fr 1fr}
+  .ncard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .ncard h3{font-size:15px;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .ncard .n{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;
+    background:var(--accent);color:#fff;font-size:13px;font-weight:700;flex:none}
+  .ncard p{font-size:14px;color:var(--muted)}
+  .ncard .tag{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--wip);background:#fbeee9;padding:2px 9px;border-radius:30px;margin-top:10px}
+  /* CALLOUT */
+  .callout{margin-top:26px;background:linear-gradient(135deg,var(--ink),#26405f);color:#fff;border-radius:18px;padding:30px 34px}
+  .callout h3{font-size:19px;margin-bottom:8px;color:var(--accent2)}
+  .callout p{color:#cdd7e4;font-size:15px;max-width:760px}
+  footer{margin-top:48px;text-align:center;color:var(--muted);font-size:13px;line-height:1.7}
+  footer code{background:#ece7dd;padding:1px 6px;border-radius:5px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12px}
+  @media(max-width:760px){.stats{grid-template-columns:1fr 1fr}.next{grid-template-columns:1fr}h1{font-size:32px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Build Progress · Manifest Real Estate AI Companion</span>
+    <h1>Built, working, and <span class="em">live-tested.</span></h1>
+    <p class="sub">Phases 1–3 are done and verified end-to-end on Claude Opus 4.8. Phase 4 — hardening complete; deployment is the last step. This is a working app, not a slide deck.</p>
+    <div class="meta">
+      <span><b>Status:</b> Phase 4 (deploy) in progress</span>
+      <span><b>Models:</b> claude-opus-4-8</span>
+      <span><b>Updated:</b> 15 Jun 2026</span>
+    </div>
+    <div class="barwrap">
+      <div class="barlbl"><span>Overall delivery</span><span>~82% · 3 of 4 phases live</span></div>
+      <div class="bar"><span></span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="kicker">At a glance</div>
+    <h2>What's real right now</h2>
+    <div class="stats">
+      <div class="stat"><div class="big">2 / 2</div><div class="lbl">hero AI tools built &amp; live</div></div>
+      <div class="stat"><div class="big">20</div><div class="lbl">real listings from his public site ($0, no LLM)</div></div>
+      <div class="stat"><div class="big">2</div><div class="lbl">reviews passed — security + code</div></div>
+      <div class="stat"><div class="big">~$0</div><div class="lbl">cost so far · pennies/mo at trial volume</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">The four phases</div>
+    <h2>Where each phase stands</h2>
+
+    <div class="phases">
+
+      <div class="phase">
+        <div class="phase-head">
+          <span class="ph">Phase 1</span>
+          <h3>Scaffold + design the microsite</h3>
+          <span class="badge done">Done</span>
+        </div>
+        <p class="teaches">Teaches: setup, design — a polished site at localhost with real listings.</p>
+        <ul>
+          <li class="d">Vite + React + TS + Tailwind front-end; Hono + Anthropic SDK API (Node-local, Cloudflare-ready)</li>
+          <li class="d">Distinctive "inner-west editorial" design system — bone / navy / teal / terracotta</li>
+          <li class="d">Seed data: listings, suburbs, recently-sold comps</li>
+          <li class="d"><b>20 real listings</b> scraped from his <b>public</b> site — pure HTML parsing, no LLM, $0</li>
+        </ul>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head">
+          <span class="ph">Phase 2</span>
+          <h3>Instant Home Valuation</h3>
+          <span class="badge done">Done · live-tested</span>
+        </div>
+        <p class="teaches">Teaches: Claude API, prompt engineering, structured JSON — address → range → seller lead saved.</p>
+        <ul>
+          <li class="d">Valuation form: suburb, street, type, bed / bath / car, land size</li>
+          <li class="d">Claude reasons over comps → structured JSON: low, high, midpoint, confidence, rationale, comparables</li>
+          <li class="d">Result UI labelled an "indicative estimate"; CTA drives to a real appraisal</li>
+          <li class="d">Lead persisted to SQLite (name, contact, address, estimate)</li>
+        </ul>
+        <div class="proof"><b>Live test:</b> Newport 3-bed → <b>$1.18M–$1.32M</b>, high confidence, cited a same-street comp; the seller lead row landed in <code>data/leads.db</code>.</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-head">
+          <span class="ph">Phase 3</span>
+          <h3>AI Buyer Concierge Chatbot</h3>
+          <span class="badge done">Done · live-tested</span>
+        </div>
+        <p class="teaches">Teaches: system prompts, tool use, light RAG, streaming — chat → matches → inspection booked → lead.</p>
+        <ul>
+          <li class="d">Floating chat widget with streamed responses + suggestion chips</li>
+          <li class="d">System prompt scoped to Manifest RE; listings injected as context (light RAG)</li>
+          <li class="d">Tool use: <code style="font-size:12px">search_listings()</code> (NL search) + <code style="font-size:12px">capture_lead()</code></li>
+          <li class="d">SSE token streaming to the UI</li>
+        </ul>
+        <div class="proof"><b>Live test:</b> "3-beds under $1M near Newport" → <b>search_listings ×2</b> → accurate matches; "inspect 31 The Avenue, I'm Jordan…" → <b>capture_lead</b> wrote the lead.</div>
+      </div>
+
+      <div class="phase wip">
+        <div class="phase-head">
+          <span class="ph">Phase 4</span>
+          <h3>Polish + deploy</h3>
+          <span class="badge wip">In progress</span>
+        </div>
+        <p class="teaches">Teaches: deployment — hardening done; going live is the last mile.</p>
+        <ul>
+          <li class="d">Per-IP rate-limiting on valuation / chat / lead (429 + Retry-After)</li>
+          <li class="d">In-memory analytics at <code style="font-size:12px">/api/stats</code></li>
+          <li class="d">Loading / empty / error states + global ErrorBoundary + 404 route</li>
+          <li class="d"><b>security-review</b> — input size/numeric caps, CORS locked to an allowlist, stats gated by a token, email/NaN validation</li>
+          <li class="d"><b>code-review</b> — caught &amp; fixed a chat-history truncation bug</li>
+          <li class="t">Final mobile QA on a real device</li>
+          <li class="t">Set the Anthropic spend cap before sharing any link</li>
+          <li class="t">Deploy: web → Cloudflare Pages · api → Workers · leads.db → D1</li>
+          <li class="t">Package both tools as embeddable iframe / script widgets</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Immediate next up</div>
+    <h2>The short list to go live</h2>
+    <div class="next">
+      <div class="ncard">
+        <h3><span class="n">1</span>Final mobile QA</h3>
+        <p>One pass on a real handset — both tools, both happy paths and error states.</p>
+      </div>
+      <div class="ncard">
+        <h3><span class="n">2</span>Set the spend cap</h3>
+        <p>A hard Anthropic spend limit in the console <b>before</b> any shared link goes out — so cost can never surprise anyone.</p>
+        <span class="tag">Guardrail · before share</span>
+      </div>
+      <div class="ncard">
+        <h3><span class="n">3</span>Deploy to Cloudflare</h3>
+        <p>web → Pages, api → Workers, leads → D1, secrets → CF env vars. Trial it on a subdomain.</p>
+      </div>
+      <div class="ncard">
+        <h3><span class="n">4</span>Package as embeds</h3>
+        <p>Wrap both tools as drop-in iframe / script widgets for manifestre.com.au once site rights come through.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">One open decision</div>
+    <h2 style="font-size:24px">Valuation service area</h2>
+    <div class="callout">
+      <h3>Match the data to the real footprint</h3>
+      <p>The 20 real listings now span the outer-west / north growth corridors (Sunbury, Beveridge, Keilor East…), but the valuation's suburb medians and sold comps are still representative inner-west data. Decision before launch: extend the valuation service area — and its grounding data — to match where the listings actually are.</p>
+    </div>
+  </section>
+
+  <footer>
+    Manifest Real Estate — AI Companion · Build-progress dashboard.<br>
+    Companion docs: <code>pitch.html</code> (business pitch) · <code>one-pager.html</code> (technical) · <code>plan.md</code> (full plan) · <code>PROJECT_TRACKER.md</code> (phase tracker).<br>
+    Phases 1–3 built &amp; live-tested on Opus 4.8 · Phase 4 (deploy) in progress.
+  </footer>
+
+</div>
+</body>
+</html>
