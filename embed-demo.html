@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manifest RE — Embed Demo (simulated host site)</title>
+<style>
+  :root { --ink:#0f1b2d; --paper:#f7f4ee; --muted:#5d6b7e; --line:#e3ddd0; --teal:#1f7a6e; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+    background:var(--paper); color:var(--ink); line-height:1.55; }
+  .wrap { max-width:980px; margin:0 auto; padding:48px 24px 96px; }
+  .tag { display:inline-block; letter-spacing:.16em; text-transform:uppercase; font-size:12px;
+    font-weight:700; color:var(--teal); margin-bottom:14px; }
+  h1 { font-size:32px; font-weight:800; letter-spacing:-.02em; }
+  .lead { color:var(--muted); font-size:16px; max-width:680px; margin-top:10px; }
+  .note { margin-top:18px; padding:14px 16px; border:1px dashed var(--line); border-radius:12px;
+    background:#fff; font-size:13.5px; color:var(--muted); }
+  code { background:#ece7dd; padding:1px 6px; border-radius:5px;
+    font-family:'SF Mono',Menlo,Consolas,monospace; font-size:12.5px; }
+  section { margin-top:44px; }
+  h2 { font-size:14px; text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px;
+    border-left:4px solid var(--teal); padding-left:10px; }
+  .grid { display:grid; grid-template-columns:1fr; gap:40px; }
+  @media(min-width:820px){ .grid { grid-template-columns:1fr 1fr; align-items:start; } }
+  footer { margin-top:64px; color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">Embed demo · simulated external site</div>
+  <h1>This page pretends to be manifestre.com.au</h1>
+  <p class="lead">Both tools below are dropped in with a single placeholder <code>&lt;div&gt;</code> and one
+    <code>&lt;script&gt;</code> tag — exactly how they'd embed into the agent's WordPress theme. Each runs in an
+    iframe served from the Manifest companion app, so the AI calls stay same-origin (no CORS) and the styling
+    can't clash with the host site.</p>
+  <div class="note">
+    <strong>Local demo:</strong> this loads <code>embed.js</code> from <code>http://localhost:5173</code>, so the
+    Manifest web app (<code>cd web &amp;&amp; npm run dev</code>) and API (<code>cd api &amp;&amp; npm run dev</code>)
+    must be running. For production, change the script <code>src</code> to your deployed host.
+  </div>
+
+  <div class="grid">
+    <section>
+      <h2>🏡 Instant Home Valuation</h2>
+      <!-- Drop-in: valuation tool. Auto-resizes as the result renders. -->
+      <div data-manifest-embed="valuation"></div>
+    </section>
+
+    <section>
+      <h2>💬 AI Buyer Concierge</h2>
+      <!-- Drop-in: concierge chat. Fixed-height panel (override with data-height). -->
+      <div data-manifest-embed="concierge" data-height="560"></div>
+    </section>
+  </div>
+
+  <footer>Manifest Real Estate — embeddable widgets demo. The two tags above + the one script tag are the entire integration.</footer>
+</div>
+
+<!-- The one line a host site adds. Point src at your deployed host in production. -->
+<script src="http://localhost:5173/embed.js" async></script>
+</body>
+</html>

@@ -48,17 +48,19 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - [x] ✅ Loading/empty/error states + global `ErrorBoundary` + 404 route + rate-limit (429) messaging surfaced in UI
 - [x] ✅ **security-review** — hardened public API: input size/numeric caps + `validate.ts` (stops Claude input-token cost runaway + DB bloat), CORS locked to `ALLOWED_ORIGINS` in prod, `/api/stats` gated behind `STATS_TOKEN`, email/NaN validation. Verified live (400s, 401/200, both AI happy paths, oversized/trailing-assistant histories clean).
 - [x] ✅ **code-review** of the diff — caught + fixed a chat-history truncation bug (was dropping the newest turn / could send an Opus-rejected trailing-assistant prefill); now keeps recent turns and trims leading/trailing assistant turns.
-- [ ] Final mobile QA pass on a real device
-- [ ] Set Anthropic spend cap before sharing any deployed link
-- [ ] Deploy: `web/` → Cloudflare Pages · `api/` → Workers · `leads.db` → D1
-- [ ] Package the two tools as embeddable iframe/script widgets for manifestre.com.au
+- [x] ✅ **Extended valuation data to the real footprint** — added the 7 outer-west/north corridor suburbs that had listings but no median/comp data (Keilor East, Sunbury, Beveridge, Wallan, Werribee, Weir Views, Winter Valley) to `suburbs.json` (medians) + `sold.json` (~25 comps). Now 14 suburbs / 47 comps; **every listing suburb is covered**. Valuation SYSTEM-prompt service-area copy broadened. Live-verified: Sunbury 4bd → $670k–$740k (high) citing the new Sunbury comps; Newport unchanged (no regression).
+- [x] ✅ **Embeddable widgets (iframe approach)** — chrome-less `/embed/valuation` + `/embed/concierge` routes (bare layout in `App.tsx`), `inline` mode on `ConciergeWidget`, `web/public/embed.js` loader + `embed-demo.html`, postMessage auto-resize for the valuation iframe, `VITE_API_BASE` indirection in `lib/api.ts`. Served same-origin so `/api` keeps working with no CORS. `tsc -b` + `vite build` green; `embed.js` ships to `dist/`.
+- [x] ✅ **Mobile/responsive fixes** (code audit) — clamped concierge panel height (`min(34rem,75svh)`) + tighter mobile width/position, abbreviated launcher & Nav-CTA text on small screens, bumped Nav CTA tap target, reduced valuation-form padding/stepper gap at 360px.
+- [ ] Final mobile QA on a **real device** (owner)
+- [ ] Set Anthropic spend cap before sharing any link (owner — Anthropic console)
+- [ ] Deploy on a **VM** (owner's chosen target — not Cloudflare): Node + Hono + SQLite stack ports directly; needs a process manager + reverse proxy with SPA fallback (incl. `/embed/*`) + env vars `ALLOWED_ORIGINS` / `STATS_TOKEN`. Revisit once happy with local.
 
 ---
 
 ## Backlog / open follow-ups 🔭
 - [ ] Phase 5 (optional): AI Listing Copy Generator (agent-facing)
-- [ ] Source of suburb median data to ground valuations beyond comps alone
-- [ ] Decide final deploy target (Cloudflare vs VM) at Phase 4
+- [ ] Source of *real* suburb median data to ground valuations beyond comps alone (current corridor medians are representative)
+- [x] ✅ Deploy target decided: **VM** (owner) — local-first until happy, then deploy. Cloudflare Workers/D1 path dropped.
 
 ## Known constraints
 - Installed `@anthropic-ai/sdk@0.68.0` doesn't type `output_config` (structured outputs); valuation requests strict JSON and parses it tolerantly. Revisit if the SDK is upgraded.
@@ -68,7 +70,9 @@ Phased delivery tracker. See `plan.md` for the full plan and `README.md` for how
 - `ALLOWED_ORIGINS` — comma-separated front-end origins; locks CORS in prod (unset = open, for local dev).
 - `STATS_TOKEN` — required to read `GET /api/stats` when set (send as `x-stats-token` header or `?token=`).
 
-## Immediate next up
-1. Final mobile QA on a real device.
+## Immediate next up (all owner-owned)
+1. Final mobile QA on a real device (responsive code fixes already in; needs a real handset pass).
 2. Set Anthropic spend cap before any shared link.
-3. Note: valuation `suburbs.json`/`sold.json` are still representative inner-west data — real listings now span the outer-west/north growth corridors (Sunbury, Beveridge, Keilor East…). Decide whether to extend the valuation service area to match.
+3. When happy with local: deploy on the VM (process manager + reverse proxy with SPA fallback incl. `/embed/*`; set `ALLOWED_ORIGINS` / `STATS_TOKEN`). Then point the embed `<script src>` in `embed-demo.html` / the WordPress theme at the deployed host.
+
+> Open the embed demo locally: run `web` + `api` dev servers, then open `embed-demo.html` (loads `embed.js` from `http://localhost:5173`).

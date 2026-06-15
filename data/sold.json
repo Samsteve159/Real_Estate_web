@@ -27,5 +27,36 @@
 
   { "address": "33 Charles Street, Seddon", "suburb": "Seddon", "beds": 3, "baths": 1, "cars": 0, "landSize": 270, "type": "House", "soldPrice": 1150000, "soldDate": "2026-04-25" },
   { "address": "12 Belair Street, Seddon", "suburb": "Seddon", "beds": 3, "baths": 2, "cars": 1, "landSize": 300, "type": "House", "soldPrice": 1265000, "soldDate": "2026-03-18" },
-  { "address": "1/9 Stephen Street, Seddon", "suburb": "Seddon", "beds": 2, "baths": 1, "cars": 1, "landSize": 0, "type": "Townhouse", "soldPrice": 720000, "soldDate": "2026-05-06" }
+  { "address": "1/9 Stephen Street, Seddon", "suburb": "Seddon", "beds": 2, "baths": 1, "cars": 1, "landSize": 0, "type": "Townhouse", "soldPrice": 720000, "soldDate": "2026-05-06" },
+
+  { "address": "12 Woorite Place, Keilor East", "suburb": "Keilor East", "beds": 3, "baths": 1, "cars": 2, "landSize": 560, "type": "House", "soldPrice": 985000, "soldDate": "2026-04-15" },
+  { "address": "8 Lyndon Street, Keilor East", "suburb": "Keilor East", "beds": 4, "baths": 2, "cars": 2, "landSize": 600, "type": "House", "soldPrice": 1175000, "soldDate": "2026-03-09" },
+  { "address": "2/31 Quinn Grove, Keilor East", "suburb": "Keilor East", "beds": 4, "baths": 3, "cars": 2, "landSize": 280, "type": "Townhouse", "soldPrice": 1340000, "soldDate": "2026-05-20" },
+  { "address": "55 Hoffmans Road, Keilor East", "suburb": "Keilor East", "beds": 3, "baths": 2, "cars": 1, "landSize": 520, "type": "House", "soldPrice": 1050000, "soldDate": "2026-02-26" },
+
+  { "address": "14 Marigold Crescent, Sunbury", "suburb": "Sunbury", "beds": 3, "baths": 2, "cars": 2, "landSize": 450, "type": "House", "soldPrice": 615000, "soldDate": "2026-04-22" },
+  { "address": "9 Redgum Drive, Sunbury", "suburb": "Sunbury", "beds": 4, "baths": 2, "cars": 2, "landSize": 560, "type": "House", "soldPrice": 705000, "soldDate": "2026-03-13" },
+  { "address": "27 Mitchells Lane, Sunbury", "suburb": "Sunbury", "beds": 4, "baths": 2, "cars": 2, "landSize": 640, "type": "House", "soldPrice": 740000, "soldDate": "2026-02-08" },
+  { "address": "3/6 O'Shanassy Street, Sunbury", "suburb": "Sunbury", "beds": 3, "baths": 2, "cars": 1, "landSize": 0, "type": "Townhouse", "soldPrice": 525000, "soldDate": "2026-05-11" },
+
+  { "address": "22 Mandalay Circuit, Beveridge", "suburb": "Beveridge", "beds": 4, "baths": 2, "cars": 2, "landSize": 448, "type": "House", "soldPrice": 690000, "soldDate": "2026-04-30" },
+  { "address": "7 Lyra Boulevard, Beveridge", "suburb": "Beveridge", "beds": 3, "baths": 2, "cars": 2, "landSize": 350, "type": "House", "soldPrice": 590000, "soldDate": "2026-03-25" },
+  { "address": "41 Stewart Street, Beveridge", "suburb": "Beveridge", "beds": 4, "baths": 2, "cars": 2, "landSize": 512, "type": "House", "soldPrice": 725000, "soldDate": "2026-02-17" },
+
+  { "address": "18 Knight Way, Wallan", "suburb": "Wallan", "beds": 4, "baths": 2, "cars": 2, "landSize": 600, "type": "House", "soldPrice": 685000, "soldDate": "2026-04-09" },
+  { "address": "5 Hidden Valley Drive, Wallan", "suburb": "Wallan", "beds": 3, "baths": 2, "cars": 2, "landSize": 480, "type": "House", "soldPrice": 575000, "soldDate": "2026-03-19" },
+  { "address": "33 Watson Street, Wallan", "suburb": "Wallan", "beds": 4, "baths": 2, "cars": 2, "landSize": 700, "type": "House", "soldPrice": 720000, "soldDate": "2026-05-15" },
+
+  { "address": "16 Hemsworth Road, Weir Views", "suburb": "Weir Views", "beds": 4, "baths": 2, "cars": 2, "landSize": 448, "type": "House", "soldPrice": 645000, "soldDate": "2026-04-21" },
+  { "address": "9 Toolern Street, Weir Views", "suburb": "Weir Views", "beds": 3, "baths": 2, "cars": 2, "landSize": 350, "type": "House", "soldPrice": 560000, "soldDate": "2026-03-06" },
+  { "address": "24 Bridge Road, Weir Views", "suburb": "Weir Views", "beds": 4, "baths": 2, "cars": 2, "landSize": 512, "type": "House", "soldPrice": 690000, "soldDate": "2026-05-18" },
+
+  { "address": "12 Boomerang Street, Werribee", "suburb": "Werribee", "beds": 3, "baths": 1, "cars": 1, "landSize": 480, "type": "House", "soldPrice": 600000, "soldDate": "2026-04-14" },
+  { "address": "40 Synnot Street, Werribee", "suburb": "Werribee", "beds": 4, "baths": 2, "cars": 2, "landSize": 560, "type": "House", "soldPrice": 725000, "soldDate": "2026-03-23" },
+  { "address": "6 Tarcoola Drive, Werribee", "suburb": "Werribee", "beds": 4, "baths": 2, "cars": 2, "landSize": 600, "type": "House", "soldPrice": 765000, "soldDate": "2026-02-11" },
+  { "address": "2/15 Cottrell Street, Werribee", "suburb": "Werribee", "beds": 3, "baths": 2, "cars": 1, "landSize": 0, "type": "Townhouse", "soldPrice": 545000, "soldDate": "2026-05-04" },
+
+  { "address": "8 Aberdeen Drive, Winter Valley", "suburb": "Winter Valley", "beds": 3, "baths": 2, "cars": 2, "landSize": 420, "type": "House", "soldPrice": 520000, "soldDate": "2026-04-17" },
+  { "address": "21 Integra Boulevard, Winter Valley", "suburb": "Winter Valley", "beds": 4, "baths": 2, "cars": 2, "landSize": 560, "type": "House", "soldPrice": 610000, "soldDate": "2026-03-12" },
+  { "address": "14 Saleyards Road, Winter Valley", "suburb": "Winter Valley", "beds": 3, "baths": 2, "cars": 2, "landSize": 450, "type": "House", "soldPrice": 555000, "soldDate": "2026-05-08" }
 ]

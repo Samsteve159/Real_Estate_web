@@ -36,7 +36,7 @@ const SCHEMA_HINT = `{
   "comparables_used": [ { "address": string, "sold_price": integer, "sold_date": string, "note": string } ]
 }`;
 
-const SYSTEM = `You are the valuation engine for ${AGENT_NAME}, an independent real estate agency in Melbourne's inner west.
+const SYSTEM = `You are the valuation engine for ${AGENT_NAME}, an independent real estate agency covering Melbourne's inner and outer west and the northern growth corridors.
 
 Produce an INDICATIVE price range for a subject property using the recently-sold comparable sales and suburb context provided. This is a marketing estimate, not a formal valuation — be realistic and grounded in the comps, never wildly optimistic.
 

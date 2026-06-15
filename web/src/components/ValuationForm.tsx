@@ -40,7 +40,7 @@ export default function ValuationForm({ onSubmit, loading }: Props) {
   }
 
   return (
-    <form onSubmit={submit} className="rounded-2xl border hairline bg-paper p-7 sm:p-9">
+    <form onSubmit={submit} className="rounded-2xl border hairline bg-paper p-5 sm:p-9">
       <div className="grid gap-6 sm:grid-cols-2">
         <Field label="Suburb" full={false}>
           <select
@@ -86,7 +86,7 @@ export default function ValuationForm({ onSubmit, loading }: Props) {
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-3 gap-4">
+      <div className="mt-6 grid grid-cols-3 gap-2.5 sm:gap-4">
         <Stepper label="Beds" value={beds} set={setBeds} min={0} max={8} />
         <Stepper label="Baths" value={baths} set={setBaths} min={1} max={6} />
         <Stepper label="Cars" value={cars} set={setCars} min={0} max={6} />

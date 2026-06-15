@@ -1,4 +1,8 @@
 // Thin fetch wrappers around the Hono API. In dev, Vite proxies /api → :8787.
+// Default is the relative "/api" (same-origin — works for the site and for
+// iframe embeds served from this origin). A cross-origin script embed can point
+// at an absolute API by building with VITE_API_BASE=https://host/api.
+const API_BASE = ((import.meta.env.VITE_API_BASE as string | undefined) ?? "/api").replace(/\/$/, "");
 
 export interface Listing {
   id: string;
@@ -73,18 +77,18 @@ async function jsonOrThrow<T>(res: Response): Promise<T> {
 }
 
 export async function getListings(): Promise<Listing[]> {
-  const data = await jsonOrThrow<{ listings: Listing[] }>(await fetch("/api/listings"));
+  const data = await jsonOrThrow<{ listings: Listing[] }>(await fetch(`${API_BASE}/listings`));
   return data.listings;
 }
 
 export async function getSuburbs(): Promise<Suburb[]> {
-  const data = await jsonOrThrow<{ suburbs: Suburb[] }>(await fetch("/api/suburbs"));
+  const data = await jsonOrThrow<{ suburbs: Suburb[] }>(await fetch(`${API_BASE}/suburbs`));
   return data.suburbs;
 }
 
 export async function requestValuation(req: ValuationRequest): Promise<ValuationResult> {
   return jsonOrThrow<ValuationResult>(
-    await fetch("/api/valuation", {
+    await fetch(`${API_BASE}/valuation`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(req),
@@ -94,7 +98,7 @@ export async function requestValuation(req: ValuationRequest): Promise<Valuation
 
 export async function submitLead(lead: LeadPayload): Promise<{ leadId: number }> {
   return jsonOrThrow<{ ok: true; leadId: number }>(
-    await fetch("/api/lead", {
+    await fetch(`${API_BASE}/lead`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(lead),
@@ -125,7 +129,7 @@ export async function streamChat(
   onEvent: (e: ChatEvent) => void,
   signal?: AbortSignal,
 ): Promise<void> {
-  const res = await fetch("/api/chat", {
+  const res = await fetch(`${API_BASE}/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ messages }),

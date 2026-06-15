@@ -27,9 +27,10 @@ export default function Nav() {
           </a>
           <Link
             to="/valuation"
-            className="rounded-full bg-teal px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-teal-bright"
+            className="rounded-full bg-teal px-4 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-teal-bright"
           >
-            What's my home worth?
+            <span className="sm:hidden">My home's worth</span>
+            <span className="hidden sm:inline">What's my home worth?</span>
           </Link>
         </nav>
       </div>

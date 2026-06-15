@@ -13,8 +13,10 @@ const SUGGESTIONS = [
   "Anything near Williamstown beach?",
 ];
 
-export default function ConciergeWidget() {
-  const [open, setOpen] = useState(false);
+export default function ConciergeWidget({ inline = false }: { inline?: boolean }) {
+  // Inline (iframe embed) mode renders the panel always-open and full-frame,
+  // with no floating launcher.
+  const [open, setOpen] = useState(inline);
   const [messages, setMessages] = useState<ChatMessage[]>([GREETING]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
@@ -67,24 +69,33 @@ export default function ConciergeWidget() {
     });
   }
 
+  const panelClass = inline
+    ? "flex h-full w-full flex-col overflow-hidden bg-bone"
+    : "pop fixed bottom-[5.5rem] right-4 z-50 flex h-[min(34rem,75svh)] w-[calc(100vw-2rem)] max-w-[24rem] flex-col overflow-hidden rounded-2xl border hairline bg-bone shadow-[0_40px_80px_-20px_rgba(13,27,42,0.55)] sm:right-6 sm:w-[calc(100vw-3rem)]";
+
   return (
     <>
-      {/* Launcher */}
-      <button
-        onClick={() => setOpen((o) => !o)}
-        aria-label="Open buyer concierge"
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full bg-teal py-3.5 pl-4 pr-5 text-paper shadow-[0_20px_40px_-12px_rgba(31,122,110,0.7)] transition-transform hover:scale-105"
-      >
-        <span className="relative flex h-3 w-3">
-          <span className="absolute h-3 w-3 animate-ping rounded-full bg-amber/80" />
-          <span className="h-3 w-3 rounded-full bg-amber" />
-        </span>
-        <span className="text-sm font-semibold">{open ? "Close" : "Ask the concierge"}</span>
-      </button>
+      {/* Launcher — hidden in inline embed mode */}
+      {!inline && (
+        <button
+          onClick={() => setOpen((o) => !o)}
+          aria-label="Open buyer concierge"
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full bg-teal py-3.5 pl-4 pr-5 text-paper shadow-[0_20px_40px_-12px_rgba(31,122,110,0.7)] transition-transform hover:scale-105"
+        >
+          <span className="relative flex h-3 w-3">
+            <span className="absolute h-3 w-3 animate-ping rounded-full bg-amber/80" />
+            <span className="h-3 w-3 rounded-full bg-amber" />
+          </span>
+          <span className="text-sm font-semibold">
+            <span className="sm:hidden">{open ? "Close" : "Concierge"}</span>
+            <span className="hidden sm:inline">{open ? "Close" : "Ask the concierge"}</span>
+          </span>
+        </button>
+      )}
 
       {/* Panel */}
-      {open && (
-        <div className="pop fixed bottom-24 right-6 z-50 flex h-[34rem] w-[calc(100vw-3rem)] max-w-[24rem] flex-col overflow-hidden rounded-2xl border hairline bg-bone shadow-[0_40px_80px_-20px_rgba(13,27,42,0.55)]">
+      {(inline || open) && (
+        <div className={panelClass}>
           {/* Header */}
           <div className="flex items-center gap-3 border-b hairline bg-navy px-5 py-4 text-bone">
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-teal">

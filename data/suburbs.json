@@ -68,5 +68,75 @@
     "blurb": "A village-scale suburb wedged between Footscray and Yarraville, beloved for its Victorian cottages and its tight, walkable shopping strip.",
     "lifestyle": "Charles Street village, Bibby Street cafes, easy reach of Footscray Market.",
     "transport": "Seddon station; ~7km to the CBD."
+  },
+  {
+    "name": "Keilor East",
+    "postcode": "3033",
+    "medianHouse": 1080000,
+    "medianUnit": 700000,
+    "trend12mo": "+2.6%",
+    "blurb": "An established middle-ring suburb where mid-century family homes are increasingly replaced by quality double-storey townhouses. Strong appeal to families wanting space without inner-city prices.",
+    "lifestyle": "Milleara Mall, the Maribyrnong River parklands, Keilor village dining.",
+    "transport": "Buses to Keilor Plains & Niddrie; quick CityLink/Tullamarine Fwy access, ~13km to the CBD."
+  },
+  {
+    "name": "Sunbury",
+    "postcode": "3429",
+    "medianHouse": 640000,
+    "medianUnit": 470000,
+    "trend12mo": "+2.7%",
+    "blurb": "A semi-rural township on the city's north-west edge, growing fast as buyers chase larger blocks and value. Big house-and-land estates sit alongside an established town centre.",
+    "lifestyle": "Sunbury town centre, Jacksons Creek trails, wineries and the Macedon Ranges nearby.",
+    "transport": "Sunbury station (end of the metro line); ~20 min to Melbourne Airport, ~40 min to the CBD."
+  },
+  {
+    "name": "Beveridge",
+    "postcode": "3753",
+    "medianHouse": 620000,
+    "medianUnit": 480000,
+    "trend12mo": "+4.6%",
+    "blurb": "One of Melbourne's fastest-growing northern frontier suburbs, anchored by the approved Beveridge Central PSP. Almost entirely new house-and-land and development land, with major price growth as infrastructure lands.",
+    "lifestyle": "New masterplanned estates (Lyra, Mandalay), parks and schools rolling out; country outlook.",
+    "transport": "Hume Freeway on the doorstep; future Beveridge station planned; ~45km to the CBD."
+  },
+  {
+    "name": "Wallan",
+    "postcode": "3756",
+    "medianHouse": 610000,
+    "medianUnit": 450000,
+    "trend12mo": "+3.8%",
+    "blurb": "A growing northern township around the Hidden Valley golf community, popular with families and tree-changers after acreage and lifestyle blocks at accessible prices.",
+    "lifestyle": "Hidden Valley Golf & Country Club, Wallan town centre, Mount Disappointment forest.",
+    "transport": "Wallan station on the Seymour line; Hume Freeway access, ~50km to the CBD."
+  },
+  {
+    "name": "Werribee",
+    "postcode": "3030",
+    "medianHouse": 650000,
+    "medianUnit": 480000,
+    "trend12mo": "+3.0%",
+    "blurb": "A major established outer-west centre with its own hospital, university and town heart, surrounded by fast-growing new estates. Deep, value-driven buyer demand from first-home owners and investors.",
+    "lifestyle": "Werribee Open Range Zoo, the Mansion & State Rose Garden, Werribee Plaza, riverside parks.",
+    "transport": "Werribee station on the metro line; Princes Freeway access, ~32km to the CBD."
+  },
+  {
+    "name": "Weir Views",
+    "postcode": "3338",
+    "medianHouse": 590000,
+    "medianUnit": 430000,
+    "trend12mo": "+3.5%",
+    "blurb": "A newer estate suburb beside Melton South, made up almost entirely of modern family homes. Affordable, well-serviced and popular with growing families.",
+    "lifestyle": "Lake-side reserves, new schools and shopping, the Toolern development precinct.",
+    "transport": "Close to Melton & Cobblebank stations; Western Freeway access, ~40km to the CBD."
+  },
+  {
+    "name": "Winter Valley",
+    "postcode": "3358",
+    "medianHouse": 540000,
+    "medianUnit": 400000,
+    "trend12mo": "+4.1%",
+    "blurb": "A rapidly expanding estate suburb on Ballarat's western edge within the approved Ballarat West PSP. New homes and large lots at some of the most accessible price points in the region.",
+    "lifestyle": "Aberdeen Estate parklands, new schools, minutes to Ballarat's amenities and the Goldfields.",
+    "transport": "Near Wendouree & Ballarat stations; Western Freeway access, ~110km to the CBD."
   }
 ]

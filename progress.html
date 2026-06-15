@@ -31,7 +31,7 @@
   .barwrap{margin-top:30px;max-width:620px}
   .barlbl{display:flex;justify-content:space-between;font-size:13px;color:#9fb0c4;margin-bottom:8px}
   .bar{height:12px;background:rgba(255,255,255,.12);border-radius:30px;overflow:hidden}
-  .bar>span{display:block;height:100%;width:82%;border-radius:30px;
+  .bar>span{display:block;height:100%;width:90%;border-radius:30px;
     background:linear-gradient(90deg,var(--teal),var(--accent2))}
   /* SECTION */
   section{margin-top:56px}
@@ -94,7 +94,7 @@
       <span><b>Updated:</b> 15 Jun 2026</span>
     </div>
     <div class="barwrap">
-      <div class="barlbl"><span>Overall delivery</span><span>~82% · 3 of 4 phases live</span></div>
+      <div class="barlbl"><span>Overall delivery</span><span>~90% · local build complete, VM deploy pending</span></div>
       <div class="bar"><span></span></div>
     </div>
   </div>
@@ -179,10 +179,12 @@
           <li class="d">Loading / empty / error states + global ErrorBoundary + 404 route</li>
           <li class="d"><b>security-review</b> — input size/numeric caps, CORS locked to an allowlist, stats gated by a token, email/NaN validation</li>
           <li class="d"><b>code-review</b> — caught &amp; fixed a chat-history truncation bug</li>
-          <li class="t">Final mobile QA on a real device</li>
-          <li class="t">Set the Anthropic spend cap before sharing any link</li>
-          <li class="t">Deploy: web → Cloudflare Pages · api → Workers · leads.db → D1</li>
-          <li class="t">Package both tools as embeddable iframe / script widgets</li>
+          <li class="d"><b>Extended valuation data</b> to the real footprint — 7 growth-corridor suburbs added (14 suburbs / 47 comps); every listing suburb now covered</li>
+          <li class="d"><b>Embeddable widgets</b> — chrome-less <code style="font-size:12px">/embed</code> routes + <code style="font-size:12px">embed.js</code> loader (iframe drop-in, no CORS); build green</li>
+          <li class="d"><b>Responsive fixes</b> — concierge panel, nav/launcher, form at mobile widths</li>
+          <li class="t">Final mobile QA on a real device (owner)</li>
+          <li class="t">Set the Anthropic spend cap before sharing any link (owner)</li>
+          <li class="t">Deploy on a VM (owner) — once happy with local</li>
         </ul>
       </div>
 
@@ -203,22 +205,22 @@
         <span class="tag">Guardrail · before share</span>
       </div>
       <div class="ncard">
-        <h3><span class="n">3</span>Deploy to Cloudflare</h3>
-        <p>web → Pages, api → Workers, leads → D1, secrets → CF env vars. Trial it on a subdomain.</p>
+        <h3><span class="n">3</span>Deploy on a VM</h3>
+        <p>Node + Hono + SQLite stack ports directly. Process manager + reverse proxy with SPA fallback; set <code style="font-size:12px">ALLOWED_ORIGINS</code> / <code style="font-size:12px">STATS_TOKEN</code>. Trial on a subdomain once happy with local.</p>
       </div>
       <div class="ncard">
-        <h3><span class="n">4</span>Package as embeds</h3>
-        <p>Wrap both tools as drop-in iframe / script widgets for manifestre.com.au once site rights come through.</p>
+        <h3><span class="n">✓</span>Embeds — done</h3>
+        <p>Both tools now drop into any site with one <code style="font-size:12px">&lt;div&gt;</code> + one <code style="font-size:12px">&lt;script&gt;</code> (see <code style="font-size:12px">embed-demo.html</code>). Point the script at the deployed host on go-live.</p>
       </div>
     </div>
   </section>
 
   <section>
-    <div class="kicker">One open decision</div>
+    <div class="kicker">Resolved this session</div>
     <h2 style="font-size:24px">Valuation service area</h2>
     <div class="callout">
-      <h3>Match the data to the real footprint</h3>
-      <p>The 20 real listings now span the outer-west / north growth corridors (Sunbury, Beveridge, Keilor East…), but the valuation's suburb medians and sold comps are still representative inner-west data. Decision before launch: extend the valuation service area — and its grounding data — to match where the listings actually are.</p>
+      <h3>Data now matches the real footprint ✓</h3>
+      <p>The valuation's suburb medians and sold comps now cover the outer-west / north growth corridors (Sunbury, Beveridge, Keilor East, Wallan, Werribee, Weir Views, Winter Valley) where the real listings actually are — 14 suburbs, 47 comps, every listing suburb grounded. Medians remain representative; sourcing real median data is a future nicety, not a blocker.</p>
     </div>
   </section>
 
