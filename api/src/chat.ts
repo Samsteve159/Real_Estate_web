@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { anthropic, CHAT_MODEL, AGENT_NAME, AGENT_TAGLINE } from "./anthropic.js";
+import { anthropic, CHAT_MODEL, AGENT_NAME, AGENT_TAGLINE, AGENTS } from "./anthropic.js";
 import { listings, searchListings } from "./data.js";
 import { saveLead } from "./leads.js";
 
@@ -13,31 +13,38 @@ const activeSuburbs = [...new Set(listings.map((l) => l.suburb))];
 const listingDigest = listings
   .map(
     (l) =>
-      `[${l.id}] ${l.address} — ${l.type}, ${l.beds}bd/${l.baths}ba/${l.cars}car, ${l.price}. ${l.headline}.`,
+      `[${l.id}] ${l.address}: ${l.type}, ${l.beds}bd/${l.baths}ba/${l.cars}car, ${l.price}. ${l.headline}.`,
   )
   .join("\n");
 
 const SYSTEM = `You are the AI Buyer Concierge for ${AGENT_NAME}, an independent agency covering Melbourne's inner and outer west (${AGENT_TAGLINE}). You help buyers explore current listings, learn about the suburbs, and book an inspection or a callback with the agent.
 
-Style: warm, concise, genuinely helpful — like a sharp local agent, not a chatbot. Use Australian spelling and AUD. Keep replies short; use a tight list when showing properties.
+Style: warm, concise, genuinely helpful, like a sharp local agent rather than a chatbot. Use Australian spelling and AUD. Keep replies short; use a tight list when showing properties. Never use em dashes (the "—" character). Write with commas, full stops, or short separate sentences instead.
+
+The agents buyers deal with are ${AGENTS}. Refer to them by name to keep things personal: when you arrange a callback or inspection, say something like "I'll have ${AGENTS.split(" and ")[1] ?? AGENTS} give you a call" or "${AGENTS} will be in touch", rather than a faceless "an agent" or "the agent".
 
 Suburbs with current stock: ${activeSuburbs.join(", ")}.
 
-Current listings (your live knowledge — never invent properties beyond these):
+Current listings (your live knowledge; never invent properties beyond these):
 ${listingDigest}
 
+Hard rules, stay grounded in Manifest's book:
+- ONLY ever discuss the specific properties in the listing book above. Never reference, count, estimate, or invent any property, price, suburb statistic, or "X properties available" figure from outside it. You have no knowledge of any other listings.
+- A property only counts as being "in" a suburb if its suburb field matches. Never present a listing from one suburb as a match for another suburb the buyer named.
+
 How to work:
-- For specific buyer criteria (beds, budget, suburb, type) call search_listings to return accurate matches rather than eyeballing the list.
-- Recommend honestly. If nothing matches, say so and offer the closest options or to register their brief.
-- When a buyer wants to inspect a property, get a callback, or is clearly a strong lead, call capture_lead to record their details. Ask for a name and a phone or email first if you don't have them — don't fabricate contact details.
+- Whenever a buyer names a suburb or gives concrete criteria (beds, budget, type), call search_listings (with the suburb set) and present ONLY what it returns. Don't eyeball the digest or recommend a different suburb's property as the answer.
+- If the buyer asked about a specific suburb and search_listings returns nothing there, say plainly that Manifest doesn't have anything listed in that suburb right now, then offer the closest current listings (clearly naming their actual suburb, e.g. "over in Keilor East") or to register their buyer brief. Never paper over an empty suburb with another suburb's stock.
+- Recommend honestly within the matches you actually have.
+- When a buyer wants to inspect a property, get a callback, or is clearly a strong lead, call capture_lead to record their details. Ask for a name and a phone or email first if you don't have them, and don't fabricate contact details.
 - Never quote a firm valuation; for "what's my home worth" point them to the free instant valuation tool on the site.
-- After capturing a lead, confirm warmly that the agent will be in touch.`;
+- After capturing a lead, confirm warmly and by name that ${AGENTS} will be in touch.`;
 
 const TOOLS: Anthropic.Tool[] = [
   {
     name: "search_listings",
     description:
-      "Search Manifest's current for-sale listings by buyer criteria. Returns matching properties. Call this whenever the buyer gives concrete criteria (suburb, budget, bedrooms, property type).",
+      "Search Manifest's current for-sale listings by buyer criteria. Returns ONLY listings whose fields match the filters; an empty result means Manifest has no such stock. Call this whenever the buyer names a suburb or gives concrete criteria (budget, bedrooms, property type), and always pass the suburb when they mention one; results are scoped to that exact suburb.",
     input_schema: {
       type: "object",
       properties: {
@@ -126,7 +133,7 @@ function runTool(name: string, input: Record<string, unknown>): string {
     return JSON.stringify({
       saved: true,
       lead_id: id,
-      confirmation: "Lead recorded — the agent will follow up.",
+      confirmation: `Lead recorded. ${AGENTS} will follow up.`,
     });
   }
 
@@ -201,7 +208,7 @@ export async function runConcierge(
     console.error("[concierge] error", err);
     emit({
       type: "error",
-      message: "Sorry — I hit a snag. Please try again in a moment.",
+      message: "Sorry, I hit a snag. Please try again in a moment.",
     });
   }
 }

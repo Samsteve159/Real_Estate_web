@@ -24,3 +24,6 @@ export const CHAT_MODEL = "claude-opus-4-8";
 
 export const AGENT_NAME = "Manifest Real Estate";
 export const AGENT_TAGLINE = "Where dreams meet reality";
+// The agents buyers deal with. The concierge names them when arranging a
+// callback or inspection so it feels personal rather than faceless.
+export const AGENTS = "Rishi and Akshay";

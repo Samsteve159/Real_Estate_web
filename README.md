@@ -16,6 +16,8 @@ A local-first companion site for **Manifest Real Estate** (manifestre.com.au) sh
 │       ├── routes/        page-level views
 │       ├── components/     UI building blocks
 │       └── lib/            API fetch wrappers
+├── demo_theme/ Copy of web/ re-skinned to Manifest's live brand (localhost:5174)
+│                navy/gold + Raleway + real logo; theme-only change via @theme tokens
 ├── api/        Hono + @anthropic-ai/sdk server                 (localhost:8787)
 │   └── src/
 │       ├── index.ts        routes: /api/valuation, /api/lead, /api/chat, …
@@ -39,7 +41,8 @@ A local-first companion site for **Manifest Real Estate** (manifestre.com.au) sh
 │   ├── one-pager.html       technical one-pager
 │   ├── progress.html        build-status dashboard
 │   ├── once_deployed.html   preview: the AI tools embedded on the live site
-│   └── embed-demo.html      working embeddable-widgets demo
+│   ├── embed-demo.html      working embeddable-widgets demo
+│   └── cost.html            AI + hosting running-cost sheet (hybrid model options)
 ├── README.md
 └── CLAUDE.md   working guidance for Claude Code
 ```
@@ -63,6 +66,15 @@ cd api && npm install && npm run dev      # http://localhost:8787
 
 # 2. Web (terminal 2)
 cd web && npm install && npm run dev      # http://localhost:5173
+```
+
+### Manifest-branded variant (optional)
+
+`demo_theme/` is the same app re-skinned to Manifest's live brand. Run it alongside
+`web/` (both share the API):
+
+```bash
+cd demo_theme && npm install && npm run dev   # http://localhost:5174
 ```
 
 ### API key

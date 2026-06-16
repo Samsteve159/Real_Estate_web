@@ -3,7 +3,7 @@
 Phased delivery tracker. See `plan.md` (same folder) for the full plan and the repo-root `README.md` for how to run.
 
 **Repo:** `git@github.com:Samsteve159/Real_Estate_web.git` · **Branch:** `main`
-**Last updated:** 2026-06-15 · **Models:** `claude-opus-4-8` (valuation + concierge)
+**Last updated:** 2026-06-16 · **Models:** `claude-opus-4-8` (valuation + concierge)
 
 **Status legend:** ✅ done · 🟡 in progress / needs live test · ⬜ not started · 🔭 backlog
 
@@ -39,6 +39,8 @@ Phased delivery tracker. See `plan.md` (same folder) for the full plan and the r
 - [x] Tool: `capture_lead(name, contact, intent)` → writes to leads store
 - [x] SSE token streaming to the UI
 - [x] ✅ **Live test (Opus 4.8):** "3-beds under $1M near Newport" → `search_listings` ×2 → accurate matches; "inspect 31 The Avenue, I'm Jordan…" → `capture_lead` wrote the lead row
+- [x] ✅ **Grounding hardened (2026-06-16)** — concierge now scopes strictly to the suburb asked, never invents listings/counts/market stats, and handles an empty suburb honestly (says so + offers nearby stock by its real suburb, or registers a brief). Fix for: a "Sunbury" search recommended a Keilor East listing. Prompt + tool-description change in `chat.ts`. Live-verified (Sunbury → 15 Raes Road only; Footscray → "nothing listed" + alternatives).
+- [x] ✅ **Personalised callbacks + house style (2026-06-16)** — concierge names the agents (**Rishi & Akshay**, via `AGENTS` in `anthropic.ts`) when arranging a callback/inspection instead of "the agent"; **em dashes removed** from all chat copy. Live-verified.
 
 ## Phase 4 — Polish + decide deployment 🟡
 *Teaches: deployment.*
@@ -53,6 +55,9 @@ Phased delivery tracker. See `plan.md` (same folder) for the full plan and the r
 - [x] ✅ **Mobile/responsive fixes** (code audit) — clamped concierge panel height (`min(34rem,75svh)`) + tighter mobile width/position, abbreviated launcher & Nav-CTA text on small screens, bumped Nav CTA tap target, reduced valuation-form padding/stepper gap at 360px.
 - [x] ✅ **Mobile/responsive QA** — driven live with Playwright at 390px (mobile) + 768px (tablet): nav/launcher text abbreviates correctly, concierge panel fits the viewport (212→756 of 844, no clip), no horizontal/form overflow, valuation runs end-to-end for a **new** suburb (Sunbury 3bd → $545k–$615k citing the new comps), concierge streams, and both `/embed/*` routes render chrome-less. Screenshots captured. *(Optional: a quick spot-check on a physical handset.)*
 - [x] ✅ **Anthropic spend cap set** (owner — monthly cap in the Anthropic console).
+- [x] ✅ **"Claude" branding removed (2026-06-16)** — all four user-facing mentions on both sites changed to "AI" / "our AI" (Hero, Landing, Valuation page, ValuationForm). The model is kept server-side and not named to end users.
+- [x] ✅ **`demo_theme/` — Manifest-branded variant (2026-06-16)** — full copy of `web/` re-skinned to the live brand (navy `#003970` + gold `#c2a267`, Raleway, real circular logo) via the Tailwind `@theme` tokens only, so every component re-themes with no layout change. Runs on **:5174**, shares the same API; the original "inner-west editorial" build is untouched on :5173. Live-verified (fonts/logo/colours compiled).
+- [x] ✅ **`docs/cost.html` — running-cost sheet (2026-06-16)** — Manifest-branded one-pager comparing hybrid model setups (Opus valuation + Haiku/Sonnet chat) with hosting/domain/email/SMS costs and all-in yearly totals. Self-contained, print-friendly.
 - [ ] Deploy on a **VM** — **deferred: running local-first** per owner ("let's see how it functions local first"). When ready: Node + Hono + SQLite stack ports directly; needs a process manager + reverse proxy with SPA fallback (incl. `/embed/*`) + env vars `ALLOWED_ORIGINS` / `STATS_TOKEN`.
 
 ---

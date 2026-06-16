@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manifest Real Estate — AI Tools Running Cost</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy: #003970;
+    --navy-soft: #0a4b87;
+    --gold: #c2a267;
+    --gold-deep: #ad8c4d;
+    --ink: #2b2b2b;
+    --muted: #6f7680;
+    --line: #e2e2e2;
+    --bg: #f4f4f4;
+    --paper: #ffffff;
+    --pale-gold: #f3ecdc;
+    --pale-navy: #eaf0f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Raleway", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    font-weight: 400;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    padding: 40px 20px;
+  }
+  .sheet {
+    max-width: 920px;
+    margin: 0 auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px -28px rgba(0,57,112,0.35);
+  }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    color: #fff;
+    padding: 38px 44px 32px;
+    position: relative;
+  }
+  header::after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-deep) 100%);
+  }
+  .brand-row { display: flex; align-items: center; gap: 14px; }
+  .emblem {
+    width: 46px; height: 46px; border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1.35rem; color: var(--gold);
+    flex-shrink: 0;
+  }
+  .brand-name { font-size: 1.15rem; font-weight: 700; letter-spacing: 0.02em; line-height: 1.1; }
+  .brand-sub { font-size: 0.62rem; letter-spacing: 0.34em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  h1 { font-size: 2rem; font-weight: 700; margin-top: 22px; letter-spacing: -0.01em; }
+  .subtitle { color: #cdddec; font-size: 1rem; margin-top: 6px; font-weight: 300; }
+
+  main { padding: 8px 44px 40px; }
+
+  section { margin-top: 36px; }
+  h2 {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.26em;
+    color: var(--gold-deep); font-weight: 700; margin-bottom: 14px;
+    padding-bottom: 8px; border-bottom: 2px solid var(--pale-gold);
+  }
+  h2 .num { color: var(--navy); margin-right: 8px; }
+  p.lead { color: var(--muted); margin-bottom: 14px; font-size: 0.95rem; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+  th {
+    font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--muted); font-weight: 700; background: #fafafa;
+  }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:last-child td { border-bottom: none; }
+  .total-row td { font-weight: 700; color: var(--navy); background: var(--pale-navy); border-top: 2px solid var(--navy); }
+
+  /* Hybrid cards */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .card {
+    border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+    background: var(--paper);
+  }
+  .card.recommended { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+  .card-head { padding: 16px 18px; color: #fff; }
+  .card.a .card-head { background: var(--navy); }
+  .card.b .card-head { background: linear-gradient(135deg, var(--gold-deep), var(--gold)); }
+  .card-head .tag { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.85; font-weight: 600; }
+  .card-head .title { font-size: 1.05rem; font-weight: 700; margin-top: 3px; }
+  .card-head .config { font-size: 0.8rem; margin-top: 4px; opacity: 0.92; font-weight: 300; }
+  .card table { font-size: 0.86rem; }
+  .ribbon {
+    display: inline-block; background: var(--gold); color: var(--navy);
+    font-size: 0.58rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 20px; margin-left: 8px; vertical-align: middle;
+  }
+
+  .pill { display:inline-block; padding: 2px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; }
+  .pill.opus { background: var(--pale-navy); color: var(--navy); }
+  .pill.sonnet { background: #e7f1ee; color: #1f7a6e; }
+  .pill.haiku { background: var(--pale-gold); color: var(--gold-deep); }
+
+  .note {
+    background: var(--pale-navy); border-left: 4px solid var(--navy);
+    padding: 14px 18px; border-radius: 0 8px 8px 0; font-size: 0.9rem; color: var(--ink);
+  }
+  .note strong { color: var(--navy); }
+  .levers { list-style: none; display: grid; gap: 10px; }
+  .levers li { padding-left: 26px; position: relative; font-size: 0.92rem; }
+  .levers li::before { content: "→"; position: absolute; left: 0; color: var(--gold-deep); font-weight: 700; }
+  .free { color: #1f7a6e; font-weight: 700; }
+
+  footer {
+    padding: 22px 44px 30px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 0.74rem; line-height: 1.6;
+  }
+  .assumptions { font-size: 0.78rem; color: var(--muted); margin-top: 8px; }
+  .assumptions code { background: #f0f0f0; padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+
+  @media (max-width: 680px) {
+    body { padding: 16px 8px; }
+    main, header, footer { padding-left: 22px; padding-right: 22px; }
+    .cards { grid-template-columns: 1fr; }
+    h1 { font-size: 1.6rem; }
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .sheet { box-shadow: none; border: none; }
+    header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <div class="brand-row">
+      <div class="emblem">M</div>
+      <div>
+        <div class="brand-name">Manifest Real Estate</div>
+        <div class="brand-sub">AI Companion Tools</div>
+      </div>
+    </div>
+    <h1>Running Cost Estimate</h1>
+    <p class="subtitle">Hybrid model setup &middot; Opus for valuations, Haiku or Sonnet for chat</p>
+  </header>
+
+  <main>
+    <!-- The setup -->
+    <section>
+      <h2><span class="num">01</span> The setup being costed</h2>
+      <p class="lead">Spend the premium model where the stakes are highest, and a cheaper, faster model where the volume is.</p>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Model</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Instant Valuation</strong><br><span style="color:var(--muted);font-size:0.85rem">low volume, gives a price people act on</span></td>
+            <td><span class="pill opus">Opus 4.8</span></td>
+            <td>Keep the most capable model on the high-stakes number</td>
+          </tr>
+          <tr>
+            <td><strong>Buyer Concierge chat</strong><br><span style="color:var(--muted);font-size:0.85rem">high volume, most of the tokens</span></td>
+            <td><span class="pill haiku">Haiku 4.5</span> or <span class="pill sonnet">Sonnet 4.6</span></td>
+            <td>Plenty capable for listings chat — and faster, so it feels snappier</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Model pricing -->
+    <section>
+      <h2><span class="num">02</span> What each model costs</h2>
+      <p class="lead">Anthropic bills per million tokens (roughly per million words of input/output).</p>
+      <table>
+        <thead>
+          <tr><th>Model</th><th class="num">Input / 1M</th><th class="num">Output / 1M</th><th class="num">Relative to Opus</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="pill opus">Opus 4.8</span></td><td class="num">US$5.00</td><td class="num">US$25.00</td><td class="num">1.0&times;</td></tr>
+          <tr><td><span class="pill sonnet">Sonnet 4.6</span></td><td class="num">US$3.00</td><td class="num">US$15.00</td><td class="num">0.6&times;</td></tr>
+          <tr><td><span class="pill haiku">Haiku 4.5</span></td><td class="num">US$1.00</td><td class="num">US$5.00</td><td class="num">0.2&times;</td></tr>
+        </tbody>
+      </table>
+      <p class="assumptions">Per-interaction estimate: a valuation ≈ <strong>A$0.08</strong> (Opus). A chat conversation ≈ <strong>A$0.18</strong> on Sonnet or <strong>A$0.06</strong> on Haiku.</p>
+    </section>
+
+    <!-- Hybrid comparison -->
+    <section>
+      <h2><span class="num">03</span> Yearly AI cost — the two hybrids</h2>
+      <p class="lead">Same three traffic levels, all figures in AUD per year. Valuation always on Opus; only the chat model changes.</p>
+      <div class="cards">
+        <div class="card a">
+          <div class="card-head">
+            <div class="tag">Hybrid A</div>
+            <div class="title">Opus + Sonnet</div>
+            <div class="config">Valuation: Opus 4.8 &middot; Chat: Sonnet 4.6</div>
+          </div>
+          <table>
+            <thead><tr><th>Traffic / month</th><th class="num">AI cost / yr</th></tr></thead>
+            <tbody>
+              <tr><td>Quiet — 50 val + 100 chats</td><td class="num">~A$260</td></tr>
+              <tr><td>Steady — 150 val + 300 chats</td><td class="num">~A$780</td></tr>
+              <tr><td>Busy — 400 val + 800 chats</td><td class="num">~A$2,100</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card b recommended">
+          <div class="card-head">
+            <div class="tag">Hybrid B</div>
+            <div class="title">Opus + Haiku <span class="ribbon">Lowest cost</span></div>
+            <div class="config">Valuation: Opus 4.8 &middot; Chat: Haiku 4.5</div>
+          </div>
+          <table>
+            <thead><tr><th>Traffic / month</th><th class="num">AI cost / yr</th></tr></thead>
+            <tbody>
+              <tr><td>Quiet — 50 val + 100 chats</td><td class="num">~A$120</td></tr>
+              <tr><td>Steady — 150 val + 300 chats</td><td class="num">~A$350</td></tr>
+              <tr><td>Busy — 400 val + 800 chats</td><td class="num">~A$940</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="assumptions">For reference, running <em>everything</em> on Opus would be ~A$400 / A$1,200 / A$3,200 per year at the same volumes.</p>
+    </section>
+
+    <!-- Other costs -->
+    <section>
+      <h2><span class="num">04</span> The other costs (same for either hybrid)</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Detail</th><th class="num">Per year</th></tr></thead>
+        <tbody>
+          <tr><td>Hosting</td><td>Small virtual server to run the site + API</td><td class="num">~A$100–180</td></tr>
+          <tr><td>Domain</td><td>Subdomain of manifestre.com.au</td><td class="num"><span class="free">Free</span></td></tr>
+          <tr><td>SSL certificate</td><td>Auto-renewing (Let's Encrypt)</td><td class="num"><span class="free">Free</span></td></tr>
+          <tr><td>Lead storage</td><td>Database file on the server</td><td class="num"><span class="free">Free</span></td></tr>
+          <tr><td>Email lead alerts</td><td>Free tier covers thousands of emails/mo</td><td class="num"><span class="free">~A$0</span></td></tr>
+          <tr><td>SMS lead alerts <em>(optional)</em></td><td>Twilio number rental + ~A$0.08 per text</td><td class="num">~A$130–150</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- All-in -->
+    <section>
+      <h2><span class="num">05</span> All-in yearly total</h2>
+      <p class="lead">AI cost + ~A$150 hosting, with email alerts (free). Add ~A$140 if you want SMS alerts too.</p>
+      <table>
+        <thead><tr><th>Traffic</th><th class="num">Hybrid A (Opus+Sonnet)</th><th class="num">Hybrid B (Opus+Haiku)</th></tr></thead>
+        <tbody>
+          <tr><td>Quiet</td><td class="num">~A$410</td><td class="num">~A$270</td></tr>
+          <tr><td>Steady</td><td class="num">~A$930</td><td class="num">~A$500</td></tr>
+          <tr><td>Busy</td><td class="num">~A$2,250</td><td class="num">~A$1,090</td></tr>
+          <tr class="total-row"><td>+ SMS alerts (any level)</td><td class="num">add ~A$140/yr</td><td class="num">add ~A$140/yr</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Levers / takeaways -->
+    <section>
+      <h2><span class="num">06</span> Worth knowing</h2>
+      <div class="note">
+        <strong>The spend cap is your safety net.</strong> A hard monthly limit is set on the AI account, so the cost can never run past whatever ceiling you choose — regardless of how busy the tools get.
+      </div>
+      <ul class="levers" style="margin-top:16px">
+        <li><strong>Hybrid B (Haiku chat) is the cheapest</strong> by a wide margin and is genuinely capable for a listings chatbot — roughly half the all-in cost of Hybrid A.</li>
+        <li><strong>Hybrid A (Sonnet chat)</strong> buys a little extra polish in conversation for a modest step up in cost.</li>
+        <li><strong>Both keep Opus on the valuation</strong>, so the number a seller sees is always produced by the most capable model.</li>
+        <li><strong>"Prompt caching"</strong> can be switched on later to shave the chat cost further — the listings data is re-sent on every message and could be cached.</li>
+        <li><strong>Note:</strong> using anything below Opus is a deliberate choice — the current standard is "Opus 4.8 or above", so this is the owner's call.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <strong>How to read these numbers.</strong> All figures are estimates, not quotes. They scale with how many people use the tools and how long each chat runs, so treat them as a budgeting range rather than a fixed bill. USD converted to AUD at roughly 1.5&times;. Hosting and SMS prices vary by provider.
+    <p class="assumptions">Traffic levels: <strong>Quiet</strong> = 50 valuations + 100 chats/mo &middot; <strong>Steady</strong> = 150 + 300/mo &middot; <strong>Busy</strong> = 400 + 800/mo. Prepared for Manifest Real Estate &middot; pricing current as of 2026.</p>
+  </footer>
+</div>
+</body>
+</html>
