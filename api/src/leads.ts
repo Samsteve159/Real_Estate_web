@@ -29,7 +29,7 @@ db.exec(`
 `);
 
 export interface LeadInput {
-  source: "valuation" | "concierge";
+  source: "valuation" | "concierge" | "contact";
   name?: string;
   email?: string;
   phone?: string;

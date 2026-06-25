@@ -35,8 +35,8 @@
     iframe served from the Manifest companion app, so the AI calls stay same-origin (no CORS) and the styling
     can't clash with the host site.</p>
   <div class="note">
-    <strong>Local demo:</strong> this loads <code>embed.js</code> from <code>http://localhost:5173</code>, so the
-    Manifest web app (<code>cd web &amp;&amp; npm run dev</code>) and API (<code>cd api &amp;&amp; npm run dev</code>)
+    <strong>Local demo:</strong> this loads <code>embed.js</code> from <code>http://localhost:5174</code>, so the
+    Manifest themed site (<code>cd demo_theme &amp;&amp; npm run dev</code>) and API (<code>cd api &amp;&amp; npm run dev</code>)
     must be running. For production, change the script <code>src</code> to your deployed host.
   </div>
 
@@ -58,6 +58,6 @@
 </div>
 
 <!-- The one line a host site adds. Point src at your deployed host in production. -->
-<script src="http://localhost:5173/embed.js" async></script>
+<script src="http://localhost:5174/embed.js" async></script>
 </body>
 </html>

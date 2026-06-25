@@ -98,14 +98,19 @@ app.post("/api/lead", async (c) => {
     return c.json({ error: "Please provide a valid email address" }, 400);
   }
 
+  // Default to the valuation/sell flow; the contact form passes source "contact".
+  const rawSource = str(body.source, LIMITS.str);
+  const source = rawSource === "contact" ? "contact" : "valuation";
+  const intent = source === "contact" ? (str(body.intent, LIMITS.str) || "enquiry") : "sell";
+
   const id = saveLead({
-    source: "valuation",
+    source,
     name,
     email,
     phone,
     address: str(body.address, LIMITS.address),
     suburb: str(body.suburb, LIMITS.str),
-    intent: "sell",
+    intent,
     estimateLow: num(body.estimateLow, 0, 1_000_000_000),
     estimateHigh: num(body.estimateHigh, 0, 1_000_000_000),
     estimateMid: num(body.estimateMid, 0, 1_000_000_000),

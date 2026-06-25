@@ -45,7 +45,7 @@ Rules:
 - Keep the low-to-high spread sensible: roughly 8-14% of the midpoint for typical homes. Wider only when comps are sparse or inconsistent.
 - Set confidence to "high" when several close same-type comps exist, "medium" when comps are mixed, "low" when comps are sparse.
 - In "rationale", write 2-3 plain-English sentences a homeowner would understand, referencing the comps and the suburb trend.
-- In "comparables_used", list the 2-4 sales that most influenced the estimate with a one-line note each on how they compare.
+- In "comparables_used", list the 2-4 sales that most influenced the estimate with a one-line note each on how they compare. Copy each comp's address, sold_price and sold_date EXACTLY as supplied — never pair one property's address with another's price.
 - All dollar figures are whole AUD integers.
 
 Respond with ONLY a single JSON object in exactly this shape, no prose, no code fences:
@@ -98,7 +98,52 @@ Return the indicative valuation as JSON matching the required schema.`;
   if (!text || text.type !== "text") {
     throw new Error("Valuation model returned no text content");
   }
-  return extractJson(text.text);
+  const result = extractJson(text.text);
+  // The model only chooses WHICH comps to cite — never trust the price/date it
+  // echoes back (it can transpose one property's price onto another). Re-bind
+  // every cited comp to the ground-truth sold record by address so the figure
+  // shown always belongs to that property.
+  result.comparables_used = reconcileComps(result.comparables_used, comps);
+  return result;
+}
+
+/** Normalise an address for tolerant matching (case, punctuation, spacing). */
+function normAddress(s: string): string {
+  return (s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * Replace each cited comp's price/date with the authoritative figure from the
+ * supplied `sold` records, matched by address. Drops any comp the model
+ * invented (no matching real sale), keeping the model's comparison note.
+ */
+function reconcileComps(
+  used: ValuationResult["comparables_used"],
+  comps: Sold[],
+): ValuationResult["comparables_used"] {
+  if (!Array.isArray(used)) return [];
+  const byAddr = new Map(comps.map((c) => [normAddress(c.address), c]));
+
+  return used
+    .map((u) => {
+      const key = normAddress(u.address);
+      let match = byAddr.get(key);
+      if (!match && key) {
+        // Fuzzy fallback: model reformatted the address (e.g. dropped a unit no.).
+        match = comps.find((c) => {
+          const ck = normAddress(c.address);
+          return ck && (ck.includes(key) || key.includes(ck));
+        });
+      }
+      if (!match) return null; // unverifiable / hallucinated comp — drop it
+      return {
+        address: match.address,
+        sold_price: match.soldPrice,
+        sold_date: match.soldDate,
+        note: typeof u.note === "string" ? u.note : "",
+      };
+    })
+    .filter((c): c is ValuationResult["comparables_used"][number] => c !== null);
 }
 
 /** Pull the JSON object out of the model reply, tolerating stray prose or code fences. */

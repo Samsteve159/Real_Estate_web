@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ *  Manifest RE — design tokens (brand theme)
+ *  Mirrors manifestre.com.au: Raleway type, navy #003970 + gold #c2a267
+ *  on light grey / white. Same token names as the editorial build so the
+ *  whole UI re-themes from here without touching components.
+ * ------------------------------------------------------------------ */
+@theme {
+  --font-display: "Raleway", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Raleway", ui-sans-serif, system-ui, sans-serif;
+
+  --color-bone: #f4f4f4;
+  --color-bone-deep: #e6e6e6;
+  --color-paper: #ffffff;
+  --color-ink: #2b2b2b;
+  --color-navy: #003970;
+  --color-navy-soft: #0a4b87;
+
+  /* Brand gold — carried on the `teal` token (primary action + accent). */
+  --color-teal: #c2a267;
+  --color-teal-bright: #ad8c4d;
+  --color-teal-pale: #ece0c6;
+
+  /* Navy as the secondary accent (selection, link underline). */
+  --color-terra: #003970;
+  --color-terra-soft: #0a4b87;
+  --color-amber: #c2a267;
+
+  --color-muted: #6f7680;
+  --color-line: #dcdcdc;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bone);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-terra);
+    color: var(--color-paper);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bone-deep);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-teal);
+    border: 2px solid var(--color-bone-deep);
+    border-radius: 999px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ *  Utilities & motifs
+ * ------------------------------------------------------------------ */
+@layer utilities {
+  /* Wide-tracked uppercase label — the editorial eyebrow. */
+  .eyebrow {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-weight: 600;
+    font-size: 0.7rem;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  /* Topographic contour backdrop — a nod to suburb maps. */
+  .contours {
+    background-image: radial-gradient(
+        ellipse 80% 60% at 70% 20%,
+        rgba(194, 162, 103, 0.1),
+        transparent 60%
+      ),
+      repeating-radial-gradient(
+        circle at 78% 12%,
+        transparent 0,
+        transparent 38px,
+        rgba(0, 57, 112, 0.05) 38px,
+        rgba(0, 57, 112, 0.05) 39px
+      );
+  }
+
+  .hairline {
+    border-color: var(--color-line);
+  }
+
+  .link-underline {
+    background-image: linear-gradient(var(--color-terra), var(--color-terra));
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s ease;
+  }
+  .link-underline:hover {
+    background-size: 100% 2px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ *  Motion
+ * ------------------------------------------------------------------ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.rise {
+  opacity: 0;
+  animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.marquee-track {
+  animation: marquee 34s linear infinite;
+}
+.pop {
+  animation: pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .marquee-track,
+  .pop {
+    animation: none;
+    opacity: 1;
+  }
+}
