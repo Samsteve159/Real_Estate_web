@@ -1,7 +1,7 @@
 # Manifest Overhaul — Project Tracker
 
 Living status doc. Updated as we go. Plan: `~/.claude/plans/we-need-to-to-sequential-deer.md`.
-Last updated: **2026-06-25**.
+Last updated: **2026-06-26**.
 
 ## Status legend
 ✅ done · 🟡 in progress · ⛔ blocked (waiting on owner/third party) · ⬜ not started
@@ -37,7 +37,7 @@ Last updated: **2026-06-25**.
 | `vault.ts` API client (auth, fetch, normalize, cache) | ⬜ (blocked on API access) |
 | Scaffold `Fresh_Build/website/` from `demo_theme` baseline | ✅ runs on :5175 (proxies API :8787); logo wired; renders OK |
 | Design system (tokens/type from brief + logo) | ✅ | black/white/gold dark token set live in `site/src/index.css`; logo recolored for black + wired into nav |
-| Pages: Home, Listings, Listing detail, About/Agents, Contact | 🟡 | Home, Listings (mock), About, Contact ✅. Listing-detail page ⬜ (waits on Vault RE shape) |
+| Pages: Home, Listings, Listing detail, About/Agents, Contact | 🟡 | Home, Listings (mock), About (real Akshay photo ✅), Contact ✅. Listing-detail page ⬜ (waits on Vault RE shape) |
 | AI Buyer Concierge over real listings | ✅ (mock) | `routes/ConciergePage.tsx` + `streamChat` in `site/lib/api.ts` → existing `/api/chat` SSE (tool-use: search_listings + capture_lead). Full-page dark chat, suggestions, lead capture. Runs over mock listings now; swaps to Vault with no UI change. **Model: `claude-sonnet-4-6`** (downgraded from Opus 4.8 to cut cost ~40%; valuation still Opus 4.8). Live test needs `ANTHROPIC_API_KEY` in `api/.env` |
 | Lead capture → DB | ✅ | valuation + contact forms POST `/api/lead` → SQLite; contact tagged `source:"contact"` |
 
@@ -59,7 +59,7 @@ Last updated: **2026-06-25**.
 ## TODO next session
 - **Vault RE listings** (blocked on Akshay's API access): build `vault.ts` client, normalise to the listing shape, replace `mockListings`, build the **listing-detail page**.
 - **Live verify the AI tools**: add Akshay's `ANTHROPIC_API_KEY` to `api/.env`, run `api` (:8787) + `site` (:5180), confirm Valuation returns a range + the fixed comps, and the concierge chats and captures a lead.
-- **Real assets to swap**: Akshay's hero footage (`site/public/hero/hero.mp4`) and/or a real B&W skyline photo (`site/public/hero/melbourne-skyline.jpg`); white/mono logo SVG if available; About page photo + bio. (Contact details now real ✓.)
+- **Real assets to swap**: Akshay's hero footage (`site/public/hero/hero.mp4`) and/or a real B&W skyline photo (`site/public/hero/melbourne-skyline.jpg`); white/mono logo SVG if available; About page bio copy. (Contact details ✓; About page photo ✓ — real headshot now wired.)
 - **Milestone 3 (separate from the website)**: newsletter + monthly market-update engine via the content-engine agent.
 - Optional polish: visual QA pass in-browser of the 6 tools + nav mega-menu + floating bot.
 
@@ -70,6 +70,7 @@ Last updated: **2026-06-25**.
 - **Who owns calculator maintenance** (tax brackets, stamp-duty schedule, APRA buffer) after handover — see `Fresh_Build/MAINTENANCE.md`. Recommend codebase-maintainer-owned on an annual/post-budget cadence; Akshay to confirm.
 
 ## Changelog
+- **2026-06-26 (reviews + agent photo)** — Owner asked to put real client reviews + Akshay's photo on the site. realestate.com.au (the agency review page) is behind Akamai bot protection → `HTTP 429` on every automated fetch; pulled Akshay's headshot instead from `manifestre.com.au/agents` (same photo), resized 800×800 → `site/public/akshay-kapoor.jpg`. (1) **Home `TrustBand`**: replaced the 2 placeholder testimonials with **4 real reviews** owner supplied from realestate.com.au (condensed faithfully for the card layout; the 2 truncated ones completed using only owner's wording — no invented claims). Added a section header with Akshay's avatar + 5-star line; each card shows a gold ★★★★★ row. Attribution kept as **"Verified seller · realestate.com.au"** — confirmed with owner the source page shows no reviewer names, only "Verified seller". (2) **AboutPage** founder block: swapped the "Photo of Akshay" placeholder for the real headshot (4:5, gold top-accent). Typecheck clean; verified both via headless full-page screenshots (CDP, reduced-motion + scroll to trip lazy-load). Committed + pushed (`0a81079`).
 - **2026-06-26 (UX + cost pass)** — Owner-requested fixes: (1) **Tools mega-menu hover bug** fixed (`components/ToolsMenu.tsx`) — the `position: fixed` panel was detached from the trigger, so crossing the dead gap fired `mouseleave` and closed it; added a close-delay timeout, panel hover handlers, and a transparent bridge over the gap. (2) **Contact details made real** (`routes/ContactPage.tsx`): admin@manifestre.com.au, +61 403 466 216, 2 Blackwood Drive, Altona North VIC 3025 (email/phone now tappable). (3) **Landing order swapped** (`routes/Home.tsx`) — Current Listings now leads, broker-grade Tools follow (lead with the product, then the differentiator). (4) **Concierge model downgraded Opus 4.8 → `claude-sonnet-4-6`** (`api/src/anthropic.ts`) to cut cost ~40%; Sonnet holds the tool-use + grounding discipline the bot needs. Valuation reasoning stays on Opus 4.8. Typecheck clean. **Needs API restart to take effect.**
 - **2026-06-25 (hero refine)** — Owner feedback on the hero: redrew the **skyline with more contrast + character** (varied tops, antennas, Eureka/spire landmarks; no longer a bar graph) and raised opacity to 0.8 so it's clearly visible. **Removed the tool-chip trust strip** under the CTAs and the **scroll indicator + its animation**. Rewrote the subhead to: "Buying or selling property should feel exciting, not overwhelming. With the right agent beside you and broker-grade tools at your fingertips, every step is a confident one." Build clean.
 - **2026-06-25 (rental + hero)** — Built the **Rental tool** (`lib/rental.ts` + `routes/RentalPage.tsx`): gross/net yield, operating costs, interest-only cash flow, positive/negative gearing verdict. Wired into route `/tools/rental`, the Tools mega-menu (now **6 buckets**, 3-col grid), mobile menu, footer and home ToolsShowcase (removed the "More coming" filler). Added a **black-and-white Melbourne skyline** to the hero (`public/hero/melbourne-skyline.svg`, greyscale, with a swap point for a real photo at `melbourne-skyline.jpg`). Removed the low-value **"Broker-grade tools, free"** eyebrow from the hero trust strip. Typecheck + build clean.
