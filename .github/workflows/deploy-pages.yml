@@ -1,6 +1,7 @@
 name: Deploy Fresh_Build site to GitHub Pages
 
 # Preview deploy of Fresh_Build/site (Vite + React) to GitHub Pages.
+# Pages enabled via Settings -> Source: GitHub Actions (2026-06-27).
 # NOTE: this is a Sameer-hosted PREVIEW for build-phase review (e.g. mobile
 # rendering). Production hosting moves under Manifest/Akshay later.
 # Backend (/api) does not exist on Pages, so the AI valuation/concierge and
