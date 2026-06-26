@@ -18,8 +18,8 @@ import { Link } from "react-router-dom";
  *  the poster image (or static gradient) shows instead.
  * ================================================================== */
 
-const HERO_VIDEO_SRC = "/hero/hero.mp4";       // swap point, see above
-const HERO_POSTER   = "/hero/hero-poster.jpg"; // swap point, see above
+const HERO_VIDEO_SRC = `${import.meta.env.BASE_URL}hero/hero.mp4`;       // swap point, see above
+const HERO_POSTER   = `${import.meta.env.BASE_URL}hero/hero-poster.jpg`; // swap point, see above
 
 export default function MotionHero() {
   return (
@@ -89,7 +89,7 @@ export default function MotionHero() {
           className="absolute inset-x-0 bottom-0"
           style={{
             height: "62%",
-            backgroundImage: `url("/hero/melbourne-skyline.svg")`,
+            backgroundImage: `url("${import.meta.env.BASE_URL}hero/melbourne-skyline.svg")`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center bottom",
             backgroundSize: "cover",
@@ -98,7 +98,7 @@ export default function MotionHero() {
           aria-hidden="true"
         />
         <img
-          src="/hero/melbourne-skyline.jpg"
+          src={`${import.meta.env.BASE_URL}hero/melbourne-skyline.jpg`}
           alt=""
           aria-hidden="true"
           className="absolute inset-x-0 bottom-0 w-full object-cover object-bottom"

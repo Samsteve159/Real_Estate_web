@@ -75,7 +75,7 @@ export default function TrustBand() {
         {/* Testimonials */}
         <div className="reveal mb-12 flex items-center gap-5">
           <img
-            src="/akshay-kapoor.jpg"
+            src={`${import.meta.env.BASE_URL}akshay-kapoor.jpg`}
             alt="Akshay Kapoor, Manifest Real Estate"
             className="w-16 h-16 rounded-full object-cover shrink-0"
             style={{ border: "2px solid var(--color-gold)" }}

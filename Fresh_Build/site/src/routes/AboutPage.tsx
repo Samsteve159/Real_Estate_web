@@ -47,7 +47,7 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-5 gap-12 items-start">
           <div className="reveal md:col-span-2">
             <img
-              src="/akshay-kapoor.jpg"
+              src={`${import.meta.env.BASE_URL}akshay-kapoor.jpg`}
               alt="Akshay Kapoor, Director of Manifest Real Estate"
               className="w-full aspect-[4/5] object-cover object-top"
               style={{ border: "1px solid var(--color-line)", borderTop: "2px solid var(--color-gold)" }}

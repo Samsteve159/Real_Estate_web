@@ -72,7 +72,7 @@ export default function Shell() {
 
           {/* Logo: recolored tower mark (white + gold) beside the wordmark */}
           <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="Manifest Real Estate home">
-            <img src="/manifest-mark.png" alt="" aria-hidden="true" className="w-auto" style={{ height: "1.85rem" }} />
+            <img src={`${import.meta.env.BASE_URL}manifest-mark.png`} alt="" aria-hidden="true" className="w-auto" style={{ height: "1.85rem" }} />
             <span className="flex flex-col leading-none">
               <span className="font-display font-semibold tracking-tight" style={{ color: "var(--color-text)", fontSize: "1.1rem", letterSpacing: "0.02em" }}>
                 MANIFEST
