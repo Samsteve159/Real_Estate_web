@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import InfoHint from "../components/InfoHint";
 import { useReveal } from "../lib/useReveal";
 import {
   getSuburbs,
@@ -116,7 +117,7 @@ export default function ValuationPage() {
               <Field label="Cars"><Stepper value={form.cars} onChange={(v) => update("cars", v)} min={0} max={12} /></Field>
             </div>
 
-            <Field label="Land size (sqm, optional)">
+            <Field label="Land size (sqm, optional)" hint="The area of the block in square metres, if you know it.">
               <TextInput
                 value={form.landSize ? String(form.landSize) : ""}
                 onChange={(v) => update("landSize", v ? parseInt(v.replace(/[^0-9]/g, ""), 10) || undefined : undefined)}
@@ -172,14 +173,14 @@ function ResultView({ result, subject }: { result: ValuationResult; subject: Val
   return (
     <>
       <div className="flex items-center justify-between mb-2">
-        <p className="eyebrow">Indicative range</p>
-        <span className="text-xs font-semibold uppercase" style={{ color: conf.color, letterSpacing: "0.15em" }}>{conf.label}</span>
+        <p className="eyebrow">Indicative range <InfoHint text="An estimated price band for your home from recent comparable sales, not a formal valuation." /></p>
+        <span className="text-xs font-semibold uppercase flex items-center gap-1" style={{ color: conf.color, letterSpacing: "0.15em" }}>{conf.label} <InfoHint text="How reliable the estimate is, based on how many close comparable sales were found." /></span>
       </div>
       <p className="display mb-3" style={{ fontSize: "clamp(1.7rem, 4.5vw, 2.6rem)", color: "var(--color-gold)", letterSpacing: "-0.02em" }}>
         {fmt(result.low)} <span style={{ color: "var(--color-dim)" }}>–</span> {fmt(result.high)}
       </p>
       <p className="text-sm mb-6" style={{ color: "var(--color-muted)" }}>
-        Midpoint <span className="font-semibold" style={{ color: "var(--color-text)" }}>{fmt(result.midpoint)}</span>
+        Midpoint <span className="font-semibold" style={{ color: "var(--color-text)" }}>{fmt(result.midpoint)}</span> <InfoHint text="The middle of the estimated range, a single best-guess figure." />
         {" · "}{subject.beds} bed {subject.type.toLowerCase()} in {subject.suburb}
       </p>
       <p className="text-sm leading-relaxed pb-6 mb-6 border-b" style={{ color: "var(--color-text)", borderColor: "var(--color-line)" }}>
@@ -188,7 +189,7 @@ function ResultView({ result, subject }: { result: ValuationResult; subject: Val
 
       {result.comparables_used.length > 0 && (
         <>
-          <p className="eyebrow mb-3">Comparable sales used</p>
+          <p className="eyebrow mb-3">Comparable sales used <InfoHint text="Recently sold homes similar to yours that this estimate is built from." /></p>
           <ul className="flex flex-col">
             {result.comparables_used.map((c, i) => (
               <li key={i} className="flex items-start justify-between gap-4 py-3 border-b" style={{ borderColor: "var(--color-line)" }}>
@@ -281,10 +282,10 @@ function LeadCapture({ result, subject }: { result: ValuationResult; subject: Va
 }
 
 /* ---- Form primitives ---- */
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) {
   return (
     <label className="block">
-      <span className="eyebrow block mb-2.5">{label}</span>
+      <span className="eyebrow block mb-2.5">{label}{hint && <> <InfoHint text={hint} /></>}</span>
       {children}
     </label>
   );

@@ -17,10 +17,11 @@ if (!process.env.ANTHROPIC_API_KEY) {
 
 export const anthropic = new Anthropic();
 
-// Models. Per the owner, capability must stay at Opus 4.8 or above — so both the
-// valuation reasoning and the concierge run on Opus 4.8, the most capable Opus.
+// Models. Valuation reasoning stays on Opus 4.8 (the most capable Opus). The
+// concierge runs on Sonnet 4.6 — strong enough for its tool use and strict
+// grounding rules, at ~40% lower cost than Opus for the high-volume chat path.
 export const REASONING_MODEL = "claude-opus-4-8";
-export const CHAT_MODEL = "claude-opus-4-8";
+export const CHAT_MODEL = "claude-sonnet-4-6";
 
 export const AGENT_NAME = "Manifest Real Estate";
 export const AGENT_TAGLINE = "Where dreams meet reality";

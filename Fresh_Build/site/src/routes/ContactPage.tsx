@@ -62,8 +62,9 @@ export default function ContactPage() {
           </p>
 
           <div className="flex flex-col gap-6">
-            <Detail label="Email" value="hello@manifestre.com.au" />
-            <Detail label="Phone" value="(03) 0000 0000" />
+            <Detail label="Email" value="admin@manifestre.com.au" href="mailto:admin@manifestre.com.au" />
+            <Detail label="Phone" value="+61 403 466 216" href="tel:+61403466216" />
+            <Detail label="Office" value="2 Blackwood Drive, Altona North VIC 3025" />
             <Detail label="Servicing" value="Melbourne, inner west & northern growth corridors" />
           </div>
         </div>
@@ -133,11 +134,15 @@ export default function ContactPage() {
   );
 }
 
-function Detail({ label, value }: { label: string; value: string }) {
+function Detail({ label, value, href }: { label: string; value: string; href?: string }) {
   return (
     <div className="pb-5 border-b" style={{ borderColor: "var(--color-line)" }}>
       <p className="eyebrow mb-1.5">{label}</p>
-      <p className="text-sm" style={{ color: "var(--color-text)" }}>{value}</p>
+      {href ? (
+        <a href={href} className="text-sm gold-underline" style={{ color: "var(--color-text)" }}>{value}</a>
+      ) : (
+        <p className="text-sm" style={{ color: "var(--color-text)" }}>{value}</p>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import InfoHint from "../components/InfoHint";
 import { useReveal } from "../lib/useReveal";
 import { assessPreBuying, type PreBuyingInput } from "../lib/preBuying";
 import { formatAUD, type BuyerType } from "../lib/stampDuty";
@@ -60,15 +61,15 @@ export default function PreBuyingPage() {
 
           {/* INPUTS */}
           <div className="p-8 sm:p-10 flex flex-col gap-7" style={{ background: "var(--color-surface)" }}>
-            <MoneyField label="Combined gross income (yearly)" value={grossIncome} onChange={setGrossIncome} step={5_000} />
-            <MoneyField label="Living expenses (monthly)" value={monthlyExpenses} onChange={setMonthlyExpenses} step={250} />
-            <MoneyField label="Other debt repayments (monthly)" value={monthlyDebts} onChange={setMonthlyDebts} step={100} />
-            <MoneyField label="Savings for deposit + costs" value={savings} onChange={setSavings} step={5_000} />
-            <MoneyField label="Target purchase price" value={purchasePrice} onChange={setPurchasePrice} step={10_000} />
+            <MoneyField label="Combined gross income (yearly)" hint="Total household income before tax, across all buyers." value={grossIncome} onChange={setGrossIncome} step={5_000} />
+            <MoneyField label="Living expenses (monthly)" hint="What you typically spend each month to live, excluding debts." value={monthlyExpenses} onChange={setMonthlyExpenses} step={250} />
+            <MoneyField label="Other debt repayments (monthly)" hint="Monthly repayments on car loans, personal loans, credit cards, etc." value={monthlyDebts} onChange={setMonthlyDebts} step={100} />
+            <MoneyField label="Savings for deposit + costs" hint="Cash you have ready to put toward the deposit and upfront costs." value={savings} onChange={setSavings} step={5_000} />
+            <MoneyField label="Target purchase price" hint="The price of the property you're aiming to buy." value={purchasePrice} onChange={setPurchasePrice} step={10_000} />
 
             {/* Interest rate */}
             <label className="block">
-              <span className="eyebrow block mb-3">Interest rate · {interestRate.toFixed(2)}%</span>
+              <span className="eyebrow block mb-3">Interest rate · {interestRate.toFixed(2)}% <InfoHint text="The home-loan interest rate you expect to pay." /></span>
               <input
                 type="range" min={3} max={9} step={0.1}
                 value={interestRate}
@@ -77,7 +78,7 @@ export default function PreBuyingPage() {
                 style={{ accentColor: "var(--color-gold)" }}
               />
               <span className="text-xs" style={{ color: "var(--color-dim)" }}>
-                Assessed at {(interestRate + 3).toFixed(2)}% (incl. 3% APRA buffer)
+                Assessed at {(interestRate + 3).toFixed(2)}% (incl. 3% APRA buffer) <InfoHint text="Lenders must check you could still repay if rates rose ~3%, so borrowing power is tested at this higher rate." />
               </span>
             </label>
 
@@ -130,27 +131,27 @@ export default function PreBuyingPage() {
             </div>
 
             {/* Borrowing power headline */}
-            <p className="eyebrow mb-2">Indicative borrowing power</p>
+            <p className="eyebrow mb-2">Indicative borrowing power <InfoHint text="A rough estimate of the loan amount a lender might offer, based on your income and expenses." /></p>
             <p className="display mb-1" style={{ fontSize: "clamp(2rem, 5vw, 3rem)", color: "var(--color-gold)", letterSpacing: "-0.02em" }}>
               {formatAUD(r.maxBorrow)}
             </p>
             <p className="text-xs mb-8" style={{ color: "var(--color-dim)" }}>
-              ≈ up to {formatAUD(r.maxPurchase)} purchase price with your savings · {formatAUD(r.monthlySurplus)}/mo surplus
+              ≈ up to {formatAUD(r.maxPurchase)} purchase price with your savings · {formatAUD(r.monthlySurplus)}/mo surplus <InfoHint text="Surplus is the income left each month after the loan repayment, living expenses and other debts." />
             </p>
 
             {/* Breakdown for the target price */}
             <p className="eyebrow mb-4">At {formatAUD(purchasePrice)}</p>
             <div className="flex flex-col gap-3 text-sm">
-              <Row label="Deposit (savings after costs)" value={formatAUD(r.depositAmount)} />
-              <Row label="Loan required" value={formatAUD(r.loanNeeded)} />
-              <Row label="Loan-to-value ratio (LVR)" value={`${r.lvr.toFixed(1)}%`} accent={r.lvr > 80} />
-              {r.lmi > 0 && <Row label="Lenders mortgage insurance (est.)" value={formatAUD(r.lmi)} accent />}
-              <Row label="Stamp duty" value={formatAUD(r.stampDuty)} />
-              <Row label="Upfront costs (duty + fees)" value={formatAUD(r.upfrontCosts)} />
+              <Row label="Deposit (savings after costs)" hint="The cash you put toward the property, what's left of your savings after upfront costs." value={formatAUD(r.depositAmount)} />
+              <Row label="Loan required" hint="The amount you'd need to borrow: purchase price minus your deposit." value={formatAUD(r.loanNeeded)} />
+              <Row label="Loan-to-value ratio (LVR)" hint="Your loan as a percentage of the property's value. Above 80% usually means extra insurance." value={`${r.lvr.toFixed(1)}%`} accent={r.lvr > 80} />
+              {r.lmi > 0 && <Row label="Lenders mortgage insurance (est.)" hint="A one-off insurance premium lenders charge when your deposit is under 20%. It protects them, not you." value={formatAUD(r.lmi)} accent />}
+              <Row label="Stamp duty" hint="The one-off state tax on the purchase (calculated exactly from the VIC schedule)." value={formatAUD(r.stampDuty)} />
+              <Row label="Upfront costs (duty + fees)" hint="Total cash needed at settlement on top of the deposit: stamp duty plus legal and other fees." value={formatAUD(r.upfrontCosts)} />
             </div>
 
             <div className="pt-5 mt-5 border-t flex items-center justify-between" style={{ borderColor: "var(--color-line)" }}>
-              <span className="text-sm font-semibold" style={{ color: "var(--color-text)" }}>Est. repayment</span>
+              <span className="text-sm font-semibold" style={{ color: "var(--color-text)" }}>Est. repayment <InfoHint text="Estimated monthly mortgage repayment on the loan at your interest rate." /></span>
               <span className="font-display font-semibold" style={{ color: "var(--color-text)", fontSize: "1.2rem" }}>
                 {formatAUD(r.monthlyRepayment)}<span className="text-xs font-normal" style={{ color: "var(--color-dim)" }}>/mo</span>
               </span>
@@ -184,10 +185,10 @@ export default function PreBuyingPage() {
 }
 
 /* ---- Small field with stepper buttons ---- */
-function MoneyField({ label, value, onChange, step }: { label: string; value: number; onChange: (n: number) => void; step: number }) {
+function MoneyField({ label, value, onChange, step, hint }: { label: string; value: number; onChange: (n: number) => void; step: number; hint?: string }) {
   return (
     <label className="block">
-      <span className="eyebrow block mb-3">{label}</span>
+      <span className="eyebrow block mb-3">{label}{hint && <> <InfoHint text={hint} /></>}</span>
       <div className="flex items-center border" style={{ background: "var(--color-bg)", borderColor: "var(--color-line)" }}>
         <Stepper sign="−" onClick={() => onChange(Math.max(0, value - step))} />
         <div className="flex-1 flex items-center justify-center px-2">
@@ -226,10 +227,10 @@ function Stepper({ sign, onClick }: { sign: string; onClick: () => void }) {
   );
 }
 
-function Row({ label, value, accent = false }: { label: string; value: string; accent?: boolean }) {
+function Row({ label, value, hint, accent = false }: { label: string; value: string; hint?: string; accent?: boolean }) {
   return (
     <div className="flex items-center justify-between">
-      <span style={{ color: "var(--color-muted)" }}>{label}</span>
+      <span style={{ color: "var(--color-muted)" }}>{label}{hint && <> <InfoHint text={hint} /></>}</span>
       <span className="font-medium" style={{ color: accent ? "var(--color-gold)" : "var(--color-text)" }}>{value}</span>
     </div>
   );

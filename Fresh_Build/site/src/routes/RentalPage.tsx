@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import InfoHint from "../components/InfoHint";
 import { useReveal } from "../lib/useReveal";
 import { assessRental, type RentalInput } from "../lib/rental";
 import { formatAUD } from "../lib/stampDuty";
@@ -61,51 +62,51 @@ export default function RentalPage() {
           {/* INPUTS */}
           <div className="p-8 sm:p-10 flex flex-col gap-6" style={{ background: "var(--color-surface)" }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <MoneyField label="Purchase price" value={purchasePrice} onChange={setPurchasePrice} step={10_000} />
-              <MoneyField label="Weekly rent" value={weeklyRent} onChange={setWeeklyRent} step={10} suffix="/wk" />
-              <MoneyField label="Loan amount" value={loanAmount} onChange={setLoanAmount} step={10_000} />
-              <PctField label="Interest rate" value={interestRate} onChange={setInterestRate} step={0.1} />
+              <MoneyField label="Purchase price" hint="What you're paying for the property." value={purchasePrice} onChange={setPurchasePrice} step={10_000} />
+              <MoneyField label="Weekly rent" hint="Rent the tenant pays each week." value={weeklyRent} onChange={setWeeklyRent} step={10} suffix="/wk" />
+              <MoneyField label="Loan amount" hint="How much of the price you're borrowing." value={loanAmount} onChange={setLoanAmount} step={10_000} />
+              <PctField label="Interest rate" hint="Your loan's annual interest rate." value={interestRate} onChange={setInterestRate} step={0.1} />
             </div>
 
             <div className="pt-2">
               <p className="eyebrow mb-4">Annual running costs</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <MoneyField label="Council rates" value={councilRates} onChange={setCouncilRates} step={100} />
-                <MoneyField label="Insurance" value={insurance} onChange={setInsurance} step={100} />
-                <MoneyField label="Maintenance" value={maintenance} onChange={setMaintenance} step={100} />
-                <MoneyField label="Body corporate" value={strata} onChange={setStrata} step={100} />
+                <MoneyField label="Council rates" hint="Yearly charge from the local council." value={councilRates} onChange={setCouncilRates} step={100} />
+                <MoneyField label="Insurance" hint="Yearly building and landlord insurance cost." value={insurance} onChange={setInsurance} step={100} />
+                <MoneyField label="Maintenance" hint="What you set aside each year for repairs and upkeep." value={maintenance} onChange={setMaintenance} step={100} />
+                <MoneyField label="Body corporate" hint="Yearly fees for shared upkeep in units and townhouses (also called strata or owners' corporation)." value={strata} onChange={setStrata} step={100} />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <PctField label="Management fee" value={managementPct} onChange={setManagementPct} step={0.1} />
-              <NumPlainField label="Vacancy (weeks/yr)" value={vacancyWeeks} onChange={setVacancyWeeks} step={1} />
+              <PctField label="Management fee" hint="What a property manager charges to run the rental, as a % of the rent." value={managementPct} onChange={setManagementPct} step={0.1} />
+              <NumPlainField label="Vacancy (weeks/yr)" hint="Weeks per year you assume the place sits empty between tenants." value={vacancyWeeks} onChange={setVacancyWeeks} step={1} />
             </div>
           </div>
 
           {/* RESULTS */}
           <div className="p-8 sm:p-10 flex flex-col" style={{ background: "var(--color-surface-2)" }}>
             <div className="grid grid-cols-2 gap-px mb-8" style={{ background: "var(--color-line)" }}>
-              <Stat label="Gross yield" value={`${r.grossYield.toFixed(1)}%`} />
-              <Stat label="Net yield" value={`${r.netYield.toFixed(1)}%`} accent />
+              <Stat label="Gross yield" hint="Yearly rent as a % of the price, before any costs." value={`${r.grossYield.toFixed(1)}%`} />
+              <Stat label="Net yield" hint="Yearly rent after running costs, as a % of the price." value={`${r.netYield.toFixed(1)}%`} accent />
             </div>
 
-            <p className="eyebrow mb-2">Weekly cash flow</p>
+            <p className="eyebrow mb-2">Weekly cash flow <InfoHint text="What the property puts in your pocket (+) or costs you (−) each week, after the loan and bills." /></p>
             <p className="display mb-1" style={{ fontSize: "clamp(2rem, 5vw, 3rem)", color: r.weeklyCashflow >= 0 ? "var(--color-gold)" : "var(--color-text)", letterSpacing: "-0.02em" }}>
               {r.weeklyCashflow >= 0 ? "+" : "−"}{formatAUD(Math.abs(r.weeklyCashflow))}<span className="text-sm font-normal" style={{ color: "var(--color-dim)" }}>/wk</span>
             </p>
-            <p className="text-xs mb-8" style={{ color: gearing.color }}>{gearing.label}</p>
+            <p className="text-xs mb-8" style={{ color: gearing.color }}>{gearing.label} <InfoHint text="Whether the property earns more than it costs (positively geared) or costs more than it earns (negatively geared)." /></p>
 
             <div className="flex flex-col gap-3 text-sm">
-              <Row label="Rent (after vacancy)" value={`${formatAUD(r.annualRent)}/yr`} />
-              <Row label="Operating expenses" value={`− ${formatAUD(r.operatingExpenses)}/yr`} />
-              <Row label="Management fee" value={`− ${formatAUD(r.managementFee)}/yr`} />
-              <Row label="Net operating income" value={`${formatAUD(r.netOperatingIncome)}/yr`} accent />
-              <Row label="Loan interest (interest-only)" value={`− ${formatAUD(r.loanInterest)}/yr`} />
+              <Row label="Rent (after vacancy)" hint="Yearly rent, reduced for the weeks you assume it's empty." value={`${formatAUD(r.annualRent)}/yr`} />
+              <Row label="Operating expenses" hint="Total yearly running costs: rates, insurance, maintenance and body corporate." value={`− ${formatAUD(r.operatingExpenses)}/yr`} />
+              <Row label="Management fee" hint="Yearly cost of the property manager." value={`− ${formatAUD(r.managementFee)}/yr`} />
+              <Row label="Net operating income" hint="Rent left each year after running and management costs, before the loan." value={`${formatAUD(r.netOperatingIncome)}/yr`} accent />
+              <Row label="Loan interest (interest-only)" hint="Yearly interest on the loan, assuming you pay interest only (no principal)." value={`− ${formatAUD(r.loanInterest)}/yr`} />
             </div>
 
             <div className="pt-5 mt-5 border-t flex items-center justify-between" style={{ borderColor: "var(--color-line)" }}>
-              <span className="text-sm font-semibold" style={{ color: "var(--color-text)" }}>Annual cash flow</span>
+              <span className="text-sm font-semibold" style={{ color: "var(--color-text)" }}>Annual cash flow <InfoHint text="Your total yearly gain (+) or shortfall (−) after everything." /></span>
               <span className="font-display font-semibold" style={{ color: r.annualCashflow >= 0 ? "var(--color-gold)" : "var(--color-text)", fontSize: "1.2rem" }}>
                 {r.annualCashflow >= 0 ? "+" : "−"}{formatAUD(Math.abs(r.annualCashflow))}
               </span>
@@ -133,19 +134,19 @@ export default function RentalPage() {
 }
 
 /* ---- fields ---- */
-function Stat({ label, value, accent = false }: { label: string; value: string; accent?: boolean }) {
+function Stat({ label, value, hint, accent = false }: { label: string; value: string; hint?: string; accent?: boolean }) {
   return (
     <div className="p-5" style={{ background: "var(--color-surface)" }}>
-      <p className="eyebrow mb-2">{label}</p>
+      <p className="eyebrow mb-2">{label}{hint && <> <InfoHint text={hint} /></>}</p>
       <p className="font-display font-semibold" style={{ color: accent ? "var(--color-gold)" : "var(--color-text)", fontSize: "1.7rem", letterSpacing: "-0.01em" }}>{value}</p>
     </div>
   );
 }
 
-function MoneyField({ label, value, onChange, step, suffix }: { label: string; value: number; onChange: (n: number) => void; step: number; suffix?: string }) {
+function MoneyField({ label, value, onChange, step, suffix, hint }: { label: string; value: number; onChange: (n: number) => void; step: number; suffix?: string; hint?: string }) {
   return (
     <label className="block">
-      <span className="eyebrow block mb-2.5">{label}</span>
+      <span className="eyebrow block mb-2.5">{label}{hint && <> <InfoHint text={hint} /></>}</span>
       <div className="flex items-center border" style={{ background: "var(--color-bg)", borderColor: "var(--color-line)" }}>
         <button type="button" onClick={() => onChange(Math.max(0, value - step))} className="px-3 py-2.5 text-lg shrink-0" style={{ color: "var(--color-muted)" }} aria-label="Decrease">−</button>
         <div className="flex-1 flex items-center justify-center">
@@ -166,19 +167,19 @@ function MoneyField({ label, value, onChange, step, suffix }: { label: string; v
   );
 }
 
-function PctField({ label, value, onChange, step }: { label: string; value: number; onChange: (n: number) => void; step: number }) {
+function PctField({ label, value, onChange, step, hint }: { label: string; value: number; onChange: (n: number) => void; step: number; hint?: string }) {
   return (
     <label className="block">
-      <span className="eyebrow block mb-2.5">{label} · {value.toFixed(1)}%</span>
+      <span className="eyebrow block mb-2.5">{label} · {value.toFixed(1)}%{hint && <> <InfoHint text={hint} /></>}</span>
       <input type="range" min={0} max={12} step={step} value={value} onChange={(e) => onChange(parseFloat(e.target.value))} className="w-full" style={{ accentColor: "var(--color-gold)" }} />
     </label>
   );
 }
 
-function NumPlainField({ label, value, onChange, step }: { label: string; value: number; onChange: (n: number) => void; step: number }) {
+function NumPlainField({ label, value, onChange, step, hint }: { label: string; value: number; onChange: (n: number) => void; step: number; hint?: string }) {
   return (
     <label className="block">
-      <span className="eyebrow block mb-2.5">{label}</span>
+      <span className="eyebrow block mb-2.5">{label}{hint && <> <InfoHint text={hint} /></>}</span>
       <div className="flex items-center border" style={{ background: "var(--color-bg)", borderColor: "var(--color-line)" }}>
         <button type="button" onClick={() => onChange(Math.max(0, value - step))} className="px-4 py-2.5 text-lg" style={{ color: "var(--color-muted)" }} aria-label="Decrease">−</button>
         <span className="flex-1 text-center font-display font-semibold" style={{ color: "var(--color-text)" }}>{value}</span>
@@ -188,10 +189,10 @@ function NumPlainField({ label, value, onChange, step }: { label: string; value:
   );
 }
 
-function Row({ label, value, accent = false }: { label: string; value: string; accent?: boolean }) {
+function Row({ label, value, hint, accent = false }: { label: string; value: string; hint?: string; accent?: boolean }) {
   return (
     <div className="flex items-center justify-between">
-      <span style={{ color: "var(--color-muted)" }}>{label}</span>
+      <span style={{ color: "var(--color-muted)" }}>{label}{hint && <> <InfoHint text={hint} /></>}</span>
       <span className="font-medium" style={{ color: accent ? "var(--color-gold)" : "var(--color-text)" }}>{value}</span>
     </div>
   );

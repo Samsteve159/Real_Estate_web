@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import InfoHint from "../components/InfoHint";
 import { useReveal } from "../lib/useReveal";
 import { calculateDuty, formatAUD, type BuyerType } from "../lib/stampDuty";
 
@@ -69,7 +70,7 @@ export default function StampDutyPage() {
 
             {/* Purchase price */}
             <label className="block mb-8">
-              <span className="eyebrow block mb-3">Purchase price</span>
+              <span className="eyebrow block mb-3">Purchase price <InfoHint text="What you're paying for the property, the price duty is calculated on." /></span>
               <div
                 className="flex items-center px-4 py-3 border transition-colors"
                 style={{ background: "var(--color-bg)", borderColor: "var(--color-line)" }}
@@ -165,7 +166,7 @@ export default function StampDutyPage() {
           <div className="p-8 sm:p-10 flex flex-col" style={{ background: "var(--color-surface-2)" }}>
             {hasInput ? (
               <>
-                <p className="eyebrow mb-2">Duty payable</p>
+                <p className="eyebrow mb-2">Duty payable <InfoHint text="The one-off state tax you pay when you buy property in Victoria." /></p>
                 <p
                   className="display mb-1"
                   style={{ fontSize: "clamp(2.4rem, 6vw, 3.6rem)", color: "var(--color-gold)", letterSpacing: "-0.02em" }}
@@ -173,18 +174,19 @@ export default function StampDutyPage() {
                   {formatAUD(result.totalPayable)}
                 </p>
                 <p className="text-xs mb-8" style={{ color: "var(--color-dim)" }}>
-                  Effective rate {effectiveRate.toFixed(2)}% of purchase price
+                  Effective rate {effectiveRate.toFixed(2)}% of purchase price <InfoHint text="Your total duty as a percentage of the price you're paying." />
                 </p>
 
                 {/* Breakdown */}
                 <div className="flex flex-col gap-3 text-sm mb-6">
-                  <Row label="Land transfer duty" value={formatAUD(result.duty, true)} />
+                  <Row label="Land transfer duty" hint="The base stamp duty on the purchase, before any surcharge or concession." value={formatAUD(result.duty, true)} />
                   {result.foreignDuty > 0 && (
-                    <Row label="Foreign purchaser duty (8%)" value={formatAUD(result.foreignDuty, true)} />
+                    <Row label="Foreign purchaser duty (8%)" hint="Extra 8% surcharge that applies when the buyer is a foreign person." value={formatAUD(result.foreignDuty, true)} />
                   )}
                   {result.saving > 0 && (
                     <Row
                       label={buyerType === "fhb" ? "First home buyer saving" : "Concession saving"}
+                      hint="How much the first-home or owner-occupier concession cuts off your duty."
                       value={`− ${formatAUD(result.saving, true)}`}
                       accent
                     />
@@ -192,7 +194,7 @@ export default function StampDutyPage() {
                 </div>
 
                 <div className="pt-5 border-t flex items-center justify-between" style={{ borderColor: "var(--color-line)" }}>
-                  <span className="text-sm font-semibold" style={{ color: "var(--color-text)" }}>Total payable</span>
+                  <span className="text-sm font-semibold" style={{ color: "var(--color-text)" }}>Total payable <InfoHint text="What you'll actually pay in duty, all in." /></span>
                   <span className="font-display font-semibold" style={{ color: "var(--color-text)", fontSize: "1.2rem" }}>
                     {formatAUD(result.totalPayable)}
                   </span>
@@ -262,10 +264,10 @@ export default function StampDutyPage() {
   );
 }
 
-function Row({ label, value, accent = false }: { label: string; value: string; accent?: boolean }) {
+function Row({ label, value, hint, accent = false }: { label: string; value: string; hint?: string; accent?: boolean }) {
   return (
     <div className="flex items-center justify-between">
-      <span style={{ color: "var(--color-muted)" }}>{label}</span>
+      <span style={{ color: "var(--color-muted)" }}>{label}{hint && <> <InfoHint text={hint} /></>}</span>
       <span className="font-medium" style={{ color: accent ? "var(--color-gold)" : "var(--color-text)" }}>{value}</span>
     </div>
   );

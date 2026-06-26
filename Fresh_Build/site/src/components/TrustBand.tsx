@@ -12,16 +12,28 @@ const STATS = [
   { value: "1 call", label: "To a real expert",      note: "skip the call centre" },
 ];
 
+// Real vendor reviews for Akshay Kapoor, sourced from realestate.com.au.
+// Condensed for the card layout — wording is faithful to the originals.
 const TESTIMONIALS = [
   {
-    quote: "I walked into my first auction knowing exactly what to bid. The valuation tool gave me the confidence to go up to my number, and I got the property.",
-    name: "Sarah M.",
-    detail: "First-home buyer, Brighton",
+    quote: "As an interstate investor I expected a stressful sale, but Akshay made the whole process completely smooth. He personally arranged every renovation and tradie needed to get the property sale-ready — and it sold above his initial estimate. I feel genuinely lucky to have worked with him.",
+    name: "Verified seller",
+    detail: "Interstate investor",
   },
   {
-    quote: "Akshay was the only agent who actually showed me the numbers behind his advice. The stamp duty calculator alone saved me a nasty surprise at settlement.",
-    name: "James & Priya T.",
-    detail: "Investors, South Yarra",
+    quote: "While the big-name agencies just put up a sign and run open homes, AK truly went above and beyond. He took the time to understand the local market and recommended smart, cost-effective improvements — painting, landscaping, tree pruning and lighting — all aimed at helping us reach our target sale price.",
+    name: "Verified seller",
+    detail: "Interstate vendor",
+  },
+  {
+    quote: "An excellent experience with Akshay at Manifest. Knowledgeable, professional and incredibly helpful — his attention to detail and market insights made the process smooth and stress-free. I highly recommend him to anyone after a reliable, skilled agent.",
+    name: "Verified seller",
+    detail: "via realestate.com.au",
+  },
+  {
+    quote: "Akshay is a very thorough person who gives a lot of attention to the minute detail. He goes well beyond to get fantastic results, and the way he carried himself through a complex sale process is commendable.",
+    name: "Verified seller",
+    detail: "Vendor, complex sale",
   },
 ];
 
@@ -61,8 +73,26 @@ export default function TrustBand() {
         </div>
 
         {/* Testimonials */}
-        <div className="reveal mb-6">
-          <p className="eyebrow mb-12">What our clients say</p>
+        <div className="reveal mb-12 flex items-center gap-5">
+          <img
+            src="/akshay-kapoor.jpg"
+            alt="Akshay Kapoor, Manifest Real Estate"
+            className="w-16 h-16 rounded-full object-cover shrink-0"
+            style={{ border: "2px solid var(--color-gold)" }}
+            loading="lazy"
+          />
+          <div>
+            <p className="eyebrow mb-1">What our clients say</p>
+            <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
+              Recent reviews for Akshay Kapoor
+              <span style={{ color: "var(--color-gold)", marginLeft: "0.6rem", letterSpacing: "1px" }}>
+                ★★★★★
+              </span>
+            </p>
+            <p className="text-xs mt-0.5" style={{ color: "var(--color-dim)" }}>
+              Verified vendor reviews · realestate.com.au
+            </p>
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {TESTIMONIALS.map((t, i) => (
@@ -92,6 +122,13 @@ export default function TrustBand() {
                   {t.quote}
                 </p>
                 <figcaption>
+                  <div
+                    className="mb-2"
+                    style={{ color: "var(--color-gold)", fontSize: "0.85rem", letterSpacing: "2px" }}
+                    aria-label="5 out of 5 stars"
+                  >
+                    ★★★★★
+                  </div>
                   <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
                     {t.name}
                   </p>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 /* ------------------------------------------------------------------ *
@@ -27,8 +27,30 @@ const BUCKETS: Bucket[] = [
 export default function ToolsMenu() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const close = () => setOpen(false);
+  // Cancel any pending close (e.g. when the pointer re-enters after
+  // crossing the gap between the trigger and the fixed panel).
+  const cancelClose = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+  const openMenu = () => {
+    cancelClose();
+    setOpen(true);
+  };
+  // Delay the close so a brief exit across the dead strip under the
+  // trigger doesn't slam the panel shut before the pointer reaches it.
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setOpen(false), 140);
+  };
+  const close = () => {
+    cancelClose();
+    setOpen(false);
+  };
 
   const activate = (b: Bucket) => {
     close();
@@ -42,8 +64,8 @@ export default function ToolsMenu() {
   return (
     <div
       className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={openMenu}
+      onMouseLeave={scheduleClose}
     >
       {/* Trigger */}
       <button
@@ -65,7 +87,12 @@ export default function ToolsMenu() {
         <div
           className="fixed left-0 right-0 z-40"
           style={{ top: "4rem" }}
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleClose}
         >
+          {/* Transparent bridge spanning the dead strip between the
+              trigger and the panel, so the hover chain never breaks. */}
+          <div className="absolute left-0 right-0" style={{ top: "-1rem", height: "1rem" }} aria-hidden="true" />
           <div className="max-w-7xl mx-auto px-6">
             <div
               className="border p-3"

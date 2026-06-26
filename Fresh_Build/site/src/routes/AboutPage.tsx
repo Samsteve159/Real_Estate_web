@@ -46,13 +46,12 @@ export default function AboutPage() {
       <section className="border-t" style={{ borderColor: "var(--color-line)", background: "var(--color-surface)" }}>
         <div className="max-w-5xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-5 gap-12 items-start">
           <div className="reveal md:col-span-2">
-            {/* Placeholder portrait, swap for Akshay's photo */}
-            <div
-              className="w-full aspect-[4/5] flex items-center justify-center"
-              style={{ background: "var(--color-surface-2)", border: "1px solid var(--color-line)" }}
-            >
-              <span className="eyebrow" style={{ color: "var(--color-dim)" }}>Photo of Akshay</span>
-            </div>
+            <img
+              src="/akshay-kapoor.jpg"
+              alt="Akshay Kapoor, Director of Manifest Real Estate"
+              className="w-full aspect-[4/5] object-cover object-top"
+              style={{ border: "1px solid var(--color-line)", borderTop: "2px solid var(--color-gold)" }}
+            />
           </div>
           <div className="reveal md:col-span-3">
             <p className="eyebrow mb-4">The founder</p>

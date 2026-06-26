@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import InfoHint from "../components/InfoHint";
 import { useReveal } from "../lib/useReveal";
 import { assessPortfolio, type Property } from "../lib/portfolio";
 import { formatAUD } from "../lib/stampDuty";
@@ -44,10 +45,10 @@ export default function PortfolioPage() {
 
         {/* Summary cards */}
         <div className="reveal grid grid-cols-2 lg:grid-cols-4 gap-px mb-px" style={{ background: "var(--color-line)" }}>
-          <Stat label="Total value" value={formatAUD(r.totalValue)} />
-          <Stat label="Total equity" value={formatAUD(r.totalEquity)} accent />
-          <Stat label="Portfolio LVR" value={`${r.portfolioLVR.toFixed(1)}%`} />
-          <Stat label="Usable equity" value={formatAUD(r.usableEquity)} accent />
+          <Stat label="Total value" hint="What all your properties are worth added together." value={formatAUD(r.totalValue)} />
+          <Stat label="Total equity" hint="The share you truly own: total value minus what you still owe." value={formatAUD(r.totalEquity)} accent />
+          <Stat label="Portfolio LVR" hint="Total loans as a percentage of total value, across everything you own." value={`${r.portfolioLVR.toFixed(1)}%`} />
+          <Stat label="Usable equity" hint="Equity a lender will typically let you borrow against, up to 80% of value less current debt." value={formatAUD(r.usableEquity)} accent />
         </div>
 
         {/* Properties */}
@@ -69,14 +70,14 @@ export default function PortfolioPage() {
                   )}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                  <NumField label="Value" value={p.value} onChange={(v) => update(p.id, { value: v })} />
-                  <NumField label="Loan balance" value={p.loanBalance} onChange={(v) => update(p.id, { loanBalance: v })} />
-                  <NumField label="Weekly rent" value={p.weeklyRent} onChange={(v) => update(p.id, { weeklyRent: v })} prefix />
+                  <NumField label="Value" hint="What this property is worth today." value={p.value} onChange={(v) => update(p.id, { value: v })} />
+                  <NumField label="Loan balance" hint="How much you still owe on this property's mortgage." value={p.loanBalance} onChange={(v) => update(p.id, { loanBalance: v })} />
+                  <NumField label="Weekly rent" hint="Rent this property brings in each week (0 if it's your home)." value={p.weeklyRent} onChange={(v) => update(p.id, { weeklyRent: v })} prefix />
                 </div>
                 <div className="flex flex-wrap gap-6 mt-5 pt-5 border-t text-xs" style={{ borderColor: "var(--color-line)" }}>
-                  <Mini label="Equity" value={formatAUD(pp.equity)} />
-                  <Mini label="LVR" value={`${pp.lvr.toFixed(1)}%`} />
-                  {p.weeklyRent > 0 && <Mini label="Gross yield" value={`${pp.grossYield.toFixed(1)}%`} />}
+                  <Mini label="Equity" hint="The share you own in this property: its value minus its loan." value={formatAUD(pp.equity)} />
+                  <Mini label="LVR" hint="This property's loan as a percentage of its value." value={`${pp.lvr.toFixed(1)}%`} />
+                  {p.weeklyRent > 0 && <Mini label="Gross yield" hint="Yearly rent as a percentage of this property's value, before costs." value={`${pp.grossYield.toFixed(1)}%`} />}
                 </div>
               </div>
             );
@@ -93,7 +94,7 @@ export default function PortfolioPage() {
           </button>
           {r.annualRent > 0 && (
             <span className="text-sm" style={{ color: "var(--color-muted)" }}>
-              Portfolio gross yield <strong style={{ color: "var(--color-text)" }}>{r.grossYield.toFixed(1)}%</strong> · {formatAUD(r.annualRent)}/yr rent
+              Portfolio gross yield <strong style={{ color: "var(--color-text)" }}>{r.grossYield.toFixed(1)}%</strong> · {formatAUD(r.annualRent)}/yr rent <InfoHint text="Total yearly rent across all properties as a percentage of their combined value." />
             </span>
           )}
         </div>
@@ -130,10 +131,10 @@ export default function PortfolioPage() {
   );
 }
 
-function Stat({ label, value, accent = false }: { label: string; value: string; accent?: boolean }) {
+function Stat({ label, value, hint, accent = false }: { label: string; value: string; hint?: string; accent?: boolean }) {
   return (
     <div className="p-6 sm:p-7" style={{ background: "var(--color-surface-2)" }}>
-      <p className="eyebrow mb-2">{label}</p>
+      <p className="eyebrow mb-2">{label}{hint && <> <InfoHint text={hint} /></>}</p>
       <p className="font-display font-semibold" style={{ color: accent ? "var(--color-gold)" : "var(--color-text)", fontSize: "clamp(1.2rem, 2.4vw, 1.7rem)", letterSpacing: "-0.01em" }}>
         {value}
       </p>
@@ -141,10 +142,10 @@ function Stat({ label, value, accent = false }: { label: string; value: string; 
   );
 }
 
-function NumField({ label, value, onChange, prefix = false }: { label: string; value: number; onChange: (v: number) => void; prefix?: boolean }) {
+function NumField({ label, value, onChange, prefix = false, hint }: { label: string; value: number; onChange: (v: number) => void; prefix?: boolean; hint?: string }) {
   return (
     <label className="block">
-      <span className="eyebrow block mb-2.5">{label}</span>
+      <span className="eyebrow block mb-2.5">{label}{hint && <> <InfoHint text={hint} /></>}</span>
       <div className="flex items-center border px-3" style={{ background: "var(--color-bg)", borderColor: "var(--color-line)" }}>
         <span style={{ color: "var(--color-gold)", marginRight: "0.2rem" }}>$</span>
         <input
@@ -164,10 +165,10 @@ function NumField({ label, value, onChange, prefix = false }: { label: string; v
   );
 }
 
-function Mini({ label, value }: { label: string; value: string }) {
+function Mini({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
     <span style={{ color: "var(--color-dim)" }}>
-      {label} <strong className="font-semibold" style={{ color: "var(--color-text)" }}>{value}</strong>
+      {label}{hint && <> <InfoHint text={hint} /></>} <strong className="font-semibold" style={{ color: "var(--color-text)" }}>{value}</strong>
     </span>
   );
 }

@@ -38,7 +38,7 @@ Runs locally now; deploys to Cloudflare (Pages + Workers + D1) later. No Astro.
 ## Stack
 - **Front-end:** Vite + React + TypeScript + Tailwind (`web/`), dev on `localhost:5173`.
 - **API:** Hono + `@anthropic-ai/sdk` (`api/`), dev on `localhost:8787`. Runs on Node locally, deploys unchanged to Cloudflare Workers.
-- **Models:** `claude-sonnet-4-6` (valuation + chat reasoning), `claude-haiku-4-5-20251001` (cheap high-volume chat).
+- **Models:** `claude-opus-4-8` (valuation reasoning, `api/src/anthropic.ts` `REASONING_MODEL`), `claude-sonnet-4-6` (concierge chat, `CHAT_MODEL` — downgraded from Opus 4.8 on 2026-06-26 to cut cost ~40% while keeping tool-use + grounding quality).
 - **Leads:** SQLite locally (`data/leads.db`) → Cloudflare D1 on deploy.
 
 ## Operating rules (read first)

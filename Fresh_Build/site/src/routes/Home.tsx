@@ -8,8 +8,8 @@ export default function Home() {
   return (
     <>
       <MotionHero />
-      <ToolsShowcase />
       <ListingsPreview />
+      <ToolsShowcase />
       <TrustBand />
       <ContactCTA />
     </>
