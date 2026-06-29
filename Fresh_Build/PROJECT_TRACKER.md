@@ -57,6 +57,7 @@ Last updated: **2026-06-29**.
 | Monthly per-client market-update emails | ⬜ |
 
 ## TODO next session
+- **Full-stack preview for Akshay (so AI + lead/report capture actually work).** The GitHub Pages preview is static (no `/api`), so Instant Valuation, Concierge, the Contact form and the new "Email me my report" CTA all no-op there. To let Akshay genuinely exercise them, host the **Hono `api/`** alongside the site (needs his `ANTHROPIC_API_KEY` + a host under Manifest/Akshay) and point the site's `/api` at it. Until then, brief Akshay that the static link is UI + deterministic calculators + the first-home-buyers journey only.
 - **Vault RE listings** (blocked on Akshay's API access): build `vault.ts` client, normalise to the listing shape, replace `mockListings`, build the **listing-detail page**.
 - **Live verify the AI tools**: add Akshay's `ANTHROPIC_API_KEY` to `api/.env`, run `api` (:8787) + `site` (:5180), confirm Valuation returns a range + the fixed comps, and the concierge chats and captures a lead.
 - **Real assets to swap**: Akshay's hero footage (`site/public/hero/hero.mp4`) and/or a real B&W skyline photo (`site/public/hero/melbourne-skyline.jpg`); white/mono logo SVG if available; About page bio copy. (Contact details ✓; About page photo ✓ — real headshot now wired.)
