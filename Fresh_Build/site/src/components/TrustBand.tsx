@@ -12,7 +12,7 @@ const STATS = [
   { value: "1 call", label: "To a real expert",      note: "skip the call centre" },
 ];
 
-// Real vendor reviews for Akshay Kapoor, sourced from realestate.com.au.
+// Real client reviews for Akshay Kapoor, supplied directly by him (2026-06-26).
 // Condensed for the card layout — wording is faithful to the originals.
 const TESTIMONIALS = [
   {
@@ -28,7 +28,7 @@ const TESTIMONIALS = [
   {
     quote: "An excellent experience with Akshay at Manifest. Knowledgeable, professional and incredibly helpful — his attention to detail and market insights made the process smooth and stress-free. I highly recommend him to anyone after a reliable, skilled agent.",
     name: "Verified seller",
-    detail: "via realestate.com.au",
+    detail: "Manifest client",
   },
   {
     quote: "Akshay is a very thorough person who gives a lot of attention to the minute detail. He goes well beyond to get fantastic results, and the way he carried himself through a complex sale process is commendable.",
@@ -90,7 +90,7 @@ export default function TrustBand() {
               </span>
             </p>
             <p className="text-xs mt-0.5" style={{ color: "var(--color-dim)" }}>
-              Verified vendor reviews · realestate.com.au
+              Client reviews · supplied by Akshay Kapoor
             </p>
           </div>
         </div>

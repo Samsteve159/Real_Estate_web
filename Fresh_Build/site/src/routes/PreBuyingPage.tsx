@@ -46,7 +46,7 @@ export default function PreBuyingPage() {
 
         {/* Header */}
         <div className="reveal mb-14 max-w-2xl">
-          <p className="eyebrow mb-4">Pre-buying · Plan your purchase</p>
+          <p className="eyebrow mb-4">Borrowing capacity · Plan your purchase</p>
           <h1 className="display mb-5" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", color: "var(--color-text)" }}>
             Can you actually<br />afford this place?
           </h1>

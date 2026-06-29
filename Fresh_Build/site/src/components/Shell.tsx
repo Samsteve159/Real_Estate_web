@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Outlet, NavLink, Link, useLocation } from "react-router-dom";
 import ToolsMenu from "./ToolsMenu";
+import FirstHomeMenu from "./FirstHomeMenu";
 import ConciergeWidget from "./ConciergeWidget";
 
 /* ------------------------------------------------------------------ *
- *  The 4 visible labels are Listings · Tools (mega-menu) · About · Contact.
+ *  Visible labels: Listings · First home buyers · Tools · About · Contact.
  *  TOOL_LINKS drives the mobile menu's expandable Tools group.
  * ------------------------------------------------------------------ */
 const TOOL_LINKS = [
   { label: "Instant Valuation", to: "/tools/valuation" },
   { label: "Stamp Duty", to: "/tools/stamp-duty" },
-  { label: "Pre-Buying", to: "/tools/pre-buying" },
+  { label: "Borrowing Capacity Calculator", to: "/tools/pre-buying" },
   { label: "Portfolio", to: "/tools/portfolio" },
   { label: "Rental", to: "/tools/rental" },
 ];
@@ -68,24 +69,17 @@ export default function Shell() {
           borderBottom: solid ? "1px solid var(--color-line)" : "none",
         }}
       >
-        <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <nav className="max-w-7xl mx-auto px-6 flex items-center justify-between h-32">
 
-          {/* Logo: recolored tower mark (white + gold) beside the wordmark */}
-          <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="Manifest Real Estate home">
-            <img src={`${import.meta.env.BASE_URL}manifest-mark.png`} alt="" aria-hidden="true" className="w-auto" style={{ height: "1.85rem" }} />
-            <span className="flex flex-col leading-none">
-              <span className="font-display font-semibold tracking-tight" style={{ color: "var(--color-text)", fontSize: "1.1rem", letterSpacing: "0.02em" }}>
-                MANIFEST
-              </span>
-              <span className="hidden sm:block font-semibold uppercase" style={{ color: "var(--color-gold)", letterSpacing: "0.32em", fontSize: "0.55rem", marginTop: "3px" }}>
-                Real Estate
-              </span>
-            </span>
+          {/* Logo: original full-colour Manifest badge (includes the wordmark) */}
+          <Link to="/" className="flex items-center shrink-0" aria-label="Manifest Real Estate home">
+            <img src={`${import.meta.env.BASE_URL}manifest-logo-color.png`} alt="Manifest Real Estate" className="w-auto" style={{ height: "116px" }} />
           </Link>
 
           {/* Desktop nav links, pushed to the right */}
           <ul className="hidden md:flex items-center gap-9 ml-auto">
             <li><NavLink to="/listings" className={linkClass}>Listings</NavLink></li>
+            <li><FirstHomeMenu /></li>
             <li><ToolsMenu /></li>
             <li><NavLink to="/about" className={linkClass}>About</NavLink></li>
             <li><NavLink to="/contact" className={linkClass}>Contact</NavLink></li>
@@ -116,6 +110,17 @@ export default function Shell() {
         >
           <div className="px-6 py-6 flex flex-col gap-6">
             <NavLink to="/listings" className={linkClass}>Listings</NavLink>
+
+            {/* First home buyers group */}
+            <div>
+              <p className="eyebrow mb-3">First home buyers</p>
+              <div className="flex flex-col gap-3 pl-1">
+                <NavLink to="/first-home-buyers/steps" className="text-sm" style={{ color: "var(--color-muted)" }}>Steps to follow</NavLink>
+                <NavLink to="/tools/valuation" className="text-sm" style={{ color: "var(--color-muted)" }}>Instant Valuation</NavLink>
+                <NavLink to="/tools/stamp-duty" className="text-sm" style={{ color: "var(--color-muted)" }}>Stamp Duty</NavLink>
+                <NavLink to="/tools/pre-buying" className="text-sm" style={{ color: "var(--color-muted)" }}>Borrowing Capacity</NavLink>
+              </div>
+            </div>
 
             {/* Tools group */}
             <div>
@@ -165,7 +170,7 @@ export default function Shell() {
                   ["Instant Valuation", "/tools/valuation"],
                   ["Buyer Concierge", "/tools/concierge"],
                   ["Stamp Duty Calculator", "/tools/stamp-duty"],
-                  ["Pre-Buying Tool", "/tools/pre-buying"],
+                  ["Borrowing Capacity Calculator", "/tools/pre-buying"],
                   ["Portfolio Assessment", "/tools/portfolio"],
                   ["Rental Yield Tool", "/tools/rental"],
                 ].map(([label, to]) => (

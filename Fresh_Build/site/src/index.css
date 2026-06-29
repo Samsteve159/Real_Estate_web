@@ -131,7 +131,7 @@
 
   /* ---- Section spacing ---- */
   .section-pad {
-    padding-top: 7rem;
+    padding-top: 9rem;   /* clears the 8rem fixed header with breathing room */
     padding-bottom: 7rem;
   }
 

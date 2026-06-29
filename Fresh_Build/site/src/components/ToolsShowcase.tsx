@@ -35,7 +35,7 @@ const TOOLS: Tool[] = [
   },
   {
     eyebrow: "Before you search",
-    title: "Pre-Buying Readiness",
+    title: "Borrowing Capacity Calculator",
     description: "Know your borrowing capacity, deposit gap, and upfront costs before you fall in love with a property. Realistic numbers, plain language.",
     to: "/tools/pre-buying",
     cta: "Check readiness",

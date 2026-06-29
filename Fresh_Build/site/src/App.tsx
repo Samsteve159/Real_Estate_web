@@ -10,6 +10,8 @@ import PortfolioPage from "./routes/PortfolioPage";
 import RentalPage from "./routes/RentalPage";
 import AboutPage from "./routes/AboutPage";
 import ContactPage from "./routes/ContactPage";
+import FirstHomeSteps from "./routes/FirstHomeSteps";
+import FirstHomeTools from "./routes/FirstHomeTools";
 import NotFound from "./routes/NotFound";
 
 export default function App() {
@@ -19,6 +21,8 @@ export default function App() {
         <Route element={<Shell />}>
           <Route path="/" element={<Home />} />
           <Route path="/listings" element={<ListingsPage />} />
+          <Route path="/first-home-buyers/steps" element={<FirstHomeSteps />} />
+          <Route path="/first-home-buyers/tools" element={<FirstHomeTools />} />
           <Route path="/tools/valuation" element={<ValuationPage />} />
           <Route path="/tools/concierge" element={<ConciergePage />} />
           <Route path="/tools/stamp-duty" element={<StampDutyPage />} />

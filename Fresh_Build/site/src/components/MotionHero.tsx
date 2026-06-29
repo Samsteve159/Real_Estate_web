@@ -41,9 +41,9 @@ export default function MotionHero() {
           className="absolute inset-0 gradient-drift"
           style={{
             background: `
-              radial-gradient(ellipse 80% 70% at 60% 40%, #0d1f35 0%, transparent 60%),
-              radial-gradient(ellipse 60% 80% at 20% 70%, #0a1520 0%, transparent 55%),
-              linear-gradient(160deg, #0a0a0b 0%, #0d1a28 40%, #0a0a0b 100%)
+              radial-gradient(ellipse 80% 70% at 60% 40%, #1c1c20 0%, transparent 60%),
+              radial-gradient(ellipse 60% 80% at 20% 70%, #141416 0%, transparent 55%),
+              linear-gradient(160deg, #0a0a0b 0%, #161618 40%, #0a0a0b 100%)
             `,
             backgroundSize: "200% 200%",
           }}
@@ -129,11 +129,6 @@ export default function MotionHero() {
       {/* === Hero content === */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-24 pt-36">
 
-        {/* Gold eyebrow */}
-        <p className="eyebrow mb-6 rise delay-100">
-          Melbourne · First-home buyers &amp; early investors
-        </p>
-
         {/* Headline */}
         <h1
           className="display rise delay-200 mb-6"
@@ -143,9 +138,9 @@ export default function MotionHero() {
             color: "var(--color-text)",
           }}
         >
-          Buy your first home
+          Make your next move
           <br />
-          with <span style={{ color: "var(--color-gold)" }}>your eyes open</span>.
+          with <span style={{ color: "var(--color-gold)" }}>conviction</span>.
         </h1>
 
         {/* Subheadline */}
