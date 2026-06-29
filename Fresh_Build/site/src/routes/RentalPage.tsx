@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import InfoHint from "../components/InfoHint";
 import { useReveal } from "../lib/useReveal";
@@ -168,10 +168,26 @@ function MoneyField({ label, value, onChange, step, suffix, hint }: { label: str
 }
 
 function PctField({ label, value, onChange, step, hint }: { label: string; value: number; onChange: (n: number) => void; step: number; hint?: string }) {
+  const [text, setText] = useState(value.toString());
+  useEffect(() => { setText(value.toString()); }, [value]);
   return (
     <label className="block">
-      <span className="eyebrow block mb-2.5">{label} · {value.toFixed(1)}%{hint && <> <InfoHint text={hint} /></>}</span>
-      <input type="range" min={0} max={12} step={step} value={value} onChange={(e) => onChange(parseFloat(e.target.value))} className="w-full" style={{ accentColor: "var(--color-gold)" }} />
+      <span className="eyebrow block mb-2.5">{label}{hint && <> <InfoHint text={hint} /></>}</span>
+      <div className="flex items-center border" style={{ background: "var(--color-bg)", borderColor: "var(--color-line)" }}>
+        <button type="button" onClick={() => onChange(Math.max(0, +(value - step).toFixed(2)))} className="px-3 py-2.5 text-lg shrink-0" style={{ color: "var(--color-muted)" }} aria-label="Decrease">−</button>
+        <div className="flex-1 flex items-center justify-center">
+          <input
+            type="text" inputMode="decimal"
+            value={text}
+            onChange={(e) => { const raw = e.target.value.replace(/[^0-9.]/g, ""); setText(raw); const n = parseFloat(raw); if (Number.isFinite(n)) onChange(n); }}
+            aria-label={label}
+            className="w-full bg-transparent outline-none py-2.5 text-center font-display font-semibold"
+            style={{ color: "var(--color-text)", fontSize: "1.05rem" }}
+          />
+          <span className="text-xs shrink-0 pr-1" style={{ color: "var(--color-gold)" }}>%</span>
+        </div>
+        <button type="button" onClick={() => onChange(+(value + step).toFixed(2))} className="px-3 py-2.5 text-lg shrink-0" style={{ color: "var(--color-muted)" }} aria-label="Increase">+</button>
+      </div>
     </label>
   );
 }

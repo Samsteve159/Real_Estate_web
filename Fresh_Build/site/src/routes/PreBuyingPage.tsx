@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import InfoHint from "../components/InfoHint";
 import { useReveal } from "../lib/useReveal";
@@ -13,7 +13,7 @@ import { formatAUD, type BuyerType } from "../lib/stampDuty";
 
 const BUYER_OPTIONS: { value: BuyerType; label: string }[] = [
   { value: "fhb", label: "First home buyer" },
-  { value: "ppr", label: "Home to live in" },
+  { value: "ppr", label: "Next home" },
   { value: "investor", label: "Investment" },
 ];
 
@@ -39,6 +39,14 @@ export default function PreBuyingPage() {
   };
 
   const r = useMemo(() => assessPreBuying(input), [grossIncome, monthlyExpenses, monthlyDebts, savings, purchasePrice, interestRate, buyerType]);
+
+  const reportSummary =
+    `Inputs — income ${formatAUD(grossIncome)}/yr, living expenses ${formatAUD(monthlyExpenses)}/mo, ` +
+    `other debts ${formatAUD(monthlyDebts)}/mo, savings ${formatAUD(savings)}, target price ${formatAUD(purchasePrice)}, ` +
+    `rate ${interestRate}%, buyer type ${buyerType}. ` +
+    `Results — borrowing power ${formatAUD(r.maxBorrow)}, max purchase ${formatAUD(r.maxPurchase)}, ` +
+    `loan required ${formatAUD(r.loanNeeded)}, LVR ${r.lvr.toFixed(1)}%, stamp duty ${formatAUD(r.stampDuty)}, ` +
+    `upfront costs ${formatAUD(r.upfrontCosts)}, est. repayment ${formatAUD(r.monthlyRepayment)}/mo.`;
 
   return (
     <div style={{ background: "var(--color-bg)", paddingTop: "6rem" }}>
@@ -68,19 +76,12 @@ export default function PreBuyingPage() {
             <MoneyField label="Target purchase price" hint="The price of the property you're aiming to buy." value={purchasePrice} onChange={setPurchasePrice} step={10_000} />
 
             {/* Interest rate */}
-            <label className="block">
-              <span className="eyebrow block mb-3">Interest rate · {interestRate.toFixed(2)}% <InfoHint text="The home-loan interest rate you expect to pay." /></span>
-              <input
-                type="range" min={3} max={9} step={0.1}
-                value={interestRate}
-                onChange={(e) => setInterestRate(parseFloat(e.target.value))}
-                className="w-full"
-                style={{ accentColor: "var(--color-gold)" }}
-              />
-              <span className="text-xs" style={{ color: "var(--color-dim)" }}>
+            <div>
+              <PercentField label="Interest rate" hint="The home-loan interest rate you expect to pay." value={interestRate} onChange={setInterestRate} step={0.1} />
+              <span className="text-xs block mt-2" style={{ color: "var(--color-dim)" }}>
                 Assessed at {(interestRate + 3).toFixed(2)}% (incl. 3% APRA buffer) <InfoHint text="Lenders must check you could still repay if rates rose ~3%, so borrowing power is tested at this higher rate." />
               </span>
-            </label>
+            </div>
 
             {/* Buyer type */}
             <div>
@@ -174,12 +175,136 @@ export default function PreBuyingPage() {
           </div>
         </div>
 
+        <ReportRequest summary={reportSummary} />
+
         <p className="reveal text-xs mt-8" style={{ color: "var(--color-dim)", maxWidth: "70ch", lineHeight: 1.6 }}>
           Borrowing power, LMI and repayments are indicative only, every lender assesses income,
           expenses and serviceability differently, and this is not a loan offer or financial advice. Stamp
           duty follows the current SRO Victoria schedule. Speak to a licensed mortgage broker before committing.
         </p>
       </div>
+    </div>
+  );
+}
+
+/* ---- Email-the-report CTA. Captures the email (+ name) as a lead. ---- */
+function ReportRequest({ summary }: { summary: string }) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [format, setFormat] = useState<"PDF" | "HTML">("PDF");
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [err, setErr] = useState("");
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+    setErr("");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "contact",
+          intent: "report",
+          name,
+          email,
+          message: `Requested a ${format} Borrowing Capacity report. ${summary}`,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+      setStatus("done");
+    } catch (e) {
+      setStatus("error");
+      setErr(e instanceof Error ? e.message : "Something went wrong. Please try again.");
+    }
+  };
+
+  return (
+    <div className="reveal mt-8 p-6 sm:p-8 border" style={{ background: "var(--color-surface)", borderColor: "var(--color-line-gold)" }}>
+      {status === "done" ? (
+        <div className="flex items-start gap-3">
+          <span style={{ color: "var(--color-gold)", fontSize: "1.1rem", lineHeight: 1 }}>◆</span>
+          <p className="text-sm" style={{ color: "var(--color-text)", lineHeight: 1.55 }}>
+            Thanks {name.split(" ")[0] || "there"} — your {format} report is on its way to <span style={{ color: "var(--color-gold)" }}>{email}</span>.
+          </p>
+        </div>
+      ) : !open ? (
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <p className="font-display font-semibold" style={{ color: "var(--color-text)", fontSize: "1.15rem" }}>
+              Want this as a report?
+            </p>
+            <p className="text-sm mt-1" style={{ color: "var(--color-muted)" }}>
+              Get your full borrowing summary as a PDF or HTML, straight to your inbox.
+            </p>
+          </div>
+          <button
+            onClick={() => setOpen(true)}
+            className="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold transition-colors duration-200"
+            style={{ background: "var(--color-gold)", color: "var(--color-bg)", letterSpacing: "0.04em" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-gold-bright)")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "var(--color-gold)")}
+          >
+            Email me my report
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M1 7h12M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={submit}>
+          <p className="font-display font-semibold mb-4" style={{ color: "var(--color-text)", fontSize: "1.15rem" }}>
+            Where should we send it?
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+            <input
+              type="text" required value={name} onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              className="w-full px-4 py-3 text-sm bg-transparent border outline-none"
+              style={{ borderColor: "var(--color-line)", color: "var(--color-text)" }}
+            />
+            <input
+              type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@email.com"
+              className="w-full px-4 py-3 text-sm bg-transparent border outline-none"
+              style={{ borderColor: "var(--color-line)", color: "var(--color-text)" }}
+            />
+          </div>
+          <div className="flex flex-wrap items-center gap-3 mb-5">
+            <span className="eyebrow">Format</span>
+            {(["PDF", "HTML"] as const).map((f) => (
+              <button
+                key={f} type="button" onClick={() => setFormat(f)}
+                className="px-4 py-2 text-xs font-semibold border transition-colors"
+                style={{
+                  borderColor: format === f ? "var(--color-gold)" : "var(--color-line)",
+                  color: format === f ? "var(--color-gold)" : "var(--color-muted)",
+                  background: format === f ? "rgba(194,162,103,0.08)" : "transparent",
+                }}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+          {status === "error" && (
+            <p className="text-xs mb-3" style={{ color: "#e2776b" }}>{err}</p>
+          )}
+          <div className="flex items-center gap-4">
+            <button
+              type="submit" disabled={status === "sending"}
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold transition-colors duration-200"
+              style={{ background: "var(--color-gold)", color: "var(--color-bg)", letterSpacing: "0.04em", opacity: status === "sending" ? 0.6 : 1 }}
+            >
+              {status === "sending" ? "Sending…" : "Send me the report"}
+            </button>
+            <button type="button" onClick={() => setOpen(false)} className="text-sm gold-underline pb-px" style={{ color: "var(--color-muted)" }}>
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
@@ -207,6 +332,37 @@ function MoneyField({ label, value, onChange, step, hint }: { label: string; val
           />
         </div>
         <Stepper sign="+" onClick={() => onChange(value + step)} />
+      </div>
+    </label>
+  );
+}
+
+function PercentField({ label, value, onChange, step, hint }: { label: string; value: number; onChange: (n: number) => void; step: number; hint?: string }) {
+  const [text, setText] = useState(value.toString());
+  useEffect(() => { setText(value.toString()); }, [value]);
+  return (
+    <label className="block">
+      <span className="eyebrow block mb-3">{label}{hint && <> <InfoHint text={hint} /></>}</span>
+      <div className="flex items-center border" style={{ background: "var(--color-bg)", borderColor: "var(--color-line)" }}>
+        <Stepper sign="−" onClick={() => onChange(Math.max(0, +(value - step).toFixed(2)))} />
+        <div className="flex-1 flex items-center justify-center px-2">
+          <input
+            type="text"
+            inputMode="decimal"
+            value={text}
+            onChange={(e) => {
+              const raw = e.target.value.replace(/[^0-9.]/g, "");
+              setText(raw);
+              const n = parseFloat(raw);
+              if (Number.isFinite(n)) onChange(n);
+            }}
+            aria-label={label}
+            className="w-full bg-transparent outline-none text-center font-display"
+            style={{ color: "var(--color-text)", fontSize: "1.25rem", fontWeight: 600 }}
+          />
+          <span style={{ color: "var(--color-gold)", marginLeft: "0.25rem" }}>%</span>
+        </div>
+        <Stepper sign="+" onClick={() => onChange(+(value + step).toFixed(2))} />
       </div>
     </label>
   );

@@ -18,7 +18,7 @@ const TOOLS: Tool[] = [
   {
     no: "01",
     title: "Instant Valuation",
-    hook: "What's it really worth?",
+    hook: "What's the property really worth?",
     body: "An indicative price range for any address, so you know if the asking price stacks up before you fall in love.",
     to: "/tools/valuation",
   },
@@ -26,14 +26,14 @@ const TOOLS: Tool[] = [
     no: "02",
     title: "Stamp Duty",
     hook: "Your VIC duty, to the dollar.",
-    body: "Exact Victorian land transfer duty — including the first-home buyer exemption and concession — straight from the SRO.",
+    body: "Exact Victorian land transfer duty, including the first-home buyer exemption and concession, straight from the SRO.",
     to: "/tools/stamp-duty",
   },
   {
     no: "03",
     title: "Borrowing Capacity Calculator",
     hook: "Can you actually afford it?",
-    body: "Your borrowing power, deposit position and every upfront cost in one view, so you walk in knowing your real number.",
+    body: "Your borrowing power, deposit position and every upfront cost in one view, so you walk away with an accurate number.",
     to: "/tools/pre-buying",
   },
 ];
