@@ -140,7 +140,7 @@ export default function MotionHero() {
         >
           Make your next move
           <br />
-          with <span style={{ color: "var(--color-gold)" }}>conviction</span>.
+          with <span className="conviction">Conviction</span>
         </h1>
 
         {/* Subheadline */}

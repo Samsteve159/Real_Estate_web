@@ -22,6 +22,12 @@ const linkClass = ({ isActive }: { isActive: boolean }) =>
     isActive ? "text-[var(--color-gold)]" : "text-[var(--color-muted)] hover:text-[var(--color-text)]",
   ].join(" ");
 
+/* Mobile menu top-level links (Listings / About / Contact): gold by default,
+   white on hover. Keeps the gold-underline animation; a touch larger than the
+   "First home buyers" / "Tools" eyebrows. */
+const mobileTopLink =
+  "text-base font-medium transition-colors duration-200 gold-underline pb-px text-[var(--color-gold)] hover:text-[var(--color-text)]";
+
 /* ------------------------------------------------------------------ *
  *  Shell, transparent-over-hero sticky nav, floating concierge, footer
  * ------------------------------------------------------------------ */
@@ -35,6 +41,9 @@ export default function Shell() {
     if (prevPath.current !== location.pathname) {
       setMenuOpen(false);
       prevPath.current = location.pathname;
+      // Every route opens at the top — the natural way to read a page.
+      // "instant" overrides the global smooth-scroll so there's no visible jump.
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
     }
   }, [location.pathname]);
 
@@ -109,7 +118,7 @@ export default function Shell() {
           }}
         >
           <div className="px-6 py-6 flex flex-col gap-6">
-            <NavLink to="/listings" className={linkClass}>Listings</NavLink>
+            <NavLink to="/listings" className={mobileTopLink}>Listings</NavLink>
 
             {/* First home buyers group */}
             <div>
@@ -135,8 +144,8 @@ export default function Shell() {
               </div>
             </div>
 
-            <NavLink to="/about" className={linkClass}>About</NavLink>
-            <NavLink to="/contact" className={linkClass}>Contact</NavLink>
+            <NavLink to="/about" className={mobileTopLink}>About</NavLink>
+            <NavLink to="/contact" className={mobileTopLink}>Contact</NavLink>
           </div>
         </div>
       </header>

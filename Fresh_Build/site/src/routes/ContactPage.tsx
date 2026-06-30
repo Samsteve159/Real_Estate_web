@@ -57,7 +57,7 @@ export default function ContactPage() {
             A real conversation,<br />no obligation.
           </h1>
           <p className="mb-10" style={{ color: "var(--color-muted)", maxWidth: "46ch", lineHeight: 1.7 }}>
-            Whether you're months from buying or ready to move, a 20-minute chat with Akshay will give
+            Whether you're months from buying or ready to move, a 20-minute chat with AK will give
             you a clearer picture than any algorithm. Tell us where you're at and we'll take it from there.
           </p>
 
@@ -75,7 +75,7 @@ export default function ContactPage() {
             <div className="p-8 border h-full flex flex-col justify-center" style={{ background: "var(--color-surface)", borderColor: "var(--color-line-gold)" }}>
               <p className="font-display font-semibold text-2xl mb-2" style={{ color: "var(--color-gold)" }}>Thanks {name.split(" ")[0]} ◆</p>
               <p className="text-sm" style={{ color: "var(--color-muted)", lineHeight: 1.6 }}>
-                Your message is in. Akshay will be in touch shortly, usually within one business day.
+                Your message is in. AK will be in touch shortly, usually within one business day.
               </p>
             </div>
           ) : (

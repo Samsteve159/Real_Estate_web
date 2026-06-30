@@ -81,7 +81,7 @@ export default function ValuationPage() {
           </h1>
           <p style={{ color: "var(--color-muted)", maxWidth: "48ch", lineHeight: 1.65 }}>
             An indicative price range in seconds, grounded in recent comparable sales in your suburb, 
-            not a black-box guess. For the real number, Akshay walks your home.
+            not a black-box guess. For the real number, AK walks your home.
           </p>
         </div>
 
@@ -245,7 +245,7 @@ function LeadCapture({ result, subject }: { result: ValuationResult; subject: Va
       <div className="p-6 border" style={{ background: "rgba(194,162,103,0.08)", borderColor: "var(--color-line-gold)" }}>
         <p className="font-display font-semibold text-lg mb-1" style={{ color: "var(--color-gold)" }}>You're booked in ◆</p>
         <p className="text-sm" style={{ color: "var(--color-muted)" }}>
-          Thanks {name.split(" ")[0]}, Akshay will be in touch to arrange a proper on-site appraisal.
+          Thanks {name.split(" ")[0]}, AK will be in touch to arrange a proper on-site appraisal.
         </p>
       </div>
     );
@@ -255,7 +255,7 @@ function LeadCapture({ result, subject }: { result: ValuationResult; subject: Va
     <form onSubmit={submit} className="p-6 border" style={{ background: "var(--color-surface)", borderColor: "var(--color-line)" }}>
       <p className="eyebrow mb-1">The real number</p>
       <p className="text-sm mb-4" style={{ color: "var(--color-muted)" }}>
-        An estimate is a starting point. Get a free, no-obligation appraisal from Akshay.
+        An estimate is a starting point. Get a free, no-obligation appraisal from AK.
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
         <input

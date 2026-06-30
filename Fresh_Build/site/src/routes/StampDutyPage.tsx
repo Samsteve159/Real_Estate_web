@@ -256,7 +256,7 @@ export default function StampDutyPage() {
           <p className="text-xs mt-6" style={{ color: "var(--color-dim)", maxWidth: "60ch", lineHeight: 1.6 }}>
             Figures follow the current SRO Victoria land transfer duty schedule and are an indicative
             calculation, not formal tax advice. Pensioner, off-the-plan and other concessions may
-            further reduce your duty, <Link to="/contact" className="gold-underline" style={{ color: "var(--color-gold)" }}>talk to Akshay</Link> to check what you qualify for.
+            further reduce your duty, <Link to="/contact" className="gold-underline" style={{ color: "var(--color-gold)" }}>talk to AK</Link> to check what you qualify for.
           </p>
         </div>
       </div>

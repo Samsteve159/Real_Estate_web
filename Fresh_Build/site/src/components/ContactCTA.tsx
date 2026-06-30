@@ -29,7 +29,7 @@ export default function ContactCTA() {
       <div className="relative max-w-7xl mx-auto px-6 py-24 flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
 
         <div className="reveal max-w-lg">
-          <p className="eyebrow mb-4">Talk to Akshay</p>
+          <p className="eyebrow mb-4">Talk to AK</p>
           <h2
             className="display mb-5"
             style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--color-text)" }}
@@ -37,7 +37,7 @@ export default function ContactCTA() {
             Get a real answer, not a brochure.
           </h2>
           <p style={{ color: "var(--color-muted)", lineHeight: 1.65, maxWidth: "42ch" }}>
-            The tools give you the numbers. Akshay gives you the context, what they mean for your suburb, your budget, and your timeline. One free call, no obligation.
+            The tools give you the numbers. AK gives you the context, what they mean for your suburb, your budget, and your timeline. One free call, no obligation.
           </p>
         </div>
 

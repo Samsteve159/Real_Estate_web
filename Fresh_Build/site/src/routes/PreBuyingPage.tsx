@@ -169,7 +169,7 @@ export default function PreBuyingPage() {
                 ← Stamp duty detail
               </Link>
               <Link to="/contact" className="text-sm font-medium gold-underline pb-px" style={{ color: "var(--color-gold)" }}>
-                Talk to Akshay about finance →
+                Speak to a RE representative →
               </Link>
             </div>
           </div>

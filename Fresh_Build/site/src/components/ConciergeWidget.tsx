@@ -53,7 +53,7 @@ export default function ConciergeWidget() {
       } else if (e.type === "tool") {
         setToolNote(e.name === "search_listings" ? "Searching the listings…" : "Booking you in…");
       } else if (e.type === "lead_captured") {
-        setToolNote("◆ Booked in, Akshay will follow up");
+        setToolNote("◆ Booked in, AK will follow up");
         setTimeout(() => setToolNote(null), 2800);
       } else if (e.type === "done") {
         setStreaming(false);

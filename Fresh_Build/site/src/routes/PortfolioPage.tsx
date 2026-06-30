@@ -110,14 +110,14 @@ export default function PortfolioPage() {
           </h2>
           <p className="text-sm" style={{ color: "var(--color-muted)", maxWidth: "52ch", lineHeight: 1.6 }}>
             Based on lenders typically releasing up to 80% of value less your current debt. Whether that
-            becomes a deposit for the next property depends on serviceability, Akshay can map the path.
+            becomes a deposit for the next property depends on serviceability, AK can map the path.
           </p>
           <div className="flex flex-wrap gap-5 pt-1">
             <Link to="/tools/pre-buying" className="text-sm font-medium gold-underline pb-px" style={{ color: "var(--color-muted)" }}>
               Test the next purchase →
             </Link>
             <Link to="/contact" className="text-sm font-medium gold-underline pb-px" style={{ color: "var(--color-gold)" }}>
-              Plan it with Akshay →
+              Plan it with AK →
             </Link>
           </div>
         </div>

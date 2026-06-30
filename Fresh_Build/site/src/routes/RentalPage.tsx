@@ -117,7 +117,7 @@ export default function RentalPage() {
                 ← Check what you can borrow
               </Link>
               <Link to="/contact" className="text-sm font-medium gold-underline pb-px" style={{ color: "var(--color-gold)" }}>
-                Talk strategy with Akshay →
+                Talk strategy with AK →
               </Link>
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function RentalPage() {
         <p className="reveal text-xs mt-8" style={{ color: "var(--color-dim)", maxWidth: "70ch", lineHeight: 1.6 }}>
           Yields and cash flow are indicative only and not financial or tax advice. Loan interest is
           shown on an interest-only basis and excludes depreciation, tax effects and one-off costs.
-          Speak to Akshay and your accountant before investing.
+          Speak to AK and your accountant before investing.
         </p>
       </div>
     </div>

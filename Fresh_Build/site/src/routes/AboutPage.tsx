@@ -56,7 +56,7 @@ export default function AboutPage() {
           <div className="reveal md:col-span-3">
             <p className="eyebrow mb-4">The founder</p>
             <h2 className="display mb-5" style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", color: "var(--color-text)" }}>
-              Akshay, Director, Manifest Real Estate
+              Akshay Kapoor (AK), Director, Manifest Real Estate
             </h2>
             <div className="flex flex-col gap-4" style={{ color: "var(--color-muted)", lineHeight: 1.7 }}>
               <p>
