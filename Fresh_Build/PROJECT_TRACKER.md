@@ -21,6 +21,7 @@ Akshay's feedback (verbatim: `Assets/akshay-feedback-2026-07-02.md`) repositions
 | Footer | ✅ | Tools column → Services; agency tagline |
 | Brand name | ✅ | Kept **"Manifest Real Estate"** (Akshay's copy said "Manifest Deal" — treated as draft) |
 | Build/typecheck | ✅ | `tsc --noEmit` clean, `vite build` clean |
+| Deployed to GitHub Pages | ✅ | 2026-07-02 — Pages workflow repointed from V1 to V2; **https://samsteve159.github.io/Real_Estate_web/ now serves V2**, V1 deployment retired. Static (no `/api`): AI/lead forms no-op there, deterministic tools work |
 | **Decisions to confirm with Akshay** | ⬜ | (1) "Manifest Deal" vs "Manifest Real Estate" name; (2) **Insights** page — he named it as frequently-changing but gave no copy; not built yet; (3) promote V2 → replace V1? |
 
 ## Phase 0 — Setup
