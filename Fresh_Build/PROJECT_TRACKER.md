@@ -10,7 +10,7 @@ Last updated: **2026-07-02**.
 Akshay's feedback (verbatim: `Assets/akshay-feedback-2026-07-02.md`) repositions Manifest from a first-home-buyer/tools angle to a **boutique full-service agency + advisory**, with **evergreen** copy (no live market conditions). Built as **V2** so V1 is preserved for backtracking.
 | Item | Status | Notes |
 |---|---|---|
-| V2 copy of the site | ✅ | **`Fresh_Build/website/site-v2/`** (copy of `site/`; moved under `website/` on 2026-07-02), dev on **:5181** (V1 stays in `Fresh_Build/site/` on :5180). Both run side by side |
+| V2 copy of the site | ✅ | **`Fresh_Build/site-v2/`** (copy of `site/`; moved up out of the demo copy on 2026-07-02), dev on **:5181** (V1 stays in `Fresh_Build/site/` on :5180). Both run side by side |
 | Nav restructure | ✅ | Home · Listings · **Services** (mega-menu) · **First home buyers** · **Tools** · About · Contact. New `ServicesMenu.tsx` added; the V1 First-home + Tools menus **kept** (restored 2026-07-02 per Sameer) |
 | 5 service pages (evergreen) | ✅ | Residential Sales, Acreage & Lifestyle, Development Projects, Commercial Leasing, Property Advisory — shared `ServicePage.tsx` layout, Akshay's copy |
 | Home rewrite | ✅ | Hero "Property. Opportunity. Results." (motion kept, "Results" = gold shimmer); "Our Expertise" + 4 service cards (`ServicesShowcase.tsx`) replaces the tools showcase |
@@ -26,24 +26,35 @@ Akshay's feedback (verbatim: `Assets/akshay-feedback-2026-07-02.md`) repositions
 | V2 feedback round 3 (2026-07-02) | ✅ | **Reviews for both directors on Home** (`TrustBand.tsx`) — grouped per director, 2 each; Akshay's real (his) + **Rishi's 2 real reviews supplied by Akshay** (were placeholders). About — added Rishi's short real review, moved photos below names (equal `max-w-[220px]`). **Rishi headshot re-cropped** tight to subject (800×800, orig backed up in scratchpad) to cut background + light `brightness(.92)` tone-match to Akshay's grey. **Padding fix:** all 12 inner pages `paddingTop` 6rem→9rem (was hiding under the 128px header). **Mobile menu fix:** panel capped to `calc(100dvh − 8rem)` w/ internal scroll so About/Contact are reachable on short screens |
 | **Decisions to confirm with Akshay** | ⬜ | (1) "Manifest Deal" vs "Manifest Real Estate" name; (2) **Insights** page — he named it as frequently-changing but gave no copy; not built yet; (3) promote V2 → replace V1?; (4) content for the hidden **RecentProjects** strips |
 
+## Billing, workspace & invoicing (2026-07-02 — planned; setup ~2026-07-03)
+Akshay pre-paid **AUD 20** for API tokens (chatbot + instant valuation); he reimburses Sameer by real project usage. Full plan: `~/.claude/plans/flickering-purring-cat.md`. Building deferred until Sameer completes the Console setup.
+| Item | Status | Notes |
+|---|---|---|
+| Anthropic **Workspace** "Manifest Real Estate" ("bucket") | ⬜ | Per-project cost isolation: own key → repo-root `.env` (`ANTHROPIC_API_KEY`; replaces the current key there), own **monthly spend limit**. Cost read per-workspace in Console **Cost dashboard** + **Admin API cost report**. Sameer sets up in Console (tomorrow) |
+| Admin API key (`sk-ant-admin…`) | ⬜ | Org-admin only; stored as a secret for the invoicing job — never committed / never in a bundle |
+| Org auto-top-up cap | ✅ | **Capped at $50** (org-level, shared across Sameer's projects; not per-workspace) — user will flag any change |
+| Threshold auto-invoicing script | ⬜ | `Fresh_Build/tools/invoice.mjs` (host-agnostic Node): reads Manifest workspace cost via Admin API; **each time Manifest usage crosses a threshold** (e.g. $20/$50) → brand-styled invoice emailed to Akshay; baseline in `invoice-state.json`. No top-up webhook exists / top-ups are org-wide, so it keys off **Manifest usage** |
+| Invoice email (ESP) | ⬜ | Provider-abstracted (default Resend); **Akshay's invoicing address + from-address TBD** (user to share); dry-run until then |
+| Automation host | ⬜ | **Interim: GitHub Actions** cron (commits state back). **Later: GoDaddy cPanel cron** — production moves to GoDaddy; ports with no code change. Akshay reimburses **API usage + GoDaddy hosting** (optional fixed hosting line on the invoice) |
+
 ## Phase 0 — Setup
 | Item | Status | Notes |
 |---|---|---|
 | `Fresh_Build/` skeleton (`website`, `app`, `Assets`) | ✅ | created |
 | Asset drop-guides (`Assets/README.md`, `Fresh_Build/README.md`) | ✅ | |
-| WhatsApp to Akshay (domain Q + Vault RE email folded in) | ✅ | `akshay-whatsapp.md`; **sent by owner** |
+| WhatsApp to Akshay (domain Q + Vault RE email folded in) | ✅ | `docs/akshay-whatsapp.md`; **sent by owner** |
 | Logo received | ✅ | `Assets/logo/…Color.png` — navy + gold; matches `demo_theme` palette |
 | Newsletter bot blueprint received | ✅ | `Assets/newsletter/` = Girish LinkedIn-bot pattern (reuse for Milestone 3) |
 | Excel file (formula audit) | ✅ | `2026_CHECK PROPERTY STATS.xlsx` audited — math correct (VIC duty + loan interest verified to the $). Issues: orphaned `#REF!` named ranges (unused, harmless now); FHB stamp-duty concession not wired up. Duty tables reusable for the stamp-duty tool |
 | Domain name confirmed | ⛔ | asked Akshay via WhatsApp |
 | Vault RE API access (key + token) | ⛔ | Akshay to email api@vaultre.com.au |
-| Anthropic (Claude) account under Manifest | ⏸️ postponed | instructions ready (`akshay-anthropic-setup.md`); revisit later. Local dev uses existing key meanwhile |
+| Anthropic (Claude) account under Manifest | ⏸️ postponed | instructions ready (`docs/akshay-anthropic-setup.md`); revisit later. Local dev uses existing key meanwhile |
 | Build the 4 project agents | ✅ | `.claude/agents/`: vault-integrator, manifest-ui, calc-verifier, content-engine |
 | Clean broken Excel names | ✅ | 19 `#REF!` names removed → `…STATS (cleaned).xlsx`; values/formatting untouched |
 | Design-direction brief (whitefox + luxhabitat crawl) | ✅ | `Assets/design-direction-brief.md`. Crawled WHITEFOX (positioning) + luxury-RE patterns. North star: **premium-agency calm + broker-grade tools + first-home-buyer warmth** — keep navy/gold/Raleway, elevate via whitespace, photography-first cards, tools-as-hero panels |
 
 ## Decisions locked
-- **Build fresh — never refine the demo.** `demo_theme` / `Fresh_Build/website` (a demo copy) are reference only. Deliverable is a net-new site + the tools.
+- **Build fresh — never refine the demo.** `demo_theme` / `Fresh_Build/_reference` (was the demo copy) are reference only. Deliverable is a net-new site + the tools.
 - **Design (Akshay):** black theme, white fonts, gold accent (`#c2a267`), Raleway. Motion hero ("moving pictures") via tasteful **placeholder motion** (swappable for real footage); placeholder pictures as needed. **Inspiration only, never copy** WHITEFOX / LUXE (IP risk) — build original. Full brief: `Assets/design-direction-brief.md`.
 - Foundation: **custom React** (Vite + React + TS + Tailwind), local-first / host-agnostic.
 - Hosting target (Cloudflare vs VM) **deferred** to go-live — and must be **Manifest/Akshay's**, not Sameer's.
@@ -79,7 +90,7 @@ Akshay's feedback (verbatim: `Assets/akshay-feedback-2026-07-02.md`) repositions
 ## TODO next session
 - **Full-stack preview for Akshay (so AI + lead/report capture actually work).** The GitHub Pages preview is static (no `/api`), so Instant Valuation, Concierge, the Contact form and the new "Email me my report" CTA all no-op there. To let Akshay genuinely exercise them, host the **Hono `api/`** alongside the site (needs his `ANTHROPIC_API_KEY` + a host under Manifest/Akshay) and point the site's `/api` at it. Until then, brief Akshay that the static link is UI + deterministic calculators + the first-home-buyers journey only.
 - **Vault RE listings** (blocked on Akshay's API access): build `vault.ts` client, normalise to the listing shape, replace `mockListings`, build the **listing-detail page**.
-- **Live verify the AI tools**: add Akshay's `ANTHROPIC_API_KEY` to `api/.env`, run `api` (:8787) + `site` (:5180), confirm Valuation returns a range + the fixed comps, and the concierge chats and captures a lead.
+- **Live verify the AI tools**: put the Manifest Workspace `ANTHROPIC_API_KEY` in the repo-root `.env` (not `api/.env`), run `api` (:8787) + `site` (:5180), confirm Valuation returns a range + the fixed comps, and the concierge chats and captures a lead.
 - **Real assets to swap**: Akshay's hero footage (`site/public/hero/hero.mp4`) and/or a real B&W skyline photo (`site/public/hero/melbourne-skyline.jpg`); white/mono logo SVG if available; About page bio copy. (Contact details ✓; About page photo ✓ — real headshot now wired.)
 - **Milestone 3 (separate from the website)**: newsletter + monthly market-update engine via the content-engine agent.
 - Optional polish: visual QA pass in-browser of the 6 tools + nav mega-menu + floating bot.
@@ -88,7 +99,7 @@ Akshay's feedback (verbatim: `Assets/akshay-feedback-2026-07-02.md`) repositions
 - Which **domain** (awaiting Akshay).
 - Production account ownership specifics (Anthropic billing, hosting, ESP) — confirm all under Manifest/Akshay.
 - Excel: what is it meant to calculate? (audit once received).
-- **Who owns calculator maintenance** (tax brackets, stamp-duty schedule, APRA buffer) after handover — see `Fresh_Build/MAINTENANCE.md`. Recommend codebase-maintainer-owned on an annual/post-budget cadence; Akshay to confirm.
+- **Who owns calculator maintenance** (tax brackets, stamp-duty schedule, APRA buffer) after handover — see `Fresh_Build/docs/MAINTENANCE.md`. Recommend codebase-maintainer-owned on an annual/post-budget cadence; Akshay to confirm.
 
 ## Changelog
 - **2026-06-30 (landing polish + AK branding + nav/scroll fixes)** — Owner-driven UX pass, committed + pushed (`4f4a125`). (1) **Hero headline** (`MotionHero.tsx` + `index.css`): `with conviction.` → **`with Conviction`** (capital C, period dropped); new `.conviction` gold-gradient text that **settles in on load then shimmers** continuously (`conviction-settle` + `conviction-shimmer` keyframes; reduced-motion keeps the static gold). (2) **Lit skyline windows** (`public/hero/melbourne-skyline.svg`): generated **~548 warm gold-toned window rects** across the prominent foreground towers so the skyline reads as a living city at dusk. Static (the SVG is a CSS `background-image`, where CSS/SMIL animation doesn't run) — kept tasteful, not every building. (3) **Akshay → "AK"**: casual CTAs site-wide now use **AK** (ContactCTA, Valuation, Listings, Stamp Duty, Portfolio, Rental, Contact page, concierge "booked in" toasts); the **Borrowing Capacity CTA** changed to **"Speak to a RE representative →"**; About founder heading → **"Akshay Kapoor (AK), Director"** (full name establishes who AK is). **Real review quotes in `TrustBand` left verbatim** + the formal "Akshay Kapoor" review header kept. (Owner floated then **dropped** a "Victoria / free for anyone in Melbourne" stat change — TrustBand stats unchanged.) (4) **Scroll-to-top on navigation** (`Shell.tsx`): every route now opens at the top (`window.scrollTo(0,0, behavior:"instant")` on `pathname` change) — fixes pages opening mid/bottom when navigating from a scrolled position via the dropdowns. (5) **Mobile hamburger menu** (`Shell.tsx`): top-level **Listings / About / Contact** are now **gold by default → white on hover** (new `mobileTopLink` class, separate from desktop `linkClass` so desktop nav is untouched), bumped to `text-base` (a touch larger than the "First home buyers"/"Tools" eyebrows); gold-underline hover animation preserved. Build clean; verified the rendered landing page via headless Chrome screenshot (Conviction headline + lit windows confirmed).

@@ -1,12 +1,14 @@
 # Fresh_Build — Manifest Real Estate overhaul
 
-The new build lives here. The old prototype (`../demo_theme`, `../web`, `../api`,
-`../docs`) stays in place as **reference** and a source of proven code to lift.
+The new build lives here. The old prototype (`../legacy/demo_theme`, `../legacy/web`, `../api`,
+`../legacy/docs`) stays in place as **reference** and a source of proven code to lift.
 
 ## Structure
 ```
 Fresh_Build/
-  website/   ← the new custom React site (Vite + React + TS + Tailwind)
+  site-v2/   ← the LIVE V2 agency site (Vite + React + TS + Tailwind)
+  site/      ← V1 build (kept for backtracking)
+  _reference/ ← old demo copy (reference only)
   app/       ← built later; reuses the same tools + API
   Assets/    ← you paste source files here (logo, newsletter MD, Excel, …)
   vault-re-api-access-email.md  ← ready-to-send email for Akshay
@@ -27,7 +29,7 @@ Then the companion **app**, reusing all of the above.
 ## Foundation decision
 Custom React (not WordPress) — because Vault RE has a documented REST API, so
 listing-sync is cheap, and we keep full control of the premium look + native AI
-tools. Hosted on Cloudflare. Target run cost ≤ **$500/mo**.
+tools. Hosted on GoDaddy (GitHub Pages is interim). Target run cost ≤ **$500/mo**.
 
 ## Next from you
 1. Paste files into `Assets/` (see `Assets/README.md`).

@@ -19,8 +19,8 @@ distinctive, intentional, anti-generic look. Never hand-roll generic markup.
 
 ## How to work in this repo
 - Stack: Vite + React + TS + **Tailwind** with `@theme` tokens. The new site lives in
-  `Fresh_Build/website/`.
-- **Reuse the proven `demo_theme/` baseline** — its `@theme` token setup (`src/index.css`),
+  `Fresh_Build/site-v2/`.
+- **Reuse the proven `legacy/demo_theme/` baseline** — its `@theme` token setup (`src/index.css`),
   `src/lib/api.ts` client, route-based pages, component patterns, and the embed plumbing
   (`public/embed.js`, `/embed/*` routes). Lift and restyle rather than rebuild from scratch.
 - Keep components accessible, responsive, and fast. Match the surrounding code's idioms.

@@ -5,18 +5,20 @@ A local-first companion site for **Manifest Real Estate** (manifestre.com.au) sh
 1. **Instant Home Valuation** — address + attributes → indicative price range (Claude over recently-sold comps) → captures a seller lead.
 2. **AI Buyer Concierge** — a streaming chatbot over real listings + suburbs, with tool use to search listings and capture buyer leads.
 
-> Indicative estimates only — the CTA drives to a real appraisal. See `docs/plan.md` for the full plan and `CLAUDE.md` for working guidance.
+> Indicative estimates only — the CTA drives to a real appraisal. See `legacy/docs/plan.md` for the full plan and `CLAUDE.md` for working guidance.
+
+> **Repo layout (2026-07-02):** active work is in **`Fresh_Build/`** (see `CLAUDE.md`). The original prototype this README documents is now archived under **`legacy/`** (`legacy/web`, `legacy/demo_theme`, `legacy/docs`, `legacy/scripts`). **`api/`** and **`data/`** stay at the repo root — they're still used live by `Fresh_Build/`.
 
 ## Structure
 
 ```
 .
-├── web/        Vite + React + TypeScript + Tailwind front-end  (localhost:5173)
+├── legacy/web/        Vite + React + TypeScript + Tailwind front-end  (localhost:5173)
 │   └── src/
 │       ├── routes/        page-level views
 │       ├── components/     UI building blocks
 │       └── lib/            API fetch wrappers
-├── demo_theme/ Copy of web/ re-skinned to Manifest's live brand (localhost:5174)
+├── legacy/demo_theme/ Copy of web/ re-skinned to Manifest's live brand (localhost:5174)
 │                navy/gold + Raleway + real logo; theme-only change via @theme tokens
 ├── api/        Hono + @anthropic-ai/sdk server                 (localhost:8787)
 │   └── src/
@@ -32,9 +34,9 @@ A local-first companion site for **Manifest Real Estate** (manifestre.com.au) sh
 │   ├── suburbs.json         suburb medians + context (valuation service area)
 │   ├── sold.json            recently-sold comparables (valuation grounding)
 │   └── leads.db             SQLite (gitignored)
-├── scripts/
+├── legacy/scripts/
 │   └── scrape-listings.mjs  one-off public-site scraper (pure fetch, no LLM, $0)
-├── docs/       Documentation & shareable artifacts
+├── legacy/docs/       Documentation & shareable artifacts
 │   ├── plan.md              full build plan
 │   ├── PROJECT_TRACKER.md   phased delivery tracker
 │   ├── pitch.html           business pitch (infographic)
@@ -53,7 +55,7 @@ A local-first companion site for **Manifest Real Estate** (manifestre.com.au) sh
 current stock (no API cost — plain HTML parsing, polite rate):
 
 ```bash
-node scripts/scrape-listings.mjs   # rewrites data/listings.json; restart the API after
+node legacy/scripts/scrape-listings.mjs   # rewrites data/listings.json; restart the API after
 ```
 
 ## Run locally
@@ -74,7 +76,7 @@ cd web && npm install && npm run dev      # http://localhost:5173
 `web/` (both share the API):
 
 ```bash
-cd demo_theme && npm install && npm run dev   # http://localhost:5174
+cd legacy/demo_theme && npm install && npm run dev   # http://localhost:5174
 ```
 
 ### API key
@@ -102,4 +104,4 @@ sqlite3 data/leads.db "select * from leads order by id desc;"
 Target is a **VM** (local-first until the owner is happy). The Node + Hono + SQLite
 stack ports directly — needs a process manager + a reverse proxy with SPA fallback
 (including the `/embed/*` routes) and the env vars `ALLOWED_ORIGINS` / `STATS_TOKEN`.
-See `docs/PROJECT_TRACKER.md` for the current status.
+See `legacy/docs/PROJECT_TRACKER.md` for the current status.

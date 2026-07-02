@@ -8,7 +8,7 @@
 - **Gold accent.** The logo's gold (`#c2a267`) is the single accent that pops on black. Navy is at most a deep secondary tone.
 - **Typeface:** Raleway (retained).
 - **Motion hero.** Full-bleed moving imagery in the hero, like the references. Use **tasteful placeholder motion** now (abstract/subtle animated treatment or licensed b-roll), built so Akshay's real footage swaps in trivially. Use **placeholder pictures** elsewhere where the design needs imagery, until real assets/listings arrive.
-- **Original build, not the demo.** `demo_theme` / `Fresh_Build/website` (a demo copy) are reference only — do not refine them. Build net-new.
+- **Original build, not the demo.** `legacy/demo_theme` / `Fresh_Build/_reference` (a demo copy) are reference only — do not refine them. Build net-new.
 - **Carries all the tools:** Instant Valuation, AI Buyer Concierge, VIC Stamp-duty, Pre-buying, Portfolio assessment.
 
 ## 1. The strategic frame
