@@ -1,10 +1,27 @@
 # Manifest Overhaul — Project Tracker
 
 Living status doc. Updated as we go. Plan: `~/.claude/plans/we-need-to-to-sequential-deer.md`.
-Last updated: **2026-06-30**.
+Last updated: **2026-07-02**.
 
 ## Status legend
 ✅ done · 🟡 in progress · ⛔ blocked (waiting on owner/third party) · ⬜ not started
+
+## V2 — Agency repositioning (2026-07-02)
+Akshay's feedback (verbatim: `Assets/akshay-feedback-2026-07-02.md`) repositions Manifest from a first-home-buyer/tools angle to a **boutique full-service agency + advisory**, with **evergreen** copy (no live market conditions). Built as **V2** so V1 is preserved for backtracking.
+| Item | Status | Notes |
+|---|---|---|
+| V2 copy of the site | ✅ | **`Fresh_Build/website/site-v2/`** (copy of `site/`; moved under `website/` on 2026-07-02), dev on **:5181** (V1 stays in `Fresh_Build/site/` on :5180). Both run side by side |
+| Nav restructure | ✅ | Home · Listings · **Services** (mega-menu) · **First home buyers** · **Tools** · About · Contact. New `ServicesMenu.tsx` added; the V1 First-home + Tools menus **kept** (restored 2026-07-02 per Sameer) |
+| 5 service pages (evergreen) | ✅ | Residential Sales, Acreage & Lifestyle, Development Projects, Commercial Leasing, Property Advisory — shared `ServicePage.tsx` layout, Akshay's copy |
+| Home rewrite | ✅ | Hero "Property. Opportunity. Results." (motion kept, "Results" = gold shimmer); "Our Expertise" + 4 service cards (`ServicesShowcase.tsx`) replaces the tools showcase |
+| About rewrite | ✅ | Evergreen story + Mission + 5 Values. **Two directors** (2026-07-02): Akshay Kapoor (AK) + **Rishi Vohra** (bio de-dashed + headshot from his manifestre agent profile `agent_id=28506`, resized to 227KB → `public/rishi-vohra.jpg`); both titled "Director". Values now a **centred flex** (5 boxes, no dangling empty cell). Portraits **slide in from screen edges on click** (`FounderPhoto`, Akshay←left / Rishi→right, reduced-motion safe) |
+| Tools verified end-to-end | ✅ | With `cd api && npm run dev` (:8787): Stamp Duty / Borrowing Capacity / Portfolio / Rental are client-side ✅; **Valuation** (200 + LLM rationale), **Concierge** `/api/chat` (200 streaming), `/api/suburbs` (200), `/api/lead` (200) all live. Anthropic key is present in the shell env (not `api/.env`) |
+| Contact rewrite | ✅ | "Let's start the conversation" copy |
+| 6 tools + FHB journey | ✅ | Kept as **their own nav sections** (First home buyers dropdown + Tools mega-menu, like V1) **and** surfaced under Property Advisory; footer Tools column restored; routes unchanged; floating concierge unchanged |
+| Footer | ✅ | Tools column → Services; agency tagline |
+| Brand name | ✅ | Kept **"Manifest Real Estate"** (Akshay's copy said "Manifest Deal" — treated as draft) |
+| Build/typecheck | ✅ | `tsc --noEmit` clean, `vite build` clean |
+| **Decisions to confirm with Akshay** | ⬜ | (1) "Manifest Deal" vs "Manifest Real Estate" name; (2) **Insights** page — he named it as frequently-changing but gave no copy; not built yet; (3) promote V2 → replace V1? |
 
 ## Phase 0 — Setup
 | Item | Status | Notes |

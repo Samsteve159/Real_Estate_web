@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+/* ================================================================== *
+ *  MANIFEST REAL ESTATE, Design System (Dark Edition)
+ *
+ *  Palette: near-black + white + gold #c2a267 (sparingly)
+ *  Typeface: Raleway (loaded via Google Fonts in index.html)
+ *  Rule: ~80% black/white, ~15% surfaces, ≤5% gold
+ *  Gold is the jewel, one CTA per view, eyebrows, key numbers.
+ * ================================================================== */
+
+@theme {
+  /* --- Typefaces --- */
+  --font-display: "Raleway", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Raleway", ui-sans-serif, system-ui, sans-serif;
+
+  /* --- Dark palette --- */
+  --color-bg:        #0a0a0b;   /* page background, near-black, not pure #000 */
+  --color-surface:   #141416;   /* elevated surface / cards */
+  --color-surface-2: #1c1c20;   /* raised / hovered surface */
+  --color-surface-3: #242429;   /* tertiary lift (used sparingly) */
+
+  /* --- Type --- */
+  --color-text:      #f5f5f6;   /* primary white */
+  --color-muted:     #a1a1aa;   /* secondary / body text */
+  --color-dim:       #71717a;   /* tertiary / disabled */
+
+  /* --- Accent: gold (use sparingly) --- */
+  --color-gold:        #c2a267;
+  --color-gold-bright: #d4b87a;
+  --color-gold-dim:    #9a7f4f;
+
+  /* --- Deep secondary tone (not the main accent) --- */
+  --color-navy:      #003970;
+
+  /* --- Hairlines / dividers --- */
+  --color-line:      rgba(255, 255, 255, 0.08);
+  --color-line-gold: rgba(194, 162, 103, 0.25);
+}
+
+/* ================================================================== *
+ *  Base resets
+ * ================================================================== */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-bg);
+  }
+
+  /* Scrollbar, dark, gold thumb */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--color-surface); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-gold-dim);
+    border-radius: 4px;
+  }
+
+  img, video { display: block; max-width: 100%; }
+
+  a { color: inherit; text-decoration: none; }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    color: var(--color-text);
+  }
+}
+
+/* ================================================================== *
+ *  Utility classes
+ * ================================================================== */
+@layer utilities {
+
+  /* ---- Typography motifs ---- */
+
+  /* Wide-tracked uppercase gold eyebrow, the Manifest premium tell */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--color-gold);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+
+  /* Gold underline link, slides in on hover */
+  .gold-underline {
+    background-image: linear-gradient(var(--color-gold), var(--color-gold));
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.35s ease;
+  }
+  .gold-underline:hover { background-size: 100% 1px; }
+
+  /* ---- Surfaces ---- */
+  .surface   { background-color: var(--color-surface); }
+  .surface-2 { background-color: var(--color-surface-2); }
+
+  /* Hairline border */
+  .hairline   { border-color: var(--color-line); }
+  .hairline-gold { border-color: var(--color-line-gold); }
+
+  /* ---- Section spacing ---- */
+  .section-pad {
+    padding-top: 9rem;   /* clears the 8rem fixed header with breathing room */
+    padding-bottom: 7rem;
+  }
+
+  /* ---- Scroll-reveal base states ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---- Ken-burns / ambient motion ---- */
+  @keyframes kenburns {
+    0%   { transform: scale(1.0) translate(0%, 0%); }
+    100% { transform: scale(1.08) translate(-1.5%, -1%); }
+  }
+
+  @keyframes drift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* Hero image fallback animation */
+  .hero-kenburns {
+    animation: kenburns 18s ease-in-out infinite alternate;
+  }
+
+  /* Ambient gradient drift */
+  .gradient-drift {
+    background-size: 300% 300%;
+    animation: drift 20s ease infinite;
+  }
+
+  .rise {
+    opacity: 0;
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* ---- Hero "Conviction" — gold shimmer + gentle settle ---- */
+  @keyframes conviction-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+  @keyframes conviction-settle {
+    from { opacity: 0; transform: translateY(0.12em) scale(0.985); letter-spacing: 0.04em; }
+    to   { opacity: 1; transform: translateY(0)      scale(1);     letter-spacing: -0.01em; }
+  }
+  .conviction {
+    display: inline-block;
+    background: linear-gradient(
+      100deg,
+      var(--color-gold-dim) 0%,
+      var(--color-gold) 25%,
+      var(--color-gold-bright) 50%,
+      var(--color-gold) 75%,
+      var(--color-gold-dim) 100%
+    );
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation:
+      conviction-settle 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both,
+      conviction-shimmer 6s ease-in-out 1.2s infinite;
+  }
+
+  .fade-in {
+    opacity: 0;
+    animation: fade-in 1s ease forwards;
+  }
+
+  /* Stagger delays for hero content */
+  .delay-100 { animation-delay: 0.1s; }
+  .delay-200 { animation-delay: 0.2s; }
+  .delay-350 { animation-delay: 0.35s; }
+  .delay-500 { animation-delay: 0.5s; }
+  .delay-650 { animation-delay: 0.65s; }
+  .delay-800 { animation-delay: 0.8s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-kenburns,
+    .gradient-drift { animation: none; }
+
+    .reveal,
+    .rise,
+    .fade-in {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Keep the gold gradient, drop the motion */
+    .conviction {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      background-position: 50% 50%;
+    }
+  }
+
+  /* ---- Card hover lift ---- */
+  .card-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  }
+}
