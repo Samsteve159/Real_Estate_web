@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center text-center px-6"
-      style={{ background: "var(--color-bg)", paddingTop: "6rem" }}
+      style={{ background: "var(--color-bg)", paddingTop: "9rem" }}
     >
       <p className="eyebrow mb-6">404</p>
       <h1

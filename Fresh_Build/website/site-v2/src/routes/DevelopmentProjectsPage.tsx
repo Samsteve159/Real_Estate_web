@@ -1,4 +1,5 @@
 import ServicePage from "../components/ServicePage";
+import RecentProjects from "../components/RecentProjects";
 
 export default function DevelopmentProjectsPage() {
   return (
@@ -19,9 +20,17 @@ export default function DevelopmentProjectsPage() {
         "Site Acquisition",
         "Feasibility Discussions",
         "Market Analysis",
+        "Coordinating Finance",
+        "Exit Strategy",
       ]}
       ctaTitle="Have a site or project? Let's talk."
       ctaLabel="Discuss your project"
-    />
+    >
+      {/* Hidden until Akshay supplies content (refreshed ~every two months). */}
+      <RecentProjects
+        eyebrow="Recent projects"
+        heading="Development sites and projects we've delivered."
+      />
+    </ServicePage>
   );
 }

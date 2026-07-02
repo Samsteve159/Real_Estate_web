@@ -77,7 +77,6 @@ export default function PropertyAdvisoryPage() {
         "Site Identification",
         "Highest & Best Use",
         "Market Insights",
-        "Commercial Property Advice",
       ]}
       ctaTitle="Want clarity before you commit?"
       ctaLabel="Book a conversation"

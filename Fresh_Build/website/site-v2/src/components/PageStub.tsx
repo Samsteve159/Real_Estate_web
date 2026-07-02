@@ -15,7 +15,7 @@ export default function PageStub({ eyebrow, title, description, status = "In dev
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ background: "var(--color-bg)", paddingTop: "6rem" }}
+      style={{ background: "var(--color-bg)", paddingTop: "9rem" }}
     >
       <div className="max-w-7xl mx-auto px-6 py-24 flex-1">
         <div className="max-w-2xl">

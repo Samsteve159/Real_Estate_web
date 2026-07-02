@@ -12,28 +12,46 @@ const STATS = [
   { value: "1 call", label: "To a real expert",      note: "skip the call centre" },
 ];
 
-// Real client reviews for Akshay Kapoor, supplied directly by him (2026-06-26).
-// Condensed for the card layout — wording is faithful to the originals.
-const TESTIMONIALS = [
+// Reviews grouped per director. Akshay's are real, supplied by him (2026-06-26).
+// Rishi's are PLACEHOLDERS — swap for real, verified client quotes before launch.
+interface Review { quote: string; name: string; detail: string; }
+interface DirectorReviews { name: string; photo: string; alt: string; reviews: Review[]; }
+
+const DIRECTORS: DirectorReviews[] = [
   {
-    quote: "As an interstate investor I expected a stressful sale, but Akshay made the whole process completely smooth. He personally arranged every renovation and tradie needed to get the property sale-ready — and it sold above his initial estimate. I feel genuinely lucky to have worked with him.",
-    name: "Verified seller",
-    detail: "Interstate investor",
+    name: "Akshay Kapoor",
+    photo: "akshay-kapoor.jpg",
+    alt: "Akshay Kapoor, Manifest Real Estate",
+    reviews: [
+      {
+        quote: "As an interstate investor I expected a stressful sale, but Akshay made the whole process completely smooth. He personally arranged every renovation and tradie needed to get the property sale-ready — and it sold above his initial estimate.",
+        name: "Verified seller",
+        detail: "Interstate investor",
+      },
+      {
+        quote: "While the big-name agencies just put up a sign and run open homes, AK truly went above and beyond. He took the time to understand the local market and recommended smart, cost-effective improvements — all aimed at helping us reach our target sale price.",
+        name: "Verified seller",
+        detail: "Interstate vendor",
+      },
+    ],
   },
   {
-    quote: "While the big-name agencies just put up a sign and run open homes, AK truly went above and beyond. He took the time to understand the local market and recommended smart, cost-effective improvements — painting, landscaping, tree pruning and lighting — all aimed at helping us reach our target sale price.",
-    name: "Verified seller",
-    detail: "Interstate vendor",
-  },
-  {
-    quote: "An excellent experience with Akshay at Manifest. Knowledgeable, professional and incredibly helpful — his attention to detail and market insights made the process smooth and stress-free. I highly recommend him to anyone after a reliable, skilled agent.",
-    name: "Verified seller",
-    detail: "Manifest client",
-  },
-  {
-    quote: "Akshay is a very thorough person who gives a lot of attention to the minute detail. He goes well beyond to get fantastic results, and the way he carried himself through a complex sale process is commendable.",
-    name: "Verified seller",
-    detail: "Vendor, complex sale",
+    name: "Rishi Vohra",
+    photo: "rishi-vohra.jpg",
+    alt: "Rishi Vohra, Manifest Real Estate",
+    // Real client reviews for Rishi (supplied by Akshay, 2026-07-02).
+    reviews: [
+      {
+        quote: "Rishi was a really outstanding agent. It's not only that he helped me achieve over my target price for the sale of my property — he is very professional with deep knowledge of the market. He'll help you with due diligence and market assessment, and suggest changes that help achieve a high sales target. Very responsive and reliable. I highly recommend him.",
+        name: "Verified seller",
+        detail: "Property vendor",
+      },
+      {
+        quote: "Rishi really knows what he is doing. Really competent. I am really happy to be doing business with him.",
+        name: "Verified client",
+        detail: "Manifest client",
+      },
+    ],
   },
 ];
 
@@ -72,72 +90,83 @@ export default function TrustBand() {
           ))}
         </div>
 
-        {/* Testimonials */}
-        <div className="reveal mb-12 flex items-center gap-5">
-          <img
-            src={`${import.meta.env.BASE_URL}akshay-kapoor.jpg`}
-            alt="Akshay Kapoor, Manifest Real Estate"
-            className="w-16 h-16 rounded-full object-cover shrink-0"
-            style={{ border: "2px solid var(--color-gold)" }}
-            loading="lazy"
-          />
-          <div>
-            <p className="eyebrow mb-1">What our clients say</p>
-            <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
-              Recent reviews for Akshay Kapoor
-              <span style={{ color: "var(--color-gold)", marginLeft: "0.6rem", letterSpacing: "1px" }}>
-                ★★★★★
-              </span>
-            </p>
-            <p className="text-xs mt-0.5" style={{ color: "var(--color-dim)" }}>
-              Client reviews · supplied by Akshay Kapoor
-            </p>
-          </div>
+        {/* Testimonials — one block per director, two reviews each */}
+        <div className="reveal mb-14 max-w-2xl">
+          <p className="eyebrow mb-4">What our clients say</p>
+          <h2 className="display" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--color-text)" }}>
+            Trusted by the people we work for.
+          </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {TESTIMONIALS.map((t, i) => (
-            <figure
-              key={i}
-              className="reveal p-8 border"
-              style={{
-                background: "var(--color-surface)",
-                borderColor: "var(--color-line)",
-                borderTop: "2px solid var(--color-gold)",
-                transitionDelay: `${i * 100}ms`,
-              }}
-            >
-              {/* Open quote mark */}
-              <div
-                className="mb-6 font-display font-bold select-none"
-                style={{ fontSize: "3rem", lineHeight: 1, color: "var(--color-gold)", opacity: 0.4 }}
-                aria-hidden="true"
-              >
-                "
-              </div>
-              <blockquote>
-                <p
-                  className="text-base leading-relaxed mb-8"
-                  style={{ color: "var(--color-muted)" }}
-                >
-                  {t.quote}
-                </p>
-                <figcaption>
-                  <div
-                    className="mb-2"
-                    style={{ color: "var(--color-gold)", fontSize: "0.85rem", letterSpacing: "2px" }}
-                    aria-label="5 out of 5 stars"
-                  >
-                    ★★★★★
-                  </div>
+
+        <div className="flex flex-col gap-16">
+          {DIRECTORS.map((d) => (
+            <div key={d.name}>
+              {/* Director header */}
+              <div className="reveal mb-8 flex items-center gap-5">
+                <img
+                  src={`${import.meta.env.BASE_URL}${d.photo}`}
+                  alt={d.alt}
+                  className="w-16 h-16 rounded-full object-cover shrink-0"
+                  style={{ border: "2px solid var(--color-gold)" }}
+                  loading="lazy"
+                />
+                <div>
                   <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
-                    {t.name}
+                    Recent reviews for {d.name}
+                    <span style={{ color: "var(--color-gold)", marginLeft: "0.6rem", letterSpacing: "1px" }}>
+                      ★★★★★
+                    </span>
                   </p>
-                  <p className="text-xs mt-1" style={{ color: "var(--color-dim)" }}>
-                    {t.detail}
+                  <p className="text-xs mt-0.5" style={{ color: "var(--color-dim)" }}>
+                    Director · Manifest Real Estate
                   </p>
-                </figcaption>
-              </blockquote>
-            </figure>
+                </div>
+              </div>
+
+              {/* Two review cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {d.reviews.map((t, i) => (
+                  <figure
+                    key={i}
+                    className="reveal p-8 border"
+                    style={{
+                      background: "var(--color-surface)",
+                      borderColor: "var(--color-line)",
+                      borderTop: "2px solid var(--color-gold)",
+                      transitionDelay: `${i * 100}ms`,
+                    }}
+                  >
+                    <div
+                      className="mb-6 font-display font-bold select-none"
+                      style={{ fontSize: "3rem", lineHeight: 1, color: "var(--color-gold)", opacity: 0.4 }}
+                      aria-hidden="true"
+                    >
+                      "
+                    </div>
+                    <blockquote>
+                      <p className="text-base leading-relaxed mb-8" style={{ color: "var(--color-muted)" }}>
+                        {t.quote}
+                      </p>
+                      <figcaption>
+                        <div
+                          className="mb-2"
+                          style={{ color: "var(--color-gold)", fontSize: "0.85rem", letterSpacing: "2px" }}
+                          aria-label="5 out of 5 stars"
+                        >
+                          ★★★★★
+                        </div>
+                        <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
+                          {t.name}
+                        </p>
+                        <p className="text-xs mt-1" style={{ color: "var(--color-dim)" }}>
+                          {t.detail}
+                        </p>
+                      </figcaption>
+                    </blockquote>
+                  </figure>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>

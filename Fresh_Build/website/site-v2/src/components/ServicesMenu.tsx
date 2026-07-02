@@ -18,7 +18,7 @@ interface Service {
 const SERVICES: Service[] = [
   { no: "01", title: "Residential Sales", hook: "Tailored marketing and skilled negotiation to maximise your result.", to: "/services/residential-sales" },
   { no: "02", title: "Acreage & Lifestyle", hook: "Specialist advice for rural, hobby-farm and lifestyle property.", to: "/services/acreage-lifestyle" },
-  { no: "03", title: "Development Projects", hook: "Unlock the value of sites and residential projects.", to: "/services/development-projects" },
+  { no: "03", title: "Development Projects", hook: "Unlock the value of residential and commercial development sites.", to: "/services/development-projects" },
   { no: "04", title: "Commercial Leasing", hook: "Connecting landlords and businesses with the right space.", to: "/services/commercial-leasing" },
   { no: "05", title: "Property Advisory", hook: "Strategic advice — plus free broker-grade tools.", to: "/services/property-advisory" },
 ];

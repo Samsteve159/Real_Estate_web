@@ -1,4 +1,5 @@
 import ServicePage from "../components/ServicePage";
+import RecentProjects from "../components/RecentProjects";
 
 export default function CommercialLeasingPage() {
   return (
@@ -17,10 +18,16 @@ export default function CommercialLeasingPage() {
         "Industrial Leasing",
         "Lease Negotiation",
         "Landlord Representation",
-        "Tenant Representation",
+        "Blue Chip Tenant Sourcing",
       ]}
       ctaTitle="Leasing space or seeking a tenant?"
       ctaLabel="Get in touch"
-    />
+    >
+      {/* Hidden until Akshay supplies content (refreshed ~every two months). */}
+      <RecentProjects
+        eyebrow="Recent projects"
+        heading="Commercial leasing deals we've recently completed."
+      />
+    </ServicePage>
   );
 }

@@ -39,7 +39,7 @@ export default function ServicePage({
   const ref = useReveal(0.06) as React.RefObject<HTMLElement>;
 
   return (
-    <div ref={ref as React.RefObject<HTMLDivElement>} style={{ background: "var(--color-bg)", paddingTop: "6rem" }}>
+    <div ref={ref as React.RefObject<HTMLDivElement>} style={{ background: "var(--color-bg)", paddingTop: "9rem" }}>
 
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-6 py-20">

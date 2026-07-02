@@ -19,12 +19,15 @@ export default function AboutPage() {
   const ref = useReveal(0.06) as React.RefObject<HTMLElement>;
 
   return (
-    <div ref={ref as React.RefObject<HTMLDivElement>} style={{ background: "var(--color-bg)", paddingTop: "6rem" }}>
+    <div ref={ref as React.RefObject<HTMLDivElement>} style={{ background: "var(--color-bg)", paddingTop: "9rem" }}>
 
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-6 py-20">
         <div className="reveal max-w-3xl">
-          <p className="eyebrow mb-5">About Manifest Real Estate</p>
+          <p className="eyebrow mb-4">About Manifest Real Estate</p>
+          <p className="font-display italic mb-6" style={{ color: "var(--color-gold)", fontSize: "clamp(1.05rem, 2.2vw, 1.35rem)", lineHeight: 1.4 }}>
+            Welcome to Manifest Real Estate, where dreams meet reality.
+          </p>
           <h1 className="display mb-7" style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", color: "var(--color-text)", lineHeight: 1.08 }}>
             More than a<br />transactional approach.
           </h1>
@@ -45,23 +48,22 @@ export default function AboutPage() {
       {/* Co-founders */}
       <section className="border-t" style={{ borderColor: "var(--color-line)", background: "var(--color-surface)" }}>
         <div className="max-w-6xl mx-auto px-6 py-20">
-          <p className="reveal eyebrow mb-4">Meet the directors</p>
-          <h2 className="reveal display mb-14" style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", color: "var(--color-text)", maxWidth: "24ch" }}>
-            Two partners, one standard of service.
+          <h2 className="reveal display mb-14" style={{ fontSize: "clamp(2.4rem, 5.5vw, 4rem)", color: "var(--color-text)" }}>
+            Meet the Directors
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
 
             {/* Akshay */}
             <div className="reveal">
+              <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
+              <h3 className="display mb-5" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Akshay Kapoor (AK)</h3>
               <img
                 src={`${import.meta.env.BASE_URL}akshay-kapoor.jpg`}
                 alt="Akshay Kapoor (AK), Director at Manifest Real Estate"
-                className="w-full aspect-[4/5] object-cover object-top mb-6"
+                className="w-full max-w-[220px] aspect-[4/5] object-cover object-top mb-6"
                 style={{ border: "1px solid var(--color-line)", borderTop: "2px solid var(--color-gold)" }}
               />
-              <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
-              <h3 className="display mb-4" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Akshay Kapoor (AK)</h3>
               <div className="flex flex-col gap-4" style={{ color: "var(--color-muted)", lineHeight: 1.7 }}>
                 <p>
                   At Manifest, the name <em>is</em> the brief, turning a client's manifestations into
@@ -85,14 +87,20 @@ export default function AboutPage() {
 
             {/* Rishi */}
             <div className="reveal">
+              <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
+              <h3 className="display mb-5" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Rishi Vohra</h3>
               <img
                 src={`${import.meta.env.BASE_URL}rishi-vohra.jpg`}
                 alt="Rishi Vohra, Director at Manifest Real Estate"
-                className="w-full aspect-[4/5] object-cover object-top mb-6"
-                style={{ border: "1px solid var(--color-line)", borderTop: "2px solid var(--color-gold)" }}
+                className="w-full max-w-[220px] aspect-[4/5] object-cover object-top mb-6"
+                style={{
+                  border: "1px solid var(--color-line)",
+                  borderTop: "2px solid var(--color-gold)",
+                  // Photo is pre-cropped tight to the subject; a light tone-down
+                  // keeps the studio backdrop close to Akshay's grey on the dark theme.
+                  filter: "brightness(0.92) contrast(1.05) saturate(1.03)",
+                }}
               />
-              <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
-              <h3 className="display mb-4" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Rishi Vohra</h3>
               <div className="flex flex-col gap-4" style={{ color: "var(--color-muted)", lineHeight: 1.7 }}>
                 <p>
                   Rishi is an extremely hard-working, approachable and ethical operator who willingly
@@ -106,9 +114,10 @@ export default function AboutPage() {
                   extensive network.
                 </p>
               </div>
+              {/* Real client review for Rishi (supplied by Akshay, 2026-07-02). */}
               <blockquote className="mt-6 pl-5" style={{ borderLeft: "2px solid var(--color-gold)" }}>
                 <p className="font-display italic" style={{ color: "var(--color-text)", fontSize: "1.1rem", lineHeight: 1.5 }}>
-                  "Welcome to Manifest Real Estate, where dreams meet reality."
+                  "Rishi really knows what he is doing. Really competent. I am really happy to be doing business with him."
                 </p>
               </blockquote>
             </div>

@@ -69,7 +69,7 @@ export default function ConciergePage() {
   }
 
   return (
-    <div style={{ background: "var(--color-bg)", paddingTop: "6rem" }}>
+    <div style={{ background: "var(--color-bg)", paddingTop: "9rem" }}>
       <div className="max-w-3xl mx-auto px-6 pt-10 pb-6">
         <p className="eyebrow mb-4">AI Buyer Concierge</p>
         <h1 className="display mb-4" style={{ fontSize: "clamp(1.9rem, 4vw, 2.8rem)", color: "var(--color-text)" }}>

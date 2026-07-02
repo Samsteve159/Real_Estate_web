@@ -122,11 +122,14 @@ export default function Shell() {
         <div
           className="md:hidden transition-all duration-300 overflow-hidden"
           style={{
-            maxHeight: menuOpen ? "1200px" : "0px",
+            // Cap to the space below the 8rem header so the panel scrolls
+            // internally on short screens — About/Contact stay reachable.
+            maxHeight: menuOpen ? "calc(100dvh - 8rem)" : "0px",
             background: "rgba(10,10,11,0.98)",
             backdropFilter: "blur(16px)",
             borderBottom: menuOpen ? "1px solid var(--color-line)" : "none",
             overflowY: "auto",
+            WebkitOverflowScrolling: "touch",
           }}
         >
           <div className="px-6 py-6 flex flex-col gap-6">

@@ -17,24 +17,25 @@ const INTENTS = [
 export default function ContactPage() {
   const ref = useReveal(0.06) as React.RefObject<HTMLElement>;
   const [name, setName] = useState("");
-  const [contact, setContact] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [intent, setIntent] = useState("buy");
   const [message, setMessage] = useState("");
   const [state, setState] = useState<"idle" | "saving" | "done" | "error">("idle");
   const [error, setError] = useState("");
 
-  const isEmail = (v: string) => /\S+@\S+\.\S+/.test(v);
+  const canSubmit = !!name.trim() && (!!phone.trim() || !!email.trim());
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim() || !contact.trim()) return;
+    if (!canSubmit) return;
     setState("saving");
     setError("");
     try {
       await submitLead({
         name: name.trim(),
-        email: isEmail(contact) ? contact.trim() : undefined,
-        phone: isEmail(contact) ? undefined : contact.trim(),
+        email: email.trim() || undefined,
+        phone: phone.trim() || undefined,
         source: "contact",
         intent,
         message: message.trim() || undefined,
@@ -47,7 +48,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div style={{ background: "var(--color-bg)", paddingTop: "6rem" }}>
+    <div style={{ background: "var(--color-bg)", paddingTop: "9rem" }}>
       <div ref={ref as React.RefObject<HTMLDivElement>} className="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16">
 
         {/* Left, invitation + details */}
@@ -64,8 +65,7 @@ export default function ContactPage() {
           <div className="flex flex-col gap-6">
             <Detail label="Email" value="admin@manifestre.com.au" href="mailto:admin@manifestre.com.au" />
             <Detail label="Phone" value="+61 403 466 216" href="tel:+61403466216" />
-            <Detail label="Office" value="2 Blackwood Drive, Altona North VIC 3025" />
-            <Detail label="Servicing" value="Melbourne, inner west & northern growth corridors" />
+            <Detail label="Servicing" value="Victoria" />
           </div>
         </div>
 
@@ -84,10 +84,16 @@ export default function ContactPage() {
                 <span className="eyebrow block mb-2.5">Your name</span>
                 <Input value={name} onChange={setName} placeholder="First and last name" />
               </label>
-              <label className="block">
-                <span className="eyebrow block mb-2.5">Phone or email</span>
-                <Input value={contact} onChange={setContact} placeholder="So we can reach you" />
-              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <label className="block">
+                  <span className="eyebrow block mb-2.5">Phone</span>
+                  <Input value={phone} onChange={setPhone} placeholder="Your best number" />
+                </label>
+                <label className="block">
+                  <span className="eyebrow block mb-2.5">Email</span>
+                  <Input value={email} onChange={setEmail} placeholder="you@email.com" />
+                </label>
+              </div>
               <div>
                 <span className="eyebrow block mb-2.5">I'm interested in</span>
                 <div className="flex flex-wrap gap-2">
@@ -119,7 +125,7 @@ export default function ContactPage() {
                 />
               </label>
               <button
-                type="submit" disabled={state === "saving" || !name.trim() || !contact.trim()}
+                type="submit" disabled={state === "saving" || !canSubmit}
                 className="px-7 py-3.5 text-sm font-semibold transition-colors disabled:opacity-50"
                 style={{ background: "var(--color-gold)", color: "var(--color-bg)" }}
               >

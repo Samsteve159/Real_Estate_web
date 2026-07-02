@@ -7,7 +7,7 @@ export default function ListingsPage() {
   const ref = useReveal(0.1) as React.RefObject<HTMLElement>;
 
   return (
-    <div style={{ background: "var(--color-bg)", paddingTop: "6rem" }}>
+    <div style={{ background: "var(--color-bg)", paddingTop: "9rem" }}>
       <div
         ref={ref as React.RefObject<HTMLDivElement>}
         className="max-w-7xl mx-auto px-6 py-20"

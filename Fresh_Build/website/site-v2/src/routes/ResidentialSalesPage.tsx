@@ -17,7 +17,7 @@ export default function ResidentialSalesPage() {
         "Professional Marketing",
         "Auction & Private Sale",
         "Buyer Negotiation",
-        "Settlement Support",
+        "First Home Buyer Sales",
       ]}
       ctaTitle="Thinking of selling? Let's talk."
       ctaLabel="Request an appraisal"

@@ -42,7 +42,7 @@ export default function RentalPage() {
   const gearing = GEARING_COPY[r.geared];
 
   return (
-    <div style={{ background: "var(--color-bg)", paddingTop: "6rem" }}>
+    <div style={{ background: "var(--color-bg)", paddingTop: "9rem" }}>
       <div ref={ref as React.RefObject<HTMLDivElement>} className="max-w-6xl mx-auto px-6 py-20">
 
         {/* Header */}

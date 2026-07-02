@@ -32,7 +32,7 @@ const CARDS: Card[] = [
   {
     eyebrow: "Developers & landowners",
     title: "Development Projects",
-    description: "Working alongside developers and landowners to market development opportunities, from boutique projects to larger residential sites.",
+    description: "Working alongside developers and landowners to market development opportunities, from boutique projects to larger residential and commercial sites.",
     to: "/services/development-projects",
   },
   {
