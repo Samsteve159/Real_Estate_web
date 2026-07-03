@@ -8,6 +8,8 @@ name: Deploy Fresh_Build site to GitHub Pages
 # rendering). Production hosting moves under Manifest/Akshay later.
 # Backend (/api) does not exist on Pages, so the AI valuation/concierge and
 # lead capture will no-op; the deterministic calculators work client-side.
+# 2026-07-03: re-trigger — prior run's build succeeded but actions/deploy-pages
+# hit a transient Pages-publish failure; this push re-runs the deploy.
 
 on:
   push:
