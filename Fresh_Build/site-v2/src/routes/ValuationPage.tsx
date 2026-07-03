@@ -143,8 +143,29 @@ export default function ValuationPage() {
             {status === "done" && result ? (
               <ResultView result={result} subject={form} />
             ) : status === "loading" ? (
-              <div className="flex-1 flex items-center justify-center text-center">
-                <p style={{ color: "var(--color-muted)" }}>Reading the comparable sales…</p>
+              <div className="flex-1 flex items-center justify-center" role="status" aria-label="Preparing your indicative range">
+                <div className="relative" style={{ width: 64, height: 64 }}>
+                  {/* faint track */}
+                  <div
+                    className="absolute inset-0 rounded-full"
+                    style={{ border: "3px solid color-mix(in srgb, var(--color-gold) 16%, transparent)" }}
+                  />
+                  {/* outer gold arc */}
+                  <div
+                    className="absolute inset-0 rounded-full animate-spin"
+                    style={{ border: "3px solid transparent", borderTopColor: "var(--color-gold)", animationDuration: "0.9s" }}
+                  />
+                  {/* inner counter-rotating arc */}
+                  <div
+                    className="absolute rounded-full animate-spin"
+                    style={{ inset: 12, border: "2px solid transparent", borderBottomColor: "var(--color-gold)", animationDuration: "1.4s", animationDirection: "reverse", opacity: 0.7 }}
+                  />
+                  {/* soft pulsing core */}
+                  <div
+                    className="absolute rounded-full animate-pulse"
+                    style={{ inset: 26, background: "var(--color-gold)", opacity: 0.35 }}
+                  />
+                </div>
               </div>
             ) : status === "error" ? (
               <div className="flex-1 flex flex-col items-center justify-center text-center gap-3">

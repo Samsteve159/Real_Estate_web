@@ -1,7 +1,10 @@
 # Manifest Overhaul — Project Tracker
 
 Living status doc. Updated as we go. Plan: `~/.claude/plans/we-need-to-to-sequential-deer.md`.
-Last updated: **2026-07-02**.
+Last updated: **2026-07-03**.
+
+## ⭐ V2 LOCKED IN (2026-07-03)
+Akshay **locked in the deployed V2** (`Fresh_Build/site-v2/`, live on GitHub Pages) as the chosen build — no more backtracking to V1 (`Fresh_Build/site/` is now archived reference only). Active work now: (1) **Anthropic Workspace "bucket"** setup → chatbot + valuation live; (2) **Vault RE integration** — Akshay sent a picture (API creds?), awaiting the file to build `vault.ts` + real listings + listing-detail page.
 
 ## Status legend
 ✅ done · 🟡 in progress · ⛔ blocked (waiting on owner/third party) · ⬜ not started
@@ -24,13 +27,13 @@ Akshay's feedback (verbatim: `Assets/akshay-feedback-2026-07-02.md`) repositions
 | Deployed to GitHub Pages | ✅ | 2026-07-02 — Pages workflow repointed from V1 to V2; **https://samsteve159.github.io/Real_Estate_web/ now serves V2**, V1 deployment retired. Static (no `/api`): AI/lead forms no-op there, deterministic tools work |
 | V2 feedback round 2 (2026-07-02) | ✅ | Akshay's edits applied: Development Projects — copy "residential **and commercial** sites", added services **08 Coordinating Finance / 09 Exit Strategy**; Services dropdown DevProjects hook → "Unlock the value of residential and commercial development sites"; Residential Sales — "Settlement Support" → **"First Home Buyer Sales"**; Commercial Leasing — "Tenant Representation" → **"Blue Chip Tenant Sourcing"**; Property Advisory — dropped the 7th area ("Commercial Property Advice") → 6 areas. New **`RecentProjects.tsx`** showcase on Dev Projects + Commercial Leasing, **hidden by default** (`SHOW=false`; refresh ~every 2 months — only Listings live for now). About — removed "Two partners…" hook, enlarged **"Meet the Directors"**; photos moved **below** names, **smaller + equal width** (`max-w-[220px]`), Rishi's headshot leaned left (`objectPosition:30% top`) toward Akshay; "Welcome to Manifest Real Estate, where dreams meet reality." moved to the **About hero**. Contact — removed office address, Servicing → **"Victoria"**, split the single contact field into **separate Phone + Email** inputs |
 | V2 feedback round 3 (2026-07-02) | ✅ | **Reviews for both directors on Home** (`TrustBand.tsx`) — grouped per director, 2 each; Akshay's real (his) + **Rishi's 2 real reviews supplied by Akshay** (were placeholders). About — added Rishi's short real review, moved photos below names (equal `max-w-[220px]`). **Rishi headshot re-cropped** tight to subject (800×800, orig backed up in scratchpad) to cut background + light `brightness(.92)` tone-match to Akshay's grey. **Padding fix:** all 12 inner pages `paddingTop` 6rem→9rem (was hiding under the 128px header). **Mobile menu fix:** panel capped to `calc(100dvh − 8rem)` w/ internal scroll so About/Contact are reachable on short screens |
-| **Decisions to confirm with Akshay** | ⬜ | (1) "Manifest Deal" vs "Manifest Real Estate" name; (2) **Insights** page — he named it as frequently-changing but gave no copy; not built yet; (3) promote V2 → replace V1?; (4) content for the hidden **RecentProjects** strips |
+| **Decisions to confirm with Akshay** | 🟡 | (1) "Manifest Deal" vs "Manifest Real Estate" name; (2) **Insights** page — he named it as frequently-changing but gave no copy; not built yet; (3) ~~promote V2 → replace V1?~~ ✅ **V2 LOCKED 2026-07-03**; (4) content for the hidden **RecentProjects** strips |
 
 ## Billing, workspace & invoicing (2026-07-02 — planned; setup ~2026-07-03)
 Akshay pre-paid **AUD 20** for API tokens (chatbot + instant valuation); he reimburses Sameer by real project usage. Full plan: `~/.claude/plans/flickering-purring-cat.md`. Building deferred until Sameer completes the Console setup.
 | Item | Status | Notes |
 |---|---|---|
-| Anthropic **Workspace** "Manifest Real Estate" ("bucket") | ⬜ | Per-project cost isolation: own key → repo-root `.env` (`ANTHROPIC_API_KEY`; replaces the current key there), own **monthly spend limit**. Cost read per-workspace in Console **Cost dashboard** + **Admin API cost report**. Sameer sets up in Console (tomorrow) |
+| Anthropic **Workspace** "Manifest Real Estate" ("bucket") | ✅ **live (2026-07-03)** | Created by Sameer; new workspace key swapped into repo-root `.env` (`ANTHROPIC_API_KEY`, replacing the old dev key). **Verified end-to-end:** `/api/valuation` → 200, real range $830k–$920k + 3 `comparables_used` + rationale; `/api/chat` concierge → 200 SSE streaming. All Manifest traffic now bills to the Manifest bucket. Spend limit set. **Still needed for LIVE-on-deployed-site:** host `api/` under Manifest so the tools work on the Pages site (Pages is static, no `/api`) |
 | Admin API key (`sk-ant-admin…`) | ⬜ | Org-admin only; stored as a secret for the invoicing job — never committed / never in a bundle |
 | Org auto-top-up cap | ✅ | **Capped at $50** (org-level, shared across Sameer's projects; not per-workspace) — user will flag any change |
 | Threshold auto-invoicing script | ⬜ | `Fresh_Build/tools/invoice.mjs` (host-agnostic Node): reads Manifest workspace cost via Admin API; **each time Manifest usage crosses a threshold** (e.g. $20/$50) → brand-styled invoice emailed to Akshay; baseline in `invoice-state.json`. No top-up webhook exists / top-ups are org-wide, so it keys off **Manifest usage** |
@@ -65,7 +68,8 @@ Akshay pre-paid **AUD 20** for API tokens (chatbot + instant valuation); he reim
 ## Milestone 1 — Live website + Vault RE listings
 | Item | Status |
 |---|---|
-| `vault.ts` API client (auth, fetch, normalize, cache) | ⬜ (blocked on API access) |
+| Vault RE (MRI) API access | ⛔ **in motion (2026-07-03)** — Akshay sent the *Third-Party Access* screenshot (confirms his account has API access on; the 2 tokens shown are other integrators' — Vault Web Sites, Designly — not usable by us). Confirmed from MRI docs: every call needs **`X-Api-Key`** (issued to us on integrator registration) **+ `Authorization: Bearer <token>`** (Akshay generates per-account). Base `https://ap-southeast-2.api.vaultre.com.au/api/v1.3/`. **Step 1 (Sameer):** register as integrator at `mrisoftware.com/au/products/vault/api-integrations/` (~2 biz days → API key emailed). Register **under Manifest** (company = Manifest Real Estate; key ideally to `admin@manifestre.com.au`). **Step 2 (Akshay):** once approved, Add Token → select us → Create Token (listings read + contacts write) → send it over. Message drafted + **sent to Akshay 2026-07-03**. |
+| `vault.ts` API client (auth, fetch, normalize, cache) | ⬜ (blocked until the API key + access token above land) |
 | Scaffold `Fresh_Build/website/` from `demo_theme` baseline | ✅ runs on :5175 (proxies API :8787); logo wired; renders OK |
 | Design system (tokens/type from brief + logo) | ✅ | black/white/gold dark token set live in `site/src/index.css`; logo recolored for black + wired into nav |
 | Pages: Home, Listings, Listing detail, About/Agents, Contact | 🟡 | Home, Listings (mock), About (real Akshay photo ✅), Contact ✅. Listing-detail page ⬜ (waits on Vault RE shape) |
