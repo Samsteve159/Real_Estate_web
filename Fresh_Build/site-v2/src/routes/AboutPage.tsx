@@ -54,37 +54,6 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
 
-            {/* Akshay */}
-            <div className="reveal">
-              <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
-              <h3 className="display mb-5" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Akshay Kapoor (AK)</h3>
-              <img
-                src={`${import.meta.env.BASE_URL}akshay-kapoor.jpg`}
-                alt="Akshay Kapoor (AK), Director at Manifest Real Estate"
-                className="w-full max-w-[220px] aspect-[4/5] object-cover object-top mb-6"
-                style={{ border: "1px solid var(--color-line)", borderTop: "2px solid var(--color-gold)" }}
-              />
-              <div className="flex flex-col gap-4" style={{ color: "var(--color-muted)", lineHeight: 1.7 }}>
-                <p>
-                  At Manifest, the name <em>is</em> the brief, turning a client's manifestations into
-                  reality. Akshay built his business on three things: clear communication, genuine
-                  service, and trust. Property is his passion, and it shows in how he adapts to what each
-                  client actually needs, rather than running a script.
-                </p>
-                <p>
-                  He has worked across the lot, small land, houses, development sites and acreage, and
-                  holds property in his own portfolio, so the advice comes from someone who has sat on
-                  your side of the table. Clients describe him as responsive, proactive and easy to deal
-                  with, which is why so much of his work comes through referrals.
-                </p>
-              </div>
-              <blockquote className="mt-6 pl-5" style={{ borderLeft: "2px solid var(--color-gold)" }}>
-                <p className="font-display italic" style={{ color: "var(--color-text)", fontSize: "1.1rem", lineHeight: 1.5 }}>
-                  "He has a knack to evolve and become more efficient with the ever-changing market."
-                </p>
-              </blockquote>
-            </div>
-
             {/* Rishi */}
             <div className="reveal">
               <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
@@ -118,6 +87,37 @@ export default function AboutPage() {
               <blockquote className="mt-6 pl-5" style={{ borderLeft: "2px solid var(--color-gold)" }}>
                 <p className="font-display italic" style={{ color: "var(--color-text)", fontSize: "1.1rem", lineHeight: 1.5 }}>
                   "Rishi really knows what he is doing. Really competent. I am really happy to be doing business with him."
+                </p>
+              </blockquote>
+            </div>
+
+            {/* Akshay */}
+            <div className="reveal">
+              <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
+              <h3 className="display mb-5" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Akshay Kapoor (AK)</h3>
+              <img
+                src={`${import.meta.env.BASE_URL}akshay-kapoor.jpg`}
+                alt="Akshay Kapoor (AK), Director at Manifest Real Estate"
+                className="w-full max-w-[220px] aspect-[4/5] object-cover object-top mb-6"
+                style={{ border: "1px solid var(--color-line)", borderTop: "2px solid var(--color-gold)" }}
+              />
+              <div className="flex flex-col gap-4" style={{ color: "var(--color-muted)", lineHeight: 1.7 }}>
+                <p>
+                  At Manifest, the name <em>is</em> the brief, turning a client's manifestations into
+                  reality. Akshay built his business on three things: clear communication, genuine
+                  service, and trust. Property is his passion, and it shows in how he adapts to what each
+                  client actually needs, rather than running a script.
+                </p>
+                <p>
+                  He has worked across the lot, small land, houses, development sites and acreage, and
+                  holds property in his own portfolio, so the advice comes from someone who has sat on
+                  your side of the table. Clients describe him as responsive, proactive and easy to deal
+                  with, which is why so much of his work comes through referrals.
+                </p>
+              </div>
+              <blockquote className="mt-6 pl-5" style={{ borderLeft: "2px solid var(--color-gold)" }}>
+                <p className="font-display italic" style={{ color: "var(--color-text)", fontSize: "1.1rem", lineHeight: 1.5 }}>
+                  "He has a knack to evolve and become more efficient with the ever-changing market."
                 </p>
               </blockquote>
             </div>

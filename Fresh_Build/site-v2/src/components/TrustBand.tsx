@@ -19,23 +19,6 @@ interface DirectorReviews { name: string; photo: string; alt: string; reviews: R
 
 const DIRECTORS: DirectorReviews[] = [
   {
-    name: "Akshay Kapoor",
-    photo: "akshay-kapoor.jpg",
-    alt: "Akshay Kapoor, Manifest Real Estate",
-    reviews: [
-      {
-        quote: "As an interstate investor I expected a stressful sale, but Akshay made the whole process completely smooth. He personally arranged every renovation and tradie needed to get the property sale-ready — and it sold above his initial estimate.",
-        name: "Verified seller",
-        detail: "Interstate investor",
-      },
-      {
-        quote: "While the big-name agencies just put up a sign and run open homes, AK truly went above and beyond. He took the time to understand the local market and recommended smart, cost-effective improvements — all aimed at helping us reach our target sale price.",
-        name: "Verified seller",
-        detail: "Interstate vendor",
-      },
-    ],
-  },
-  {
     name: "Rishi Vohra",
     photo: "rishi-vohra.jpg",
     alt: "Rishi Vohra, Manifest Real Estate",
@@ -50,6 +33,23 @@ const DIRECTORS: DirectorReviews[] = [
         quote: "Rishi really knows what he is doing. Really competent. I am really happy to be doing business with him.",
         name: "Verified client",
         detail: "Manifest client",
+      },
+    ],
+  },
+  {
+    name: "Akshay Kapoor",
+    photo: "akshay-kapoor.jpg",
+    alt: "Akshay Kapoor, Manifest Real Estate",
+    reviews: [
+      {
+        quote: "As an interstate investor I expected a stressful sale, but Akshay made the whole process completely smooth. He personally arranged every renovation and tradie needed to get the property sale-ready — and it sold above his initial estimate.",
+        name: "Verified seller",
+        detail: "Interstate investor",
+      },
+      {
+        quote: "While the big-name agencies just put up a sign and run open homes, AK truly went above and beyond. He took the time to understand the local market and recommended smart, cost-effective improvements — all aimed at helping us reach our target sale price.",
+        name: "Verified seller",
+        detail: "Interstate vendor",
       },
     ],
   },
