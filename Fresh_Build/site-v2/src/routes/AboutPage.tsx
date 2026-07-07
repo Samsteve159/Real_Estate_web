@@ -8,11 +8,11 @@ import { useReveal } from "../lib/useReveal";
  * ------------------------------------------------------------------ */
 
 const VALUES = [
-  { title: "Integrity", body: "We do what we say, and we tell you what you need to hear — not just what's easy." },
+  { title: "Integrity", body: "We do what we say, and we tell you what you need to hear, not just what's easy." },
   { title: "Professionalism", body: "Considered advice, clear communication and a process you can rely on at every stage." },
   { title: "Knowledge", body: "Local market insight and research that turn complex decisions into clear ones." },
   { title: "Relationships", body: "We build lasting relationships, which is why so much of our work comes through referral." },
-  { title: "Results", body: "Everything we do is measured against one thing — the outcome we achieve for you." },
+  { title: "Results", body: "Everything we do is measured against one thing: the outcome we achieve for you." },
 ];
 
 export default function AboutPage() {
@@ -89,7 +89,7 @@ export default function AboutPage() {
               {/* Real client review for Rishi (supplied by Akshay, 2026-07-02). */}
               <blockquote className="mt-6 pl-5" style={{ borderLeft: "2px solid var(--color-gold)" }}>
                 <p className="font-display italic" style={{ color: "var(--color-text)", fontSize: "1.1rem", lineHeight: 1.5 }}>
-                  "Rishi really knows what he is doing. Really competent. I am really happy to be doing business with him."
+                  "Professional, responsive and reliable. He knows exactly how to achieve a high sales result."
                 </p>
               </blockquote>
             </div>

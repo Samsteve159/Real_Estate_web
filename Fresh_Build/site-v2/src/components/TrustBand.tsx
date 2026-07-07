@@ -25,7 +25,7 @@ const DIRECTORS: DirectorReviews[] = [
     // Real client reviews for Rishi (supplied by Akshay, 2026-07-02).
     reviews: [
       {
-        quote: "Rishi was a really outstanding agent. It's not only that he helped me achieve over my target price for the sale of my property — he is very professional with deep knowledge of the market. He'll help you with due diligence and market assessment, and suggest changes that help achieve a high sales target. Very responsive and reliable. I highly recommend him.",
+        quote: "Rishi was a really outstanding agent. It's not only that he helped me achieve over my target price for the sale of my property. He is very professional with deep knowledge of the market. He'll help you with due diligence and market assessment, and suggest changes that help achieve a high sales target. Very responsive and reliable. I highly recommend him.",
         name: "Verified seller",
         detail: "Property vendor",
       },
@@ -42,12 +42,12 @@ const DIRECTORS: DirectorReviews[] = [
     alt: "Akshay Kapoor, Manifest Real Estate",
     reviews: [
       {
-        quote: "As an interstate investor I expected a stressful sale, but Akshay made the whole process completely smooth. He personally arranged every renovation and tradie needed to get the property sale-ready — and it sold above his initial estimate.",
+        quote: "As an interstate investor I expected a stressful sale, but Akshay made the whole process completely smooth. He personally arranged every renovation and tradie needed to get the property sale-ready, and it sold above his initial estimate.",
         name: "Verified seller",
         detail: "Interstate investor",
       },
       {
-        quote: "While the big-name agencies just put up a sign and run open homes, AK truly went above and beyond. He took the time to understand the local market and recommended smart, cost-effective improvements — all aimed at helping us reach our target sale price.",
+        quote: "While the big-name agencies just put up a sign and run open homes, AK truly went above and beyond. He took the time to understand the local market and recommended smart, cost-effective improvements, all aimed at helping us reach our target sale price.",
         name: "Verified seller",
         detail: "Interstate vendor",
       },
