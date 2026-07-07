@@ -57,7 +57,10 @@ export default function AboutPage() {
             {/* Rishi */}
             <div className="reveal">
               <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
-              <h3 className="display mb-5" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Rishi Vohra</h3>
+              <h3 className="display mb-2" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Rishi Vohra</h3>
+              <p className="font-display italic mb-5" style={{ color: "var(--color-gold)", fontSize: "0.95rem", lineHeight: 1.4 }}>
+                Superior negotiation. Personalised service. Real results.
+              </p>
               <img
                 src={`${import.meta.env.BASE_URL}rishi-vohra.jpg`}
                 alt="Rishi Vohra, Director at Manifest Real Estate"
@@ -94,7 +97,10 @@ export default function AboutPage() {
             {/* Akshay */}
             <div className="reveal">
               <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
-              <h3 className="display mb-5" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Akshay Kapoor (AK)</h3>
+              <h3 className="display mb-2" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Akshay Kapoor (AK)</h3>
+              <p className="font-display italic mb-5" style={{ color: "var(--color-gold)", fontSize: "0.95rem", lineHeight: 1.4 }}>
+                Clear communication. Genuine service. Trust.
+              </p>
               <img
                 src={`${import.meta.env.BASE_URL}akshay-kapoor.jpg`}
                 alt="Akshay Kapoor (AK), Director at Manifest Real Estate"
