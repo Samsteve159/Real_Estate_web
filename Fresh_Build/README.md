@@ -7,8 +7,7 @@ The new build lives here. The old prototype (`../legacy/demo_theme`, `../legacy/
 ```
 Fresh_Build/
   site-v2/   ← the LIVE V2 agency site (Vite + React + TS + Tailwind)
-  site/      ← V1 build (kept for backtracking)
-  _reference/ ← old demo copy (reference only)
+  site/      ← V1 build (archived reference)
   app/       ← built later; reuses the same tools + API
   Assets/    ← you paste source files here (logo, newsletter MD, Excel, …)
   vault-re-api-access-email.md  ← ready-to-send email for Akshay

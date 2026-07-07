@@ -17,7 +17,7 @@ Then a companion **app** reusing the same tools. Foundation: **custom React** (l
 
 ### Design direction (LOCKED — set by Akshay)
 Full brief: `Fresh_Build/Assets/design-direction-brief.md`. Non-negotiables:
-- **Build the fresh site — never refine the demo.** `legacy/demo_theme` and `Fresh_Build/_reference` (a demo copy) are **reference only**; do not polish them. The deliverable is net-new pages + the tools.
+- **Build the fresh site — never refine the demo.** `legacy/demo_theme` is **reference only**; do not polish it. The deliverable is net-new pages + the tools. (The redundant `Fresh_Build/_reference` demo copy — a duplicate of `legacy/demo_theme` — was removed 2026-07-07; recoverable from git history.)
 - **Black theme, white fonts, gold accent** (`#c2a267`), Raleway. Near-black bg; navy is a deep secondary tone only.
 - **Motion hero** ("moving pictures" like the references) — use **tasteful placeholder motion**, swappable for Akshay's real footage; placeholder pictures elsewhere as needed.
 - **Inspiration only, NEVER copy** the reference sites (WHITEFOX Real Estate, LUXE Real Estate) — no lifting their colors/CSS/markup/assets (IP risk). Build original.
