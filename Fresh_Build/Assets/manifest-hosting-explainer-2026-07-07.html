@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manifest · Website Hosting — Plain-English Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy: #003970;
+    --navy-deep: #002a52;
+    --gold: #b8924f;
+    --gold-soft: #c2a267;
+    --ink: #1c2430;
+    --muted: #5a6675;
+    --line: #e4e8ee;
+    --bg: #f4f6f9;
+    --paper: #ffffff;
+    --good: #1c7a52;
+    --bad: #b23b3b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Raleway", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.38;
+    -webkit-font-smoothing: antialiased;
+    padding: 18px 14px;
+    font-size: 11px;
+  }
+  .page {
+    max-width: 820px;
+    margin: 0 auto;
+    background: var(--paper);
+    box-shadow: 0 20px 60px -25px rgba(0,40,82,0.35);
+  }
+
+  /* ---- Letterhead ---- */
+  .head {
+    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 100%);
+    color: #fff;
+    padding: 14px 38px 11px;
+    position: relative;
+    overflow: hidden;
+  }
+  .head::after {
+    content: "";
+    position: absolute; right: -60px; top: -60px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,146,79,0.25), transparent 70%);
+  }
+  .brand { display: flex; align-items: center; gap: 11px; }
+  .mark { width: 30px; height: 30px; flex: none; }
+  .wordmark { display: flex; flex-direction: column; line-height: 1; }
+  .wordmark b { font-weight: 800; letter-spacing: 0.18em; font-size: 0.92rem; }
+  .wordmark span { font-weight: 500; letter-spacing: 0.42em; font-size: 0.46rem; color: var(--gold-soft); margin-top: 4px; }
+  .report-title { margin-top: 12px; font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+  .report-sub { margin-top: 4px; color: rgba(255,255,255,0.72); font-size: 0.76rem; }
+  .meta {
+    margin-top: 10px; display: flex; flex-wrap: wrap; gap: 24px;
+    font-size: 0.68rem; color: rgba(255,255,255,0.85);
+    border-top: 1px solid rgba(255,255,255,0.15); padding-top: 8px;
+  }
+  .meta .k { display: block; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.53rem; color: var(--gold-soft); margin-bottom: 2px; }
+
+  /* ---- Body ---- */
+  .body { padding: 11px 38px 4px; }
+  p.lead { color: var(--ink); font-size: 0.85rem; margin-bottom: 9px; }
+  p.lead b { color: var(--navy); }
+
+  h2.section { font-size: 0.85rem; font-weight: 700; color: var(--navy); margin: 0 0 6px; padding-bottom: 5px; border-bottom: 2px solid var(--line); }
+
+  /* two cards: have vs need */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 10px; }
+  .card { border: 1px solid var(--line); padding: 10px 12px; background: #fbfcfe; }
+  .card.need { border-left: 4px solid var(--gold); }
+  .card.have { border-left: 4px solid #c9ced6; }
+  .card .tag { font-size: 0.54rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; }
+  .card.have .tag { color: var(--muted); }
+  .card.need .tag { color: var(--gold); }
+  .card .name { font-size: 0.9rem; font-weight: 800; color: var(--navy); margin: 3px 0 4px; }
+  .card p { font-size: 0.75rem; color: var(--muted); }
+  .card p b { color: var(--ink); }
+
+  /* why not wordpress callout */
+  .why { border: 1px solid var(--line); border-left: 4px solid var(--navy); background: rgba(0,57,112,0.035); padding: 9px 14px; margin-bottom: 10px; }
+  .why h3 { font-size: 0.8rem; color: var(--navy); font-weight: 700; margin-bottom: 3px; }
+  .why p { font-size: 0.76rem; color: var(--ink); }
+  .why p b { color: var(--navy); }
+
+  /* price table */
+  table { width: 100%; border-collapse: collapse; }
+  thead td { font-size: 0.56rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 700; padding: 0 8px 5px; border-bottom: 2px solid var(--line); }
+  tbody td { padding: 6px 8px; font-size: 0.77rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  td.plan b { color: var(--navy); font-weight: 700; }
+  td.plan small { display: block; color: var(--muted); font-size: 0.64rem; font-weight: 500; }
+  td.price b { color: var(--ink); font-weight: 800; font-size: 0.82rem; }
+  td.price small { display: block; color: var(--muted); font-size: 0.61rem; }
+  td.can { text-align: center; font-weight: 800; font-size: 0.75rem; }
+  .yes { color: var(--good); }
+  .no { color: var(--bad); }
+  tr.pick td { background: rgba(184,146,79,0.09); }
+  tr.pick td.plan b::after { content: " ★"; color: var(--gold); }
+  .vpsnote { font-size: 0.71rem; color: var(--muted); padding: 6px 2px 0; }
+  .vpsnote b { color: var(--navy); }
+
+  /* q&a */
+  .qa { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px; }
+  .qbox { border: 1px solid var(--line); padding: 10px 12px; background: #fbfcfe; }
+  .qbox .q { font-size: 0.76rem; font-weight: 800; color: var(--navy); margin-bottom: 3px; }
+  .qbox .q span { color: var(--gold); }
+  .qbox p { font-size: 0.72rem; color: var(--muted); }
+  .qbox p b { color: var(--ink); }
+
+  /* bottom line */
+  .cta {
+    margin-top: 10px; background: var(--navy); color: #fff;
+    padding: 11px 20px; border-radius: 4px;
+  }
+  .cta .t { font-size: 0.88rem; font-weight: 700; }
+  .cta .s { font-size: 0.74rem; color: rgba(255,255,255,0.82); margin-top: 3px; line-height: 1.48; }
+  .cta .s b { color: var(--gold-soft); }
+
+  .foot { padding: 8px 38px 10px; color: var(--muted); font-size: 0.6rem; line-height: 1.45; border-top: 1px solid var(--line); margin-top: 8px; }
+  .foot strong { color: var(--ink); }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { box-shadow: none; max-width: none; }
+    @page { margin: 8mm; size: A4; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <!-- Letterhead -->
+    <header class="head">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <path d="M14 78V30l16 10v38H14zM38 78V46l12-9 12 9v32H50V52l-12 0v26H38zM70 78V40l16-10v48H70z" fill="#fff" opacity="0.92"/>
+          <path d="M44 60h12v18H44z" fill="#b8924f"/>
+        </svg>
+        <span class="wordmark"><b>MANIFEST</b><span>REAL ESTATE</span></span>
+      </div>
+
+      <div class="report-title">Getting Manifest Online — In Plain English</div>
+      <div class="report-sub">What we're setting up, why it's <em>not</em> WordPress, and answers to your domain &amp; email questions.</div>
+
+      <div class="meta">
+        <div><span class="k">Prepared for</span>Akshay Kapoor</div>
+        <div><span class="k">Date</span>7 July 2026</div>
+        <div><span class="k">Prepared by</span>Manifest website project</div>
+        <div><span class="k">Prices</span>GoDaddy Australia (AUD)</div>
+      </div>
+    </header>
+
+    <div class="body">
+      <p class="lead">
+        We've built you a <b>brand-new custom website</b> with live listings and smart client tools
+        (instant valuation, an AI chat assistant, and stamp-duty / borrowing / rental calculators). To put it
+        online and switch those tools on, it needs a <b>proper hosting plan</b> — a different GoDaddy product
+        from the free one you're on now.
+      </p>
+
+      <!-- What you have vs what we need -->
+      <div class="cards">
+        <div class="card have">
+          <div class="tag">What you're logged into now</div>
+          <div class="name">Websites + Marketing — FREE</div>
+          <p>GoDaddy's own <b>drag-and-drop builder</b>. Fine for a quick DIY page, but it <b>cannot run our custom site or the smart tools</b>. Not what we need.</p>
+        </div>
+        <div class="card need">
+          <div class="tag">What we actually need</div>
+          <div class="name">Web Hosting — Deluxe</div>
+          <p>A separate GoDaddy product: <b>real hosting</b> where our site and tools live. Includes your <b>domain</b> and <b>email free</b>, plus the security padlock (SSL).</p>
+        </div>
+      </div>
+
+      <!-- Why not WordPress -->
+      <div class="why">
+        <h3>Why not the cheaper "WordPress" hosting?</h3>
+        <p>
+          WordPress hosting <b>only runs WordPress websites</b>. Your new site is custom-built, with its own tools
+          that need an open, flexible space to run. Your <b>old site was a WordPress template</b> — which is exactly
+          why it couldn't offer these tools. Proper <b>Web Hosting</b> is what makes them possible.
+        </p>
+      </div>
+
+      <!-- Price comparison -->
+      <h2 class="section">The options &amp; what they cost (GoDaddy Australia)</h2>
+      <table>
+        <thead>
+          <tr>
+            <td class="plan">Plan</td>
+            <td class="price">Price / month</td>
+            <td class="can">Runs our<br>site + tools?</td>
+            <td>What you get</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="pick">
+            <td class="plan"><b>Web Hosting — Deluxe</b><small>Our recommendation</small></td>
+            <td class="price"><b>$8.95</b><small>1st yr · then $27.95</small></td>
+            <td class="can yes">✓ Yes</td>
+            <td>10 sites, 50 GB, cPanel, <b>free domain + email + SSL</b></td>
+          </tr>
+          <tr>
+            <td class="plan"><b>Web Hosting — Economy</b><small>Budget option</small></td>
+            <td class="price"><b>$6.95</b><small>1st yr · then $18.95</small></td>
+            <td class="can yes">✓ Yes</td>
+            <td>1 site, 25 GB — works, but less room to grow</td>
+          </tr>
+          <tr>
+            <td class="plan"><b>Hosting for WordPress — Basic</b><small>Cheapest, but wrong fit</small></td>
+            <td class="price"><b>$6.95</b><small>1st yr · then $22.95</small></td>
+            <td class="can no">✗ No</td>
+            <td>WordPress-only — <b>cannot run our custom site or tools</b></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="vpsnote"><b>Backup option:</b> if Deluxe ever falls short, a <b>VPS ($13.95/mo)</b> guarantees everything runs — we'd only switch using the 30-day money-back guarantee, at no extra cost.</p>
+
+      <!-- Your two questions -->
+      <div class="qa">
+        <div class="qbox">
+          <div class="q">Your question: <span>can we cut the domain cost?</span></div>
+          <p>Yes — you're <b>not locked in</b>. We can keep your domain, move it to a cheaper provider (same name, lower yearly fee), or use the <b>free first-year domain</b> included with Deluxe. Changing it later is easy — <b>no rebuild needed</b>.</p>
+        </div>
+        <div class="qbox">
+          <div class="q">Your question: <span>the monthly email charge</span></div>
+          <p>Right now email is a <b>separate paid add-on</b> (GoDaddy charges from <b>$3.50 per mailbox each month</b>). Web Hosting Deluxe <b>includes email free</b> — so we cancel that add-on and your email keeps working at <b>no extra cost</b>.</p>
+        </div>
+      </div>
+
+      <!-- Bottom line -->
+      <div class="cta">
+        <div class="t">Bottom line — one purchase does it all</div>
+        <div class="s">
+          Buy <b>Web Hosting → Deluxe</b> (under Manifest's account). It replaces the free builder, hosts the real
+          site + tools, includes your <b>domain + email</b>, and <b>removes the monthly email charge</b>.
+          Then share the cPanel login and we take it live — with a 30-day money-back safety net.
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="foot">
+      <strong>Prices:</strong> GoDaddy <strong>Australia</strong> (AUD), first-term promotional rates on an annual/multi-year plan as at <strong>7 July 2026</strong>; renewal rates shown where noted, GST may apply. Set by GoDaddy and subject to change — godaddy.com/en-au. &nbsp;·&nbsp; Manifest Real Estate · manifestre.com.au
+    </div>
+  </div>
+</body>
+</html>

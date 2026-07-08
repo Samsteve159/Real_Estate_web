@@ -12,8 +12,8 @@ const STATS = [
   { value: "1 call", label: "To a real expert",      note: "skip the call centre" },
 ];
 
-// Reviews grouped per director. Akshay's are real, supplied by him (2026-06-26).
-// Rishi's are PLACEHOLDERS — swap for real, verified client quotes before launch.
+// Reviews grouped per director. All quotes are REAL, supplied by Akshay
+// (his own 2026-06-26; Rishi's 2026-07-02). Rishi renders first to match the About page.
 interface Review { quote: string; name: string; detail: string; }
 interface DirectorReviews { name: string; photo: string; alt: string; reviews: Review[]; }
 
