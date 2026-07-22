@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buyer App — Concept</title>
+<style>
+  /* ============================================================= *
+   *  Manifest Buyer App — concept deck (print-first, A4)
+   *  Brand: near-black + white + gold #c2a267 (LOCKED system)
+   * ============================================================= */
+  :root{
+    --bg:#0a0a0b; --surface:#141416; --surface-2:#1c1c20; --surface-3:#242429;
+    --text:#f5f5f6; --muted:#a1a1aa; --dim:#71717a;
+    --gold:#c2a267; --gold-bright:#d4b87a; --gold-dim:#9a7f4f;
+    --navy:#003970;
+    --line:rgba(255,255,255,.10); --line-gold:rgba(194,162,103,.28);
+    --sans:"Raleway","Helvetica Neue","Segoe UI",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#000;color:var(--text);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.01em;line-height:1.08;}
+  p{margin:0;line-height:1.62;}
+
+  /* ---- Page ---- */
+  .page{position:relative;width:210mm;height:296mm;margin:0 auto;background:var(--bg);
+    padding:20mm 18mm;overflow:hidden;page-break-after:always;display:flex;flex-direction:column;}
+  .page:last-child{page-break-after:auto;}
+  @media screen{ body{background:#050506;padding:24px 0;}
+    .page{margin:0 auto 26px;box-shadow:0 24px 60px rgba(0,0,0,.6);} }
+  @page{size:A4;margin:0;}
+
+  /* ---- Type motifs ---- */
+  .eyebrow{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.30em;color:var(--gold);}
+  .kicker{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);font-weight:600;}
+  .gold{color:var(--gold);}
+  .muted{color:var(--muted);}
+  .dim{color:var(--dim);}
+  .tnum{font-variant-numeric:tabular-nums;}
+  .rule{height:1px;background:var(--line);border:0;width:100%;}
+
+  /* running footer */
+  .foot{position:absolute;left:18mm;right:18mm;bottom:11mm;display:flex;justify-content:space-between;
+    align-items:center;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);}
+  .foot .b{color:var(--muted);font-weight:600;}
+
+  /* ============================ COVER ============================ */
+  .cover{justify-content:space-between;}
+  .cover .top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .brandmark{display:flex;align-items:center;gap:10px;}
+  .brandmark .dot{width:26px;height:26px;border-radius:7px;
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));
+    display:flex;align-items:center;justify-content:center;color:#0a0a0b;font-weight:800;font-size:15px;}
+  .brandmark .w{font-weight:700;letter-spacing:.02em;font-size:15px;}
+  .cover h1{font-size:58px;line-height:1.02;letter-spacing:-.02em;text-wrap:balance;margin-top:8px;}
+  .cover h1 .accent{background:linear-gradient(100deg,var(--gold-dim),var(--gold),var(--gold-bright),var(--gold));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+  .cover .lede{font-size:16.5px;color:var(--muted);max-width:34ch;margin-top:22px;}
+  .gap-card{margin-top:26px;border:1px solid var(--line-gold);border-radius:14px;padding:22px 24px;
+    background:linear-gradient(180deg,rgba(194,162,103,.06),rgba(194,162,103,0));}
+  .gap-card .q{font-size:19px;font-weight:600;line-height:1.4;text-wrap:balance;}
+  .cover .meta{display:flex;gap:34px;margin-top:auto;padding-top:26px;}
+  .cover .meta div{display:flex;flex-direction:column;gap:5px;}
+  .cover .meta .l{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);}
+  .cover .meta .v{font-size:13px;color:var(--text);font-weight:600;}
+
+  /* ============================ SECTION HEADS ============================ */
+  .head{display:flex;flex-direction:column;gap:9px;margin-bottom:20px;}
+  .head h2{font-size:30px;letter-spacing:-.02em;text-wrap:balance;}
+  .head p{font-size:13.5px;color:var(--muted);max-width:62ch;}
+
+  /* ============================ PHONE MOCKUPS ============================ */
+  .phones{display:flex;gap:26px;justify-content:center;align-items:flex-start;flex:1;}
+  .phone-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;width:270px;}
+  .phone{width:270px;height:560px;border-radius:36px;background:#000;padding:9px;
+    box-shadow:0 0 0 2px #2a2a2e,0 20px 40px rgba(0,0,0,.5);position:relative;}
+  .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:104px;height:22px;
+    background:#000;border-radius:0 0 14px 14px;z-index:5;}
+  .screen{width:100%;height:100%;border-radius:28px;background:var(--bg);overflow:hidden;
+    display:flex;flex-direction:column;position:relative;}
+  .statusbar{display:flex;justify-content:space-between;align-items:center;padding:11px 20px 4px;
+    font-size:10px;color:var(--text);font-weight:600;}
+  .statusbar .r{display:flex;gap:5px;align-items:center;color:var(--muted);}
+  .cap{font-size:11.5px;color:var(--muted);text-align:center;max-width:250px;line-height:1.45;}
+  .cap b{color:var(--text);font-weight:600;}
+
+  /* screen chrome */
+  .scr-pad{padding:6px 16px 0;flex:1;display:flex;flex-direction:column;min-height:0;}
+  .scr-h{font-size:16px;font-weight:600;letter-spacing:-.01em;}
+  .scr-sub{font-size:10px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;font-weight:600;}
+  .powered{font-size:8.5px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;}
+
+  .tabbar{display:flex;justify-content:space-around;align-items:center;padding:9px 8px 12px;
+    border-top:1px solid var(--line);background:var(--surface);}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:8.5px;color:var(--dim);letter-spacing:.04em;}
+  .tab .ic{width:18px;height:18px;border-radius:5px;background:var(--surface-3);}
+  .tab.active{color:var(--gold);}
+  .tab.active .ic{background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));}
+
+  /* readiness ring */
+  .ring-row{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);
+    border-radius:16px;padding:14px;margin-top:10px;}
+  .ring{width:66px;height:66px;border-radius:50%;flex:none;
+    background:conic-gradient(var(--gold) 0 62%, var(--surface-3) 62% 100%);
+    display:flex;align-items:center;justify-content:center;}
+  .ring .in{width:50px;height:50px;border-radius:50%;background:var(--surface);display:flex;
+    flex-direction:column;align-items:center;justify-content:center;gap:0;}
+  .ring .in b{font-size:16px;font-weight:700;}
+  .ring .in span{font-size:7px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;}
+  .ring-row .t b{font-size:12.5px;}
+  .ring-row .t p{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.4;}
+
+  /* stage list */
+  .stages{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+  .stage{display:flex;gap:11px;align-items:center;background:var(--surface);border:1px solid var(--line);
+    border-radius:13px;padding:11px 12px;}
+  .stage.active{border-color:var(--line-gold);background:linear-gradient(180deg,rgba(194,162,103,.07),rgba(20,20,22,1));}
+  .stage .n{width:24px;height:24px;border-radius:7px;background:var(--surface-3);flex:none;display:flex;
+    align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--muted);}
+  .stage.done .n{background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));color:#0a0a0b;}
+  .stage.active .n{background:var(--navy);color:#fff;box-shadow:0 0 0 2px var(--line-gold);}
+  .stage .m{flex:1;min-width:0;}
+  .stage .m b{font-size:11.5px;font-weight:600;display:block;}
+  .stage .m .s{font-size:9px;color:var(--dim);letter-spacing:.02em;}
+  .stage .m .s.g{color:var(--gold);}
+  .bar{height:4px;border-radius:3px;background:var(--surface-3);margin-top:6px;overflow:hidden;}
+  .bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold-dim),var(--gold-bright));}
+  .lock{font-size:11px;color:var(--dim);}
+
+  /* mentor chat */
+  .chat{display:flex;flex-direction:column;gap:9px;margin-top:10px;flex:1;overflow:hidden;}
+  .bub{max-width:88%;padding:9px 11px;border-radius:13px;font-size:11px;line-height:1.5;}
+  .bub.u{align-self:flex-end;background:var(--navy);color:#eaf1fb;border-bottom-right-radius:4px;}
+  .bub.a{align-self:flex-start;background:var(--surface-2);border:1px solid var(--line);border-bottom-left-radius:4px;color:var(--text);}
+  .bub.a .src{margin-top:7px;padding-top:7px;border-top:1px solid var(--line);font-size:8.5px;color:var(--gold);
+    letter-spacing:.08em;text-transform:uppercase;font-weight:600;}
+  .chip{display:inline-flex;align-items:center;gap:4px;font-size:9px;color:var(--gold);border:1px solid var(--line-gold);
+    border-radius:20px;padding:3px 9px;margin-top:6px;}
+  .disc{font-size:8px;color:var(--dim);align-self:center;margin-top:2px;letter-spacing:.03em;}
+  .inputbar{display:flex;align-items:center;gap:8px;margin:8px 0 12px;padding:9px 12px;border:1px solid var(--line);
+    border-radius:22px;background:var(--surface);font-size:10px;color:var(--dim);}
+  .inputbar .send{margin-left:auto;width:24px;height:24px;border-radius:50%;flex:none;
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));}
+
+  /* tool result */
+  .big{margin-top:14px;text-align:center;}
+  .big .l{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);font-weight:600;}
+  .big .v{font-size:40px;font-weight:700;letter-spacing:-.02em;margin-top:6px;
+    background:linear-gradient(100deg,var(--gold-dim),var(--gold),var(--gold-bright));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;}
+  .metric{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 12px;}
+  .metric .l{font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:600;}
+  .metric .v{font-size:15px;font-weight:600;margin-top:4px;}
+  .source{display:flex;gap:8px;align-items:flex-start;margin-top:14px;padding:10px 12px;border:1px dashed var(--line-gold);
+    border-radius:11px;background:rgba(194,162,103,.05);}
+  .source .k{font-size:8.5px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;font-weight:700;flex:none;}
+  .source p{font-size:9.5px;color:var(--muted);line-height:1.45;}
+  .cta{margin:14px 0 12px;text-align:center;background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));
+    color:#0a0a0b;font-weight:700;font-size:11.5px;border-radius:12px;padding:12px;letter-spacing:.02em;}
+
+  /* perks */
+  .perks{display:flex;flex-direction:column;gap:9px;margin-top:12px;flex:1;}
+  .perk{display:flex;gap:11px;align-items:center;background:var(--surface);border:1px solid var(--line);
+    border-radius:13px;padding:11px 12px;}
+  .perk .ic{width:34px;height:34px;border-radius:9px;flex:none;background:var(--surface-3);
+    display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .perk .m{flex:1;min-width:0;}
+  .perk .m b{font-size:11.5px;font-weight:600;display:block;}
+  .perk .m .s{font-size:9px;color:var(--dim);}
+  .save{font-size:10px;font-weight:700;color:#0a0a0b;background:linear-gradient(135deg,var(--gold-bright),var(--gold-dim));
+    padding:5px 9px;border-radius:8px;flex:none;letter-spacing:.01em;}
+  .memberbar{margin:6px 0 12px;text-align:center;font-size:9px;color:var(--gold);letter-spacing:.16em;
+    text-transform:uppercase;font-weight:600;}
+
+  /* ============================ JOURNEY TIMELINE ============================ */
+  .timeline{display:flex;flex-direction:column;gap:11px;flex:1;}
+  .tl{display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start;}
+  .tl .num{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-size:16px;font-weight:700;background:var(--surface);border:1px solid var(--line-gold);color:var(--gold);}
+  .tl .c{border:1px solid var(--line);border-radius:14px;padding:14px 18px;background:var(--surface);}
+  .tl .c h3{font-size:16px;font-weight:600;}
+  .tl .c .want{font-size:11px;color:var(--gold);margin-top:2px;font-style:italic;}
+  .tl .c .items{font-size:11.5px;color:var(--muted);margin-top:8px;line-height:1.55;}
+  .tl .c .items b{color:var(--text);font-weight:600;}
+
+  /* ============================ TWO-COL / CARDS ============================ */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;align-content:start;}
+  .card{border:1px solid var(--line);border-radius:15px;padding:20px;background:var(--surface);
+    display:flex;flex-direction:column;gap:9px;}
+  .card.gold{border-color:var(--line-gold);background:linear-gradient(180deg,rgba(194,162,103,.06),rgba(20,20,22,1));}
+  .card h3{font-size:16px;font-weight:600;}
+  .card p{font-size:12px;color:var(--muted);}
+  .card .ic{width:34px;height:34px;border-radius:9px;background:var(--surface-3);margin-bottom:2px;
+    display:flex;align-items:center;justify-content:center;font-size:16px;}
+
+  /* versus table */
+  .vs{display:grid;grid-template-columns:1.3fr 1fr 1fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;flex:none;}
+  .vs>div{padding:13px 16px;border-bottom:1px solid var(--line);font-size:12px;}
+  .vs .h{background:var(--surface);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;}
+  .vs .h.us{color:var(--gold);}
+  .vs .feat{color:var(--muted);}
+  .vs .us{color:var(--text);font-weight:600;}
+  .vs .them{color:var(--dim);}
+  .vs>div:nth-last-child(-n+3){border-bottom:0;}
+  .vs .tick{color:var(--gold);font-weight:700;}
+  .vs .cross{color:var(--dim);}
+
+  /* revenue list */
+  .rev{display:flex;flex-direction:column;gap:11px;flex:1;}
+  .rev .row{display:grid;grid-template-columns:30px 1fr;gap:14px;align-items:start;
+    border-bottom:1px solid var(--line);padding-bottom:11px;}
+  .rev .row:last-child{border-bottom:0;}
+  .rev .row .n{color:var(--gold);font-weight:700;font-size:13px;font-variant-numeric:tabular-nums;padding-top:1px;}
+  .rev .row b{font-size:13.5px;font-weight:600;}
+  .rev .row p{font-size:11.5px;color:var(--muted);margin-top:3px;}
+  .pill{display:inline-block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:3px 8px;border-radius:6px;margin-left:8px;vertical-align:middle;}
+  .pill.now{background:rgba(194,162,103,.15);color:var(--gold);border:1px solid var(--line-gold);}
+  .pill.v2{background:var(--surface-3);color:var(--muted);}
+
+  /* ideas grid */
+  .ideas{display:grid;grid-template-columns:1fr 1fr;gap:13px;flex:1;align-content:start;}
+  .idea{border:1px solid var(--line);border-radius:13px;padding:15px 16px;background:var(--surface);}
+  .idea .star{color:var(--gold);font-size:12px;}
+  .idea b{font-size:13px;font-weight:600;display:block;margin-top:4px;}
+  .idea p{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5;}
+
+  /* roadmap */
+  .road{display:flex;flex-direction:column;gap:10px;}
+  .rd{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:center;
+    border:1px solid var(--line);border-radius:12px;padding:13px 16px;background:var(--surface);}
+  .rd .ph{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .rd .w{font-size:12.5px;color:var(--text);}
+  .rd .w span{color:var(--dim);font-size:11px;}
+  .rd .t{font-size:12px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .next{margin-top:18px;border:1px solid var(--line-gold);border-radius:14px;padding:18px 20px;
+    background:linear-gradient(180deg,rgba(194,162,103,.06),rgba(194,162,103,0));}
+  .next h3{font-size:15px;margin-bottom:8px;}
+  .next ul{margin:0;padding-left:18px;color:var(--muted);font-size:12px;line-height:1.7;}
+  .next b{color:var(--text);}
+</style>
+</head>
+<body>
+
+<!-- ============================ 1 · COVER ============================ -->
+<section class="page cover">
+  <div class="top">
+    <div class="brandmark"><div class="dot">M</div><div class="w">Manifest <span class="dim">·</span> Buyer App</div></div>
+    <div class="kicker">Concept preview</div>
+  </div>
+
+  <div>
+    <div class="eyebrow" style="margin-bottom:16px;">Powered by Manifest Real Estate</div>
+    <h1>Your personal<br>buyer, <span class="accent">in your&nbsp;pocket.</span></h1>
+    <p class="lede">The one app that walks a first-home buyer through the entire purchase —
+      from "am I ready?" to the day they get the keys — in one place they can actually trust.</p>
+
+    <div class="gap-card">
+      <div class="eyebrow" style="margin-bottom:10px;">The gap we're filling</div>
+      <p class="q">No app holds a buyer's hand from start to finish. People stitch the biggest
+        purchase of their life together from a dozen sources — and never know who to trust.
+        <span class="gold">This app becomes the one they trust.</span></p>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div><span class="l">Built for</span><span class="v">First-home buyers · VIC</span></div>
+    <div><span class="l">Platform</span><span class="v">iOS &amp; Android</span></div>
+    <div><span class="l">For the buyer</span><span class="v">Free, forever</span></div>
+    <div><span class="l">Stage</span><span class="v">Concept · v1 scope</span></div>
+  </div>
+  <div class="foot"><span class="b">Manifest Buyer App</span><span>Concept · 2026</span></div>
+</section>
+
+<!-- ============================ 2 · SEE IT (1) ============================ -->
+<section class="page">
+  <div class="head">
+    <div class="eyebrow">What it looks like</div>
+    <h2>One journey, always in progress</h2>
+    <p>The app opens on the buyer's own journey — a live progress tracker, not a menu. Beside it,
+      a mentor that answers the questions they're too nervous to ask the seller's agent.</p>
+  </div>
+
+  <div class="phones">
+    <!-- PHONE: Journey dashboard -->
+    <div class="phone-wrap">
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="statusbar"><span>9:41</span><span class="r">5G ▪ 100%</span></div>
+        <div class="scr-pad">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+            <div><div class="scr-sub">Good morning</div><div class="scr-h">Sam's journey</div></div>
+            <div class="powered">Powered by<br>Manifest</div>
+          </div>
+          <div class="ring-row">
+            <div class="ring"><div class="in"><b>62%</b><span>Ready</span></div></div>
+            <div class="t"><b>Buyer Readiness</b><p>2 steps left before you're offer-ready. Next: get pre-approval.</p></div>
+          </div>
+          <div class="stages">
+            <div class="stage done"><div class="n">✓</div><div class="m"><b>Get Ready</b><span class="s g">Complete</span></div></div>
+            <div class="stage active"><div class="n">2</div><div class="m"><b>Find a Property</b><span class="s">3 of 7 checks · in progress</span><div class="bar"><i style="width:42%"></i></div></div></div>
+            <div class="stage"><div class="n">3</div><div class="m"><b>Before You Offer</b><span class="s">Next up</span></div><div class="lock">🔒</div></div>
+            <div class="stage"><div class="n">4</div><div class="m"><b>Under Contract</b><span class="s">Locked</span></div><div class="lock">🔒</div></div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="tab active"><div class="ic"></div>Journey</div>
+          <div class="tab"><div class="ic"></div>Tools</div>
+          <div class="tab"><div class="ic"></div>Mentor</div>
+          <div class="tab"><div class="ic"></div>Perks</div>
+        </div>
+      </div></div>
+      <p class="cap"><b>Home — the journey.</b> Seven stages, a readiness score, and the single next step. Reminders keep it moving.</p>
+    </div>
+
+    <!-- PHONE: Mentor -->
+    <div class="phone-wrap">
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="statusbar"><span>9:41</span><span class="r">5G ▪ 100%</span></div>
+        <div class="scr-pad">
+          <div class="scr-sub">Your buyer mentor</div><div class="scr-h">Ask anything</div>
+          <div class="chat">
+            <div class="bub u">Is 12 Rose St, Reservoir priced fairly at $840k?</div>
+            <div class="bub a">Three comparable sales within 500m sold for <b>$795k–$860k</b> in the last 6 months. At $840k it's near the top of that range — fair, but not a bargain. Worth an offer below asking.
+              <div class="src">Sources · 3 sold records · SRO duty</div></div>
+            <div class="chip">▸ See the comparable sales</div>
+            <div class="bub u">What should I ask at the inspection?</div>
+            <div class="disc">General information, not financial advice.</div>
+          </div>
+          <div class="inputbar">Ask your mentor…<div class="send"></div></div>
+        </div>
+      </div></div>
+      <p class="cap"><b>AI mentor.</b> Grounded answers that <b>cite their source</b> — the anti-ChatGPT. Hands off to a real Manifest expert for the big calls.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="b">Manifest Buyer App</span><span>02 · What it looks like</span></div>
+</section>
+
+<!-- ============================ 3 · SEE IT (2) ============================ -->
+<section class="page">
+  <div class="head">
+    <div class="eyebrow">What it looks like</div>
+    <h2>Broker-grade numbers. Real member savings.</h2>
+    <p>Every calculation is deterministic and shows its working. And the reason buyers stay: member
+      discounts on the services they need anyway.</p>
+  </div>
+
+  <div class="phones">
+    <!-- PHONE: Borrowing capacity -->
+    <div class="phone-wrap">
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="statusbar"><span>9:41</span><span class="r">5G ▪ 100%</span></div>
+        <div class="scr-pad">
+          <div class="scr-sub">Get Ready · Tool</div><div class="scr-h">Borrowing capacity</div>
+          <div class="big"><div class="l">You could borrow up to</div><div class="v tnum">$612,000</div></div>
+          <div class="metrics">
+            <div class="metric"><div class="l">Max purchase</div><div class="v tnum">$705,000</div></div>
+            <div class="metric"><div class="l">Deposit needed</div><div class="v tnum">$93,000</div></div>
+            <div class="metric"><div class="l">Stamp duty (VIC)</div><div class="v tnum">$0 · FHB</div></div>
+            <div class="metric"><div class="l">Monthly repay</div><div class="v tnum">$3,180</div></div>
+          </div>
+          <div class="source"><span class="k">How</span><p>ATO 2024–25 tax brackets + APRA 3% serviceability buffer, 30-yr term. Stamp duty from SRO Victoria. Tap to see every line.</p></div>
+          <div class="cta">Connect with a broker →</div>
+        </div>
+      </div></div>
+      <p class="cap"><b>The tools.</b> 13 calculators — borrowing, deposit, LMI, stamp duty, yield. <b>Provably correct</b>, every number sourced.</p>
+    </div>
+
+    <!-- PHONE: Perks -->
+    <div class="phone-wrap">
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="statusbar"><span>9:41</span><span class="r">5G ▪ 100%</span></div>
+        <div class="scr-pad">
+          <div class="scr-sub">Member perks</div><div class="scr-h">Save on every step</div>
+          <div class="perks">
+            <div class="perk"><div class="ic">🏠</div><div class="m"><b>Building &amp; Pest</b><span class="s">VIC Property Inspections</span></div><div class="save">Save $110</div></div>
+            <div class="perk"><div class="ic">📄</div><div class="m"><b>Conveyancing</b><span class="s">Fixed-fee settlement</span></div><div class="save">$300 flat</div></div>
+            <div class="perk"><div class="ic">🏦</div><div class="m"><b>Mortgage broker</b><span class="s">Free pre-approval review</span></div><div class="save">Free</div></div>
+            <div class="perk"><div class="ic">🛡️</div><div class="m"><b>Home insurance</b><span class="s">First 2 months</span></div><div class="save">2 mo free</div></div>
+            <div class="perk"><div class="ic">⚡</div><div class="m"><b>Utility connect</b><span class="s">Power, gas, internet</span></div><div class="save">1-tap</div></div>
+          </div>
+          <div class="memberbar">★ Free with the app — members only</div>
+        </div>
+        <div class="tabbar">
+          <div class="tab"><div class="ic"></div>Journey</div>
+          <div class="tab"><div class="ic"></div>Tools</div>
+          <div class="tab"><div class="ic"></div>Mentor</div>
+          <div class="tab active"><div class="ic"></div>Perks</div>
+        </div>
+      </div></div>
+      <p class="cap"><b>Member perks.</b> Real discounts from a <b>vetted partner network</b> — the buyer saves more than we earn. This is the hook.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="b">Manifest Buyer App</span><span>03 · What it looks like</span></div>
+</section>
+
+<!-- ============================ 4 · THE JOURNEY ============================ -->
+<section class="page">
+  <div class="head">
+    <div class="eyebrow">The spine of the app</div>
+    <h2>Seven stages, start to keys</h2>
+    <p>Each stage carries its own tools, interactive checklists and reminders. Nothing is forgotten,
+      because the app remembers for them.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl"><div class="num">1</div><div class="c"><h3>Get Ready</h3><div class="want">"Can I afford it — and what's my budget?"</div><div class="items"><b>Borrowing capacity · Deposit · Stamp duty · Budget · Savings tracker · Grants check</b> · connect to a broker · Buyer Readiness Score</div></div></div>
+    <div class="tl"><div class="num">2</div><div class="c"><h3>Find a Property</h3><div class="want">"Is this the right one — and is it fairly priced?"</div><div class="items"><b>Inspection checklist · Questions to ask the agent · Comparable sales · Suburb score · School zones · Flood/fire &amp; development overlays · Rental yield · Resale estimate</b></div></div></div>
+    <div class="tl"><div class="num">3</div><div class="c"><h3>Before You Offer</h3><div class="want">"How do I not overpay or get burned?"</div><div class="items"><b>Offer &amp; auction strategy · Recommended offer range · Due-diligence checklist · Building &amp; pest booking · Conveyancer · Finance-clause explained</b></div></div></div>
+    <div class="tl"><div class="num">4</div><div class="c"><h3>Under Contract</h3><div class="want">"Am I on track to settlement?"</div><div class="items">Progress tracker: contract signed → deposit paid → finance approved → inspections → <b>Section 32 reviewed</b> → settlement booked → utilities → insurance</div></div></div>
+    <div class="tl"><div class="num">5</div><div class="c"><h3>Final Inspection</h3><div class="want">"Is the home as promised?"</div><div class="items">Interactive checklist with photo capture — appliances, heating/cooling, hot water, fixtures included, damage since inspection, keys</div></div></div>
+    <div class="tl"><div class="num" style="font-size:13px;">6·7</div><div class="c"><h3>Settlement &amp; After</h3><div class="want">"Keys today — and settled in for the long run."</div><div class="items">Settlement tracker · key collection · utility transfers · then <b>address-change reminders, maintenance schedule &amp; a property-value tracker</b></div></div></div>
+  </div>
+  <div class="foot"><span class="b">Manifest Buyer App</span><span>04 · The seven-stage journey</span></div>
+</section>
+
+<!-- ============================ 5 · WHY IT WINS ============================ -->
+<section class="page">
+  <div class="head">
+    <div class="eyebrow">Why this, and not ChatGPT</div>
+    <h2>A system of action, not a chat box</h2>
+    <p>A buyer can ask ChatGPT anything — and get words. This app remembers their purchase, proves its
+      numbers, and gets them real discounts. That's the difference between advice and a co-pilot.</p>
+  </div>
+
+  <div class="vs">
+    <div class="h feat">Capability</div><div class="h us">Manifest App</div><div class="h">Generic AI</div>
+    <div class="feat">Remembers your journey &amp; dates</div><div class="us"><span class="tick">✓</span> Timeline + reminders</div><div class="them"><span class="cross">✕</span> Forgets</div>
+    <div class="feat">Numbers you can trust</div><div class="us"><span class="tick">✓</span> Deterministic + sourced</div><div class="them"><span class="cross">✕</span> Can hallucinate</div>
+    <div class="feat">Real property &amp; overlay data</div><div class="us"><span class="tick">✓</span> Comps, zones, overlays</div><div class="them"><span class="cross">✕</span> Not tied to the address</div>
+    <div class="feat">A real human when it matters</div><div class="us"><span class="tick">✓</span> One tap to Manifest</div><div class="them"><span class="cross">✕</span> None</div>
+    <div class="feat">Saves you money</div><div class="us"><span class="tick">✓</span> Member discounts</div><div class="them"><span class="cross">✕</span> None</div>
+  </div>
+
+  <div class="grid2" style="margin-top:18px;flex:none;">
+    <div class="card gold"><div class="ic">🔎</div><h3>Trust, made visible</h3><p>Every figure shows "how we worked this out" with its official source (SRO, gov data). AI answers cite the comp or overlay behind them. Nothing is a black box.</p></div>
+    <div class="card"><div class="ic">🤝</div><h3>Manifest as the backstop</h3><p>The app is agency-neutral, but a real, reviewed Manifest expert is one tap away for the high-stakes calls — credibility a chatbot can't offer.</p></div>
+  </div>
+  <div class="foot"><span class="b">Manifest Buyer App</span><span>05 · Why it wins</span></div>
+</section>
+
+<!-- ============================ 6 · FREE / MONEY ============================ -->
+<section class="page">
+  <div class="head">
+    <div class="eyebrow">Free for buyers — how it pays for itself</div>
+    <h2>The money is on the other side</h2>
+    <p>A first-home buyer with no spare cash gets the full journey, tools and everyday mentor for free.
+      We earn from the supply side and from optional power features — never from the anxious buyer.</p>
+  </div>
+
+  <div class="rev">
+    <div class="row"><div class="n">1</div><div><b>Partner network <span class="pill now">Live v1 · curated</span></b><p>Vetted building &amp; pest, conveyancers, brokers, insurance, utilities. Buyers get discounts; we take a referral margin. The two-sided flywheel and the reason they stay.</p></div></div>
+    <div class="row"><div class="n">2</div><div><b>Paid AI boosts <span class="pill now">Buyer-side</span></b><p>Optional 1-day / 1-week / 1-month passes for heavy AI at the moment of stress — contract-clause review, building-report summaries, negotiation coach, auction-week mentor.</p></div></div>
+    <div class="row"><div class="n">3</div><div><b>Agent &amp; broker leads to Manifest <span class="pill now">Direct win</span></b><p>Every "talk to a human" tap is a qualified, high-intent lead. The app is a lead engine for Manifest's core business — it pays back before partner revenue does.</p></div></div>
+    <div class="row"><div class="n">4</div><div><b>Business portal + white-label <span class="pill v2">v2</span></b><p>Self-serve partner sign-up with referral tracking, then licensing the whole engine to other agencies as their branded buyer app. Manifest becomes a platform.</p></div></div>
+  </div>
+
+  <div style="margin-top:14px;border:1px solid var(--line-gold);border-radius:12px;padding:14px 18px;
+    background:linear-gradient(180deg,rgba(194,162,103,.06),rgba(194,162,103,0));font-size:12.5px;color:var(--muted);">
+    <b class="gold">Two portals.</b> The buyer app (v1) + a business portal where partners publish offers and referrals
+    are tracked (v2). Everything runs under a <b style="color:var(--text);">≤ $500/month</b> cost cap — premium
+    property data is deferred to a paid tier so free stays sustainable.
+  </div>
+  <div class="foot"><span class="b">Manifest Buyer App</span><span>06 · How it stays free</span></div>
+</section>
+
+<!-- ============================ 7 · IDEAS ============================ -->
+<section class="page">
+  <div class="head">
+    <div class="eyebrow">Building on the vision</div>
+    <h2>Ideas that make it sticky</h2>
+    <p>Extensions of Akshay's core idea — the ones marked ★ are the high-impact bets for the early roadmap.</p>
+  </div>
+  <div class="ideas">
+    <div class="idea"><span class="star">★</span><b>Buyer Readiness Score</b><p>One confidence meter that fills as Stage 1 completes — turns "am I ready?" anxiety into a game with a clear next step.</p></div>
+    <div class="idea"><span class="star">★</span><b>Document Vault</b><p>Store the contract, Section 32, building &amp; pest reports in-app — and let the mentor read them: "any red flags here?"</p></div>
+    <div class="idea"><span class="star">★</span><b>Ask-before-you-sign</b><p>AI contract-clause explainer with red-flag detection — short cooling-off, finance-clause traps, unusual special conditions.</p></div>
+    <div class="idea"><span>◆</span><b>Auction-day companion</b><p>Walk-away price locked in beforehand, live bid-increment calculator, and calm-nerve prompts so no one over-bids.</p></div>
+    <div class="idea"><span class="star">★</span><b>Property School</b><p>Bite-size lessons ("what's a Section 32?"). Drives daily engagement, app-store keywords and SEO growth.</p></div>
+    <div class="idea"><span class="star">★</span><b>Invite-a-friend</b><p>Both sides unlock a partner discount. Buyers are surrounded by other buyers — the cheapest growth channel there is.</p></div>
+    <div class="idea"><span>◆</span><b>Shortlist compare</b><p>Save several properties and compare price, yield, overlays and suburb score side-by-side.</p></div>
+    <div class="idea"><span class="star">★</span><b>Post-settlement stickiness</b><p>Maintenance schedule, value tracker, and a refinance nudge years later — re-engagement and a fresh broker lead.</p></div>
+  </div>
+  <div class="foot"><span class="b">Manifest Buyer App</span><span>07 · Ideas</span></div>
+</section>
+
+<!-- ============================ 8 · ROADMAP ============================ -->
+<section class="page">
+  <div class="head">
+    <div class="eyebrow">Getting it built</div>
+    <h2>From concept to your phone</h2>
+    <p>Reusing the website's proven calculators and backend, a private beta is a few weeks away — not months.</p>
+  </div>
+  <div class="road">
+    <div class="rd"><span class="ph">Phase 0</span><span class="w">Knowledge base + app scaffold + design system <span>· done / underway</span></span><span class="t">~1 wk</span></div>
+    <div class="rd"><span class="ph">Phase 1</span><span class="w">Stage-1 tools + journey engine <span>· checklists, timeline, reminders</span></span><span class="t">~2–3 wks</span></div>
+    <div class="rd"><span class="ph">Phase 2</span><span class="w">AI mentor + remaining calculators <span>· all money verified</span></span><span class="t">~2 wks</span></div>
+    <div class="rd"><span class="ph">Phase 3</span><span class="w">Find-a-property + data <span>· overlays, comps, school zones</span></span><span class="t">~2–3 wks</span></div>
+    <div class="rd"><span class="ph">Phase 4</span><span class="w">Partner perks + Stages 3–7 + polish</span><span class="t">~2 wks</span></div>
+    <div class="rd"><span class="ph">Phase 5</span><span class="w">TestFlight / Play beta → your phone</span><span class="t">~1 wk</span></div>
+  </div>
+
+  <div style="display:flex;gap:14px;margin-top:16px;">
+    <div class="card" style="flex:1;"><div class="l" style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);font-weight:600;">Beta on your phone</div><div style="font-size:26px;font-weight:700;margin-top:6px;">~4–5 weeks</div><p>Stages 1–2 + tools + mentor</p></div>
+    <div class="card" style="flex:1;"><div class="l" style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);font-weight:600;">Polished v1</div><div style="font-size:26px;font-weight:700;margin-top:6px;">~10–12 weeks</div><p>Full journey · iOS &amp; Android</p></div>
+    <div class="card gold" style="flex:1;"><div class="l" style="font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;">Running cost</div><div style="font-size:26px;font-weight:700;margin-top:6px;">≤ $500/mo</div><p>Data deferred to a paid tier</p></div>
+  </div>
+
+  <div class="next">
+    <h3>What we need from you</h3>
+    <ul>
+      <li><b>The brand name</b> — a few candidates are ready to react to (this is bigger than the agency).</li>
+      <li><b>Seed partners</b> — your real building &amp; pest, conveyancer, broker and insurance contacts to launch the perks.</li>
+      <li><b>A thumbs-up on the direction</b> — then we start Phase 1.</li>
+    </ul>
+  </div>
+  <div class="foot"><span class="b">Manifest Buyer App</span><span>08 · Roadmap &amp; next steps</span></div>
+</section>
+
+</body>
+</html>
