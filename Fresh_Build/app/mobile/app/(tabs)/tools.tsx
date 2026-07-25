@@ -1,8 +1,9 @@
+import { useMemo } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Screen, Eyebrow, H1, Body, Label, Pill } from "../../src/components/ui";
-import { colors, radius, sp } from "../../src/theme";
+import { useTheme, radius, sp, type ThemeColors } from "../../src/theme";
 
 type Tool = { title: string; sub: string; icon: keyof typeof Ionicons.glyphMap; route?: string };
 
@@ -23,23 +24,25 @@ const COMING: Tool[] = [
 
 export default function Tools() {
   const router = useRouter();
+  const { c } = useTheme();
+  const ts = useMemo(() => makeStyles(c), [c]);
   return (
     <Screen>
       <Eyebrow>Broker-grade</Eyebrow>
       <H1>Tools</H1>
-      <Body>Deterministic calculators — every number shows its working and its source.</Body>
+      <Body>Clear, deterministic calculators — every number shows its working and its source.</Body>
 
       <Label>Ready to use</Label>
       {LIVE.map((t) => (
         <Pressable key={t.title} onPress={() => t.route && router.push(t.route as any)}>
           {({ pressed }) => (
             <View style={[ts.row, pressed && { opacity: 0.7 }]}>
-              <View style={ts.icon}><Ionicons name={t.icon} size={20} color={colors.gold} /></View>
+              <View style={ts.icon}><Ionicons name={t.icon} size={20} color={c.accent} /></View>
               <View style={{ flex: 1 }}>
                 <Text style={ts.title}>{t.title}</Text>
                 <Text style={ts.sub}>{t.sub}</Text>
               </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.dim} />
+              <Ionicons name="chevron-forward" size={18} color={c.dim} />
             </View>
           )}
         </Pressable>
@@ -48,7 +51,7 @@ export default function Tools() {
       <Label>Coming next</Label>
       {COMING.map((t) => (
         <View key={t.title} style={[ts.row, { opacity: 0.6 }]}>
-          <View style={ts.icon}><Ionicons name={t.icon} size={20} color={colors.dim} /></View>
+          <View style={ts.icon}><Ionicons name={t.icon} size={20} color={c.dim} /></View>
           <View style={{ flex: 1 }}>
             <Text style={ts.title}>{t.title}</Text>
             <Text style={ts.sub}>{t.sub}</Text>
@@ -60,9 +63,9 @@ export default function Tools() {
   );
 }
 
-const ts = StyleSheet.create({
-  row: { flexDirection: "row", alignItems: "center", gap: sp(3), backgroundColor: colors.surface, borderColor: colors.line, borderWidth: 1, borderRadius: radius.lg, padding: sp(3.5) },
-  icon: { width: 40, height: 40, borderRadius: 10, backgroundColor: colors.surface3, alignItems: "center", justifyContent: "center" },
-  title: { color: colors.text, fontSize: 15, fontWeight: "600" },
-  sub: { color: colors.dim, fontSize: 12, marginTop: 1 },
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
+  row: { flexDirection: "row", alignItems: "center", gap: sp(3), backgroundColor: c.surface, borderColor: c.line, borderWidth: 1, borderRadius: radius.lg, padding: sp(3.5) },
+  icon: { width: 40, height: 40, borderRadius: 10, backgroundColor: c.surface3, alignItems: "center", justifyContent: "center" },
+  title: { color: c.text, fontSize: 15, fontWeight: "600" },
+  sub: { color: c.dim, fontSize: 12, marginTop: 1 },
 });

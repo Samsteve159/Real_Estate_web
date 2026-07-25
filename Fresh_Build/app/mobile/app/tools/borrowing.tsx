@@ -3,7 +3,7 @@ import { View, Text, Pressable, StyleSheet, TextInput } from "react-native";
 import { Stack } from "expo-router";
 import { assessPreBuying, type BuyerType } from "@manifest/core";
 import { Screen, Eyebrow, H1, Body, Card, Label, StatTile, SourceNote, GoldButton } from "../../src/components/ui";
-import { colors, radius, sp } from "../../src/theme";
+import { useTheme, radius, sp, type ThemeColors } from "../../src/theme";
 import { aud } from "../../src/lib/format";
 
 const BUYERS: { key: BuyerType; label: string }[] = [
@@ -14,34 +14,29 @@ const BUYERS: { key: BuyerType; label: string }[] = [
 const num = (s: string) => Number(s.replace(/[^0-9.]/g, "")) || 0;
 
 function NumField({ label, value, set, prefix, suffix }: { label: string; value: string; set: (s: string) => void; prefix?: string; suffix?: string }) {
+  const { c } = useTheme();
   return (
     <View style={{ flex: 1, gap: sp(2) }}>
       <Label>{label}</Label>
-      <View style={bs.inputWrap}>
-        {prefix ? <Text style={bs.affix}>{prefix}</Text> : null}
-        <View style={{ flex: 1 }}>
-          <TextInputField value={value} set={set} />
-        </View>
-        {suffix ? <Text style={bs.affix}>{suffix}</Text> : null}
+      <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: c.surface2, borderColor: c.line, borderWidth: 1, borderRadius: radius.md, paddingHorizontal: sp(3), gap: sp(1) }}>
+        {prefix ? <Text style={{ color: c.dim, fontSize: 15, fontWeight: "600" }}>{prefix}</Text> : null}
+        <TextInput
+          value={value}
+          onChangeText={set}
+          keyboardType="numeric"
+          placeholderTextColor={c.dim}
+          selectionColor={c.accent}
+          style={{ flex: 1, color: c.text, fontSize: 16, paddingVertical: sp(3.5) }}
+        />
+        {suffix ? <Text style={{ color: c.dim, fontSize: 15, fontWeight: "600" }}>{suffix}</Text> : null}
       </View>
     </View>
   );
 }
 
-function TextInputField({ value, set }: { value: string; set: (s: string) => void }) {
-  return (
-    <TextInput
-      value={value}
-      onChangeText={set}
-      keyboardType="numeric"
-      placeholderTextColor={colors.dim}
-      selectionColor={colors.gold}
-      style={{ color: colors.text, fontSize: 16, paddingVertical: sp(3.5) }}
-    />
-  );
-}
-
 export default function Borrowing() {
+  const { c } = useTheme();
+  const bs = useMemo(() => makeStyles(c), [c]);
   const [income, setIncome] = useState("95000");
   const [expenses, setExpenses] = useState("2000");
   const [debts, setDebts] = useState("300");
@@ -84,14 +79,14 @@ export default function Borrowing() {
           <View style={bs.seg}>
             {BUYERS.map((b) => (
               <Pressable key={b.key} onPress={() => setBuyerType(b.key)} style={[bs.segItem, buyerType === b.key && bs.segOn]}>
-                <Text style={[bs.segText, buyerType === b.key && { color: colors.bg }]}>{b.label}</Text>
+                <Text style={[bs.segText, buyerType === b.key && { color: c.accentText }]}>{b.label}</Text>
               </Pressable>
             ))}
           </View>
         </View>
       </Card>
 
-      <Card gold style={{ alignItems: "center", paddingVertical: sp(6) }}>
+      <Card accent style={{ alignItems: "center", paddingVertical: sp(6) }}>
         <Label>You could borrow up to</Label>
         <Text style={bs.big}>{aud(r.maxBorrow)}</Text>
         <Text style={bs.sub}>Buying power ≈ {aud(r.maxPurchase)}</Text>
@@ -106,8 +101,8 @@ export default function Borrowing() {
         <StatTile label="Monthly repay" value={aud(r.monthlyRepayment)} />
       </View>
 
-      <Card style={{ borderColor: r.canService ? colors.lineGold : colors.line }}>
-        <Text style={{ color: r.canService ? colors.good : colors.warn, fontWeight: "700" }}>
+      <Card style={{ borderColor: r.canService ? c.lineAccent : c.line }}>
+        <Text style={{ color: r.canService ? c.good : c.warn, fontWeight: "700" }}>
           {r.canService ? "✓ Serviceable at this price" : `Short by ${aud(r.cashShortfall)} in cash to complete`}
         </Text>
       </Card>
@@ -122,13 +117,11 @@ export default function Borrowing() {
   );
 }
 
-const bs = StyleSheet.create({
-  inputWrap: { flexDirection: "row", alignItems: "center", backgroundColor: colors.surface2, borderColor: colors.line, borderWidth: 1, borderRadius: radius.md, paddingHorizontal: sp(3), gap: sp(1) },
-  affix: { color: colors.dim, fontSize: 15, fontWeight: "600" },
-  seg: { flexDirection: "row", backgroundColor: colors.surface2, borderRadius: radius.md, padding: 4, gap: 4 },
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
+  seg: { flexDirection: "row", backgroundColor: c.surface2, borderRadius: radius.md, padding: 4, gap: 4 },
   segItem: { flex: 1, paddingVertical: sp(2.5), borderRadius: radius.sm, alignItems: "center" },
-  segOn: { backgroundColor: colors.gold },
-  segText: { color: colors.muted, fontSize: 13, fontWeight: "600" },
-  big: { color: colors.text, fontSize: 38, fontWeight: "800", letterSpacing: -1, marginTop: sp(1) },
-  sub: { color: colors.gold, fontSize: 13, fontWeight: "600", marginTop: sp(1) },
+  segOn: { backgroundColor: c.accent },
+  segText: { color: c.muted, fontSize: 13, fontWeight: "600" },
+  big: { color: c.text, fontSize: 38, fontWeight: "800", letterSpacing: -1, marginTop: sp(1) },
+  sub: { color: c.accent, fontSize: 13, fontWeight: "600", marginTop: sp(1) },
 });

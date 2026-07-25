@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Manifest Buyer",
-    "slug": "manifest-buyer",
-    "scheme": "manifestbuyer",
+    "name": "Homebuyer",
+    "slug": "homebuyer",
+    "scheme": "homebuyer",
     "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
-    "backgroundColor": "#0a0a0b",
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#0e1513",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,

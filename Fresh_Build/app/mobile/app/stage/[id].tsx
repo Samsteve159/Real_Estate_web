@@ -1,20 +1,23 @@
+import { useMemo } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { useLocalSearchParams, useRouter, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { STAGES, type ItemKind } from "@manifest/core";
 import { Screen, Eyebrow, H1, Body, Pill } from "../../src/components/ui";
 import { useJourney } from "../../src/lib/journeyStore";
-import { colors, radius, sp } from "../../src/theme";
+import { useTheme, radius, sp, type ThemeColors } from "../../src/theme";
 
 const TOOL_ROUTES = new Set(["stamp-duty", "borrowing", "rental"]);
 
 const KIND_LABEL: Partial<Record<ItemKind, string>> = {
-  calc: "Tool", data: "Data", partner: "Perk", ai: "Mentor", human: "Talk to us",
+  calc: "Tool", data: "Data", partner: "Perk", ai: "Guide", human: "Talk to us",
 };
 
 export default function StageDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { c } = useTheme();
+  const cs = useMemo(() => makeStyles(c), [c]);
   const { progress, toggleItem } = useJourney();
   const stage = STAGES.find((s) => s.id === id);
 
@@ -27,7 +30,7 @@ export default function StageDetail() {
       <Stack.Screen options={{ title: `Stage ${stage.n}` }} />
       <Eyebrow>Stage {stage.n} of 7</Eyebrow>
       <H1>{stage.title}</H1>
-      <Body style={{ fontStyle: "italic", color: colors.gold }}>“{stage.want}”</Body>
+      <Body style={{ fontStyle: "italic", color: c.accent }}>“{stage.want}”</Body>
 
       <View style={{ gap: sp(2.5), marginTop: sp(2) }}>
         {stage.items.map((item) => {
@@ -37,7 +40,7 @@ export default function StageDetail() {
           return (
             <View key={item.id} style={[cs.row, done && cs.rowDone]}>
               <Pressable onPress={() => toggleItem(item.id)} hitSlop={8} style={[cs.check, done && cs.checkDone]}>
-                {done ? <Ionicons name="checkmark" size={15} color={colors.bg} /> : null}
+                {done ? <Ionicons name="checkmark" size={15} color={c.accentText} /> : null}
               </Pressable>
               <Pressable
                 style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: sp(2) }}
@@ -46,8 +49,8 @@ export default function StageDetail() {
                 <View style={{ flex: 1 }}>
                   <Text style={[cs.label, done && cs.labelDone]}>{item.label}</Text>
                 </View>
-                {tag ? <Pill tone={item.kinds.includes("partner") ? "gold" : "muted"}>{tag}</Pill> : null}
-                {tool ? <Ionicons name="chevron-forward" size={16} color={colors.gold} /> : null}
+                {tag ? <Pill tone={item.kinds.includes("partner") ? "accent" : "muted"}>{tag}</Pill> : null}
+                {tool ? <Ionicons name="chevron-forward" size={16} color={c.accent} /> : null}
               </Pressable>
             </View>
           );
@@ -59,12 +62,12 @@ export default function StageDetail() {
   );
 }
 
-const cs = StyleSheet.create({
-  row: { flexDirection: "row", alignItems: "center", gap: sp(3), backgroundColor: colors.surface, borderColor: colors.line, borderWidth: 1, borderRadius: radius.md, padding: sp(3.5) },
-  rowDone: { borderColor: colors.lineGold, backgroundColor: colors.goldWash },
-  check: { width: 26, height: 26, borderRadius: 13, borderColor: colors.dim, borderWidth: 2, alignItems: "center", justifyContent: "center" },
-  checkDone: { backgroundColor: colors.gold, borderColor: colors.gold },
-  label: { color: colors.text, fontSize: 15, fontWeight: "500" },
-  labelDone: { color: colors.muted, textDecorationLine: "line-through" },
-  hint: { color: colors.dim, fontSize: 12, marginTop: sp(3), textAlign: "center" },
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
+  row: { flexDirection: "row", alignItems: "center", gap: sp(3), backgroundColor: c.surface, borderColor: c.line, borderWidth: 1, borderRadius: radius.md, padding: sp(3.5) },
+  rowDone: { borderColor: c.lineAccent, backgroundColor: c.accentWash },
+  check: { width: 26, height: 26, borderRadius: 13, borderColor: c.dim, borderWidth: 2, alignItems: "center", justifyContent: "center" },
+  checkDone: { backgroundColor: c.accent, borderColor: c.accent },
+  label: { color: c.text, fontSize: 15, fontWeight: "500" },
+  labelDone: { color: c.muted, textDecorationLine: "line-through" },
+  hint: { color: c.dim, fontSize: 12, marginTop: sp(3), textAlign: "center" },
 });

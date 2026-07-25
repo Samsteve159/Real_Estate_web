@@ -1,19 +1,31 @@
 import { Tabs } from "expo-router";
+import { Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors } from "../../src/theme";
+import { useTheme } from "../../src/theme";
+
+function ThemeToggle() {
+  const { isDark, toggle, c } = useTheme();
+  return (
+    <Pressable onPress={toggle} hitSlop={12} style={{ marginRight: 16 }}>
+      <Ionicons name={isDark ? "sunny-outline" : "moon-outline"} size={22} color={c.accent} />
+    </Pressable>
+  );
+}
 
 export default function TabsLayout() {
+  const { c } = useTheme();
   return (
     <Tabs
       screenOptions={{
-        headerStyle: { backgroundColor: colors.bg },
-        headerTitleStyle: { color: colors.text, fontWeight: "700" },
+        headerStyle: { backgroundColor: c.bg },
+        headerTitleStyle: { color: c.text, fontWeight: "700" },
         headerShadowVisible: false,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.line, height: 88, paddingTop: 8 },
-        tabBarActiveTintColor: colors.gold,
-        tabBarInactiveTintColor: colors.dim,
+        headerRight: () => <ThemeToggle />,
+        tabBarStyle: { backgroundColor: c.surface, borderTopColor: c.line, height: 88, paddingTop: 8 },
+        tabBarActiveTintColor: c.accent,
+        tabBarInactiveTintColor: c.dim,
         tabBarLabelStyle: { fontSize: 11, fontWeight: "600" },
-        sceneStyle: { backgroundColor: colors.bg },
+        sceneStyle: { backgroundColor: c.bg },
       }}
     >
       <Tabs.Screen
@@ -26,7 +38,7 @@ export default function TabsLayout() {
       />
       <Tabs.Screen
         name="mentor"
-        options={{ title: "Mentor", tabBarIcon: ({ color, size }) => <Ionicons name="chatbubbles-outline" color={color} size={size} /> }}
+        options={{ title: "Guide", tabBarIcon: ({ color, size }) => <Ionicons name="chatbubbles-outline" color={color} size={size} /> }}
       />
       <Tabs.Screen
         name="perks"
