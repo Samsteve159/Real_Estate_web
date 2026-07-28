@@ -2,7 +2,7 @@
  *  Thin client for the Manifest API (Hono on :8787, proxied via /api).
  *  Only the endpoints the new site uses: valuation, suburbs, leads.
  * ------------------------------------------------------------------ */
-import type { Listing } from "./mockListings";
+import { MOCK_LISTINGS, type Listing } from "./mockListings";
 
 const API_BASE = ((import.meta.env.VITE_API_BASE as string | undefined) ?? "/api").replace(/\/$/, "");
 
@@ -69,6 +69,36 @@ export async function getVaultListings(): Promise<Listing[] | null> {
     if (!res.ok) return null;
     const data = (await res.json()) as { isLive?: boolean; listings?: Listing[] };
     return data.isLive && Array.isArray(data.listings) ? data.listings : null;
+  } catch {
+    return null;
+  }
+}
+
+export interface ListingDetail extends Listing {
+  description: string;
+  images: string[];
+  landSize: string;
+  agentName: string;
+  agentPhone: string;
+  agentEmail: string;
+}
+
+/**
+ * Full detail for one listing. Mock ids ("mock-001" etc.) resolve locally
+ * from MOCK_LISTINGS with no extra fields — placeholder listings have no
+ * detail data. Everything else calls the live Vault RE detail endpoint.
+ */
+export async function getVaultListingDetail(id: string): Promise<ListingDetail | null> {
+  if (id.startsWith("mock-")) {
+    const base = MOCK_LISTINGS.find((l) => l.id === id);
+    if (!base) return null;
+    return { ...base, description: "", images: [base.imageUrl], landSize: "", agentName: "", agentPhone: "", agentEmail: "" };
+  }
+  try {
+    const res = await fetch(`${API_BASE}/vault/listings/${encodeURIComponent(id)}`);
+    if (!res.ok) return null;
+    const data = (await res.json()) as { isLive?: boolean; listing?: ListingDetail };
+    return data.isLive && data.listing ? data.listing : null;
   } catch {
     return null;
   }

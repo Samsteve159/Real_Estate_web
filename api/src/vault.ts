@@ -16,8 +16,10 @@
  *  a TTL and only refetch on expiry.
  *
  *  PHOTOS: hotlinking Vault's CDN is discouraged and can get the feed disabled.
- *  For production we should download + self-host images (see normalisePhoto). For
- *  now the CDN URL is passed through so listings render; flagged as a follow-up.
+ *  Every photo URL below is rewritten to /api/vault/photo?src=... (proxyPhotoUrl)
+ *  so browsers only ever talk to us; the proxy (vaultPhoto.ts) downloads +
+ *  caches to disk on first request. See vaultPhoto.ts for the cache + the
+ *  host allowlist that keeps the proxy from becoming an open URL fetcher.
  *
  *  The exact property JSON shape is mapped defensively below (fields are read from
  *  several likely locations) because we can't see a live response until the access
@@ -159,7 +161,7 @@ function normaliseListing(raw: Record<string, unknown>): VaultListing | null {
     parking: (int(raw.garages) ?? 0) + (int(raw.carports) ?? 0) + (int(raw.openSpaces) ?? 0) || (int(raw.carSpaces) ?? 0),
     propertyType: normaliseType(raw),
     status: normaliseStatus(raw),
-    imageUrl: normalisePhoto(raw),
+    imageUrl: proxyPhotoUrl(pickPhotoUrl(raw)),
     isPlaceholder: false,
   };
 }
@@ -207,12 +209,16 @@ function normaliseStatus(raw: Record<string, unknown>): VaultListing["status"] {
   return "For Sale";
 }
 
-function normalisePhoto(raw: Record<string, unknown>): string {
+function pickPhotoUrl(raw: Record<string, unknown>): string {
   const photos = Array.isArray(raw.photos) ? (raw.photos as Record<string, unknown>[]) : [];
   // Prefer the first published photo with a URL; fall back to any photo.
   const pick = photos.find((p) => p.published !== false && str(p.url)) ?? photos.find((p) => str(p.url));
-  // TODO(production): download + self-host per Vault's no-hotlinking policy.
   return (pick && str(pick.url)) ?? str(raw.mainImage) ?? "";
+}
+
+/** Rewrite a Vault CDN URL to our self-hosting proxy — browsers never hit Vault directly. */
+function proxyPhotoUrl(url: string): string {
+  return url ? `/api/vault/photo?src=${encodeURIComponent(url)}` : "";
 }
 
 /** The sale-specific fields may sit under a `saleLife`/`life` sub-object. */
@@ -237,4 +243,91 @@ async function safeText(res: Response): Promise<string> {
   } catch {
     return "";
   }
+}
+
+/* ---- Single-listing detail (for /properties/{id}) -------------------------
+ * Same auth + defensive-parsing approach as the list fetch above. Verified
+ * against a live response (2026-07-28, property 19492724): description,
+ * landArea{value,units} and contactStaff[] all confirmed against the real
+ * shape below.
+ */
+export interface VaultListingDetail extends VaultListing {
+  description: string;
+  images: string[]; // all published photos, proxied; falls back to [imageUrl]
+  landSize: string; // display string, e.g. "650 m²"; empty if unknown
+  agentName: string;
+  agentPhone: string;
+  agentEmail: string;
+}
+
+const detailCache = new Map<string, { at: number; data: VaultListingDetail }>();
+const DETAIL_CACHE_TTL_MS = 5 * 60 * 1000;
+
+/** Fetch one property's full detail from Vault by id. Null = not configured, not found, or the call failed. */
+export async function getVaultListingDetail(id: string): Promise<VaultListingDetail | null> {
+  if (!vaultConfigured()) return null;
+
+  const cached = detailCache.get(id);
+  if (cached && Date.now() - cached.at < DETAIL_CACHE_TTL_MS) return cached.data;
+
+  try {
+    const res = await fetch(`${baseUrl()}/properties/residential/sale/${encodeURIComponent(id)}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "X-Api-Key": apiKey(),
+        Authorization: `Bearer ${accessToken()}`,
+      },
+    });
+
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`Vault RE ${res.status} on property ${id}: ${await safeText(res)}`);
+
+    const raw = (await res.json()) as Record<string, unknown>;
+    const detail = normaliseListingDetail(raw);
+    if (detail) detailCache.set(id, { at: Date.now(), data: detail });
+    return detail;
+  } catch (err) {
+    console.error("[vault] detail fetch failed", err);
+    // Serve a slightly-stale cache rather than nothing, if we have one.
+    return cached?.data ?? null;
+  }
+}
+
+function normaliseListingDetail(raw: Record<string, unknown>): VaultListingDetail | null {
+  const base = normaliseListing(raw);
+  if (!base) return null;
+
+  const description =
+    str(raw.description) ?? str(raw.marketingText) ?? str(raw.webRemarks) ?? str(raw.headline) ?? "";
+
+  const photos = Array.isArray(raw.photos) ? (raw.photos as Record<string, unknown>[]) : [];
+  const images = photos
+    .filter((p) => p.published !== false && str(p.url))
+    .map((p) => proxyPhotoUrl(str(p.url)!));
+  if (images.length === 0 && base.imageUrl) images.push(base.imageUrl);
+
+  // Verified against a live response (2026-07-28): { value, units } — e.g. { value: 5, units: "acre" }.
+  const land = (raw.landArea ?? {}) as Record<string, unknown>;
+  const landValue = int(land.value);
+  const landUnit = str(land.units) ?? "m²";
+  const landSize = landValue ? `${landValue.toLocaleString()} ${landUnit}` : "";
+
+  // Verified against a live response (2026-07-28): raw.contactStaff[], each with
+  // firstName/lastName/email/phoneNumbers[{number,typeCode}] (not a flat "phone").
+  const staff = Array.isArray(raw.contactStaff) ? (raw.contactStaff as Record<string, unknown>[]) : [];
+  const agent = staff[0] ?? {};
+  const agentName = [str(agent.firstName), str(agent.lastName)].filter(Boolean).join(" ");
+  const phones = Array.isArray(agent.phoneNumbers) ? (agent.phoneNumbers as Record<string, unknown>[]) : [];
+  const mobile = phones.find((p) => p.typeCode === "M") ?? phones[0];
+
+  return {
+    ...base,
+    description,
+    images,
+    landSize,
+    agentName,
+    agentPhone: str(mobile?.number) ?? "",
+    agentEmail: str(agent.email) ?? "",
+  };
 }

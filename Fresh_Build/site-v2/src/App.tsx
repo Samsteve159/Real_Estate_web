@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Shell from "./components/Shell";
 import Home from "./routes/Home";
 import ListingsPage from "./routes/ListingsPage";
+import ListingDetailPage from "./routes/ListingDetailPage";
 import ValuationPage from "./routes/ValuationPage";
 import ConciergePage from "./routes/ConciergePage";
 import StampDutyPage from "./routes/StampDutyPage";
@@ -26,6 +27,7 @@ export default function App() {
         <Route element={<Shell />}>
           <Route path="/" element={<Home />} />
           <Route path="/listings" element={<ListingsPage />} />
+          <Route path="/listings/:id" element={<ListingDetailPage />} />
           <Route path="/services/residential-sales" element={<ResidentialSalesPage />} />
           <Route path="/services/acreage-lifestyle" element={<AcreageLifestylePage />} />
           <Route path="/services/development-projects" element={<DevelopmentProjectsPage />} />

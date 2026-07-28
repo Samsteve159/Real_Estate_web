@@ -4,9 +4,11 @@ import { serve } from "@hono/node-server";
 import { streamSSE } from "hono/streaming";
 
 import { listings, suburbs, suburbNames } from "./data.js";
-import { getVaultListings, vaultConfigured } from "./vault.js";
+import { getVaultListings, getVaultListingDetail, vaultConfigured } from "./vault.js";
+import { proxyVaultPhoto } from "./vaultPhoto.js";
 import { valuate } from "./valuation.js";
-import { saveLead } from "./leads.js";
+import { saveLead, type LeadInput } from "./leads.js";
+import { notifyNewLead } from "./email.js";
 import { runConcierge } from "./chat.js";
 import { rateLimit } from "./ratelimit.js";
 import { track, stats } from "./analytics.js";
@@ -27,6 +29,8 @@ app.use("/api/*", cors(allowedOrigins.length ? { origin: allowedOrigins } : {}))
 app.use("/api/valuation", rateLimit("valuation", 8, 60_000));
 app.use("/api/chat", rateLimit("chat", 15, 60_000));
 app.use("/api/lead", rateLimit("lead", 20, 60_000));
+// Vault has its own hard cap (10 req/s, 10k/day) — protect our own use of it too.
+app.use("/api/vault/*", rateLimit("vault", 60, 60_000));
 
 app.get("/api/health", (c) => c.json({ ok: true }));
 
@@ -56,6 +60,31 @@ app.get("/api/vault/listings", async (c) => {
     return c.json({ isLive: false, reason: "unavailable", listings: [] });
   }
   return c.json({ isLive: true, listings: data });
+});
+
+// One property's full detail — the listing-detail page (/properties/{id} on the front-end).
+app.get("/api/vault/listings/:id", async (c) => {
+  const id = c.req.param("id");
+  if (!vaultConfigured()) {
+    return c.json({ isLive: false, reason: "not_configured", listing: null });
+  }
+  const listing = await getVaultListingDetail(id);
+  if (!listing) {
+    return c.json({ isLive: false, reason: "unavailable", listing: null }, 404);
+  }
+  return c.json({ isLive: true, listing });
+});
+
+// Self-hosts a Vault photo: downloads + caches to disk on first request, serves
+// from disk after. `src` is host-restricted to Vault's own CDN (see vaultPhoto.ts).
+app.get("/api/vault/photo", async (c) => {
+  const src = c.req.query("src");
+  if (!src) return c.text("Missing src", 400);
+  const photo = await proxyVaultPhoto(src);
+  if (!photo) return c.text("Not found", 404);
+  c.header("Content-Type", photo.contentType);
+  c.header("Cache-Control", "public, max-age=86400, immutable");
+  return c.body(new Uint8Array(photo.buffer));
 });
 
 // --- Instant Home Valuation -------------------------------------------------
@@ -117,7 +146,7 @@ app.post("/api/lead", async (c) => {
   const source = rawSource === "contact" ? "contact" : "valuation";
   const intent = source === "contact" ? (str(body.intent, LIMITS.str) || "enquiry") : "sell";
 
-  const id = saveLead({
+  const leadInput: LeadInput = {
     source,
     name,
     email,
@@ -129,8 +158,12 @@ app.post("/api/lead", async (c) => {
     estimateHigh: num(body.estimateHigh, 0, 1_000_000_000),
     estimateMid: num(body.estimateMid, 0, 1_000_000_000),
     message: str(body.message, LIMITS.message),
-  });
+  };
+  const id = saveLead(leadInput);
   track("lead");
+  // Fire-and-forget: the lead is already saved, so a slow/failed email never
+  // holds up or breaks the response. See email.ts for the no-op-when-unconfigured behaviour.
+  void notifyNewLead({ ...leadInput, leadId: id }).catch((err) => console.error("[email] notify failed", err));
   return c.json({ ok: true, leadId: id });
 });
 

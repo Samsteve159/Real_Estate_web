@@ -6,6 +6,7 @@ dist/
 !.env.example
 data/leads.db
 data/leads.db-*
+data/vault-photos/
 *.log
 .DS_Store
 .claude/settings.local.json

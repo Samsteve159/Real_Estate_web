@@ -111,8 +111,9 @@ function ListingCard({ listing, delay }: { listing: Listing; delay: number }) {
   const s = statusStyles[listing.status];
 
   return (
-    <article
-      className="reveal card-lift group overflow-hidden border"
+    <Link
+      to={`/listings/${listing.id}`}
+      className="reveal card-lift group block overflow-hidden border"
       style={{
         background: "var(--color-surface)",
         borderColor: "var(--color-line)",
@@ -122,7 +123,7 @@ function ListingCard({ listing, delay }: { listing: Listing; delay: number }) {
       <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
         <img
           src={listing.imageUrl}
-          alt={`${listing.address}, ${listing.suburb}, placeholder`}
+          alt={`${listing.address}, ${listing.suburb}`}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           loading="lazy"
         />
@@ -153,6 +154,6 @@ function ListingCard({ listing, delay }: { listing: Listing; delay: number }) {
         </div>
         <p className="font-semibold" style={{ color: "var(--color-gold)" }}>{listing.price}</p>
       </div>
-    </article>
+    </Link>
   );
 }
