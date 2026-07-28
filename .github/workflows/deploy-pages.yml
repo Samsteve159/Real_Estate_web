@@ -10,6 +10,9 @@ name: Deploy Fresh_Build site to GitHub Pages
 # lead capture will no-op; the deterministic calculators work client-side.
 # 2026-07-03: re-trigger — prior run's build succeeded but actions/deploy-pages
 # hit a transient Pages-publish failure; this push re-runs the deploy.
+# 2026-07-28: re-trigger — the repo was briefly made private, which disables
+# Pages (private repos need a paid plan). Source was re-set to GitHub Actions;
+# this push republishes the site.
 
 on:
   push:
