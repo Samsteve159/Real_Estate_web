@@ -2,6 +2,8 @@
  *  Thin client for the Manifest API (Hono on :8787, proxied via /api).
  *  Only the endpoints the new site uses: valuation, suburbs, leads.
  * ------------------------------------------------------------------ */
+import type { Listing } from "./mockListings";
+
 const API_BASE = ((import.meta.env.VITE_API_BASE as string | undefined) ?? "/api").replace(/\/$/, "");
 
 export interface Suburb {
@@ -54,6 +56,22 @@ async function jsonOrThrow<T>(res: Response): Promise<T> {
     throw new Error((body as { error?: string }).error ?? `Request failed (${res.status})`);
   }
   return res.json() as Promise<T>;
+}
+
+/**
+ * Live for-sale listings from Vault RE (via the API). Returns `null` when the
+ * API is unreachable (e.g. the static GitHub Pages build has no /api) or Vault
+ * isn't connected yet — callers fall back to placeholder listings in that case.
+ */
+export async function getVaultListings(): Promise<Listing[] | null> {
+  try {
+    const res = await fetch(`${API_BASE}/vault/listings`);
+    if (!res.ok) return null;
+    const data = (await res.json()) as { isLive?: boolean; listings?: Listing[] };
+    return data.isLive && Array.isArray(data.listings) ? data.listings : null;
+  } catch {
+    return null;
+  }
 }
 
 export async function getSuburbs(): Promise<Suburb[]> {

@@ -25,7 +25,7 @@ export interface Listing {
   propertyType: string;
   status: "For Sale" | "Sold" | "Under Offer";
   imageUrl: string;
-  isPlaceholder: true;   // flag, remove when real data arrives
+  isPlaceholder: boolean;   // true = mock; false = live Vault RE listing
 }
 
 export const MOCK_LISTINGS: Listing[] = [

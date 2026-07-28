@@ -1,10 +1,36 @@
+import { useEffect, useState } from "react";
 import { useReveal } from "../lib/useReveal";
 import { MOCK_LISTINGS } from "../lib/mockListings";
 import type { Listing } from "../lib/mockListings";
+import { getVaultListings } from "../lib/api";
 import { Link } from "react-router-dom";
 
 export default function ListingsPage() {
   const ref = useReveal(0.1) as React.RefObject<HTMLElement>;
+  // Show placeholders on first paint (so the reveal animation runs), then swap
+  // to live Vault RE listings if the API returns any.
+  const [listings, setListings] = useState<Listing[]>(MOCK_LISTINGS);
+  const [isLive, setIsLive] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    getVaultListings().then((live) => {
+      if (active && live && live.length) {
+        setListings(live);
+        setIsLive(true);
+      }
+    });
+    return () => { active = false; };
+  }, []);
+
+  // The reveal observer only watches the initial cards; when live data swaps in,
+  // reveal the newly-mounted cards directly so they can't get stuck hidden.
+  useEffect(() => {
+    if (!isLive) return;
+    requestAnimationFrame(() => {
+      ref.current?.querySelectorAll<HTMLElement>(".reveal").forEach((el) => el.classList.add("visible"));
+    });
+  }, [isLive, ref]);
 
   return (
     <div style={{ background: "var(--color-bg)", paddingTop: "9rem" }}>
@@ -21,25 +47,27 @@ export default function ListingsPage() {
             Properties worth your time.
           </h1>
           <p style={{ color: "var(--color-muted)", maxWidth: "46ch", lineHeight: 1.65 }}>
-            A selection of properties across residential, acreage and development. Real listings load automatically once Vault RE is connected.
+            A selection of properties across residential, acreage and development{isLive ? ", live from our current portfolio." : ". Real listings load automatically once Vault RE is connected."}
           </p>
         </div>
 
-        {/* Placeholder notice */}
-        <div
-          className="reveal mb-10 px-4 py-3 text-xs flex items-center gap-2 border"
-          style={{
-            background: "rgba(194,162,103,0.06)",
-            borderColor: "var(--color-line-gold)",
-            color: "var(--color-dim)",
-          }}
-        >
-          <span style={{ color: "var(--color-gold)" }}>◈</span>
-          These are placeholder listings. Real properties load automatically via the Vault RE integration.
-        </div>
+        {/* Placeholder notice — only while showing mock data */}
+        {!isLive && (
+          <div
+            className="reveal mb-10 px-4 py-3 text-xs flex items-center gap-2 border"
+            style={{
+              background: "rgba(194,162,103,0.06)",
+              borderColor: "var(--color-line-gold)",
+              color: "var(--color-dim)",
+            }}
+          >
+            <span style={{ color: "var(--color-gold)" }}>◈</span>
+            These are placeholder listings. Real properties load automatically via the Vault RE integration.
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {MOCK_LISTINGS.map((listing, i) => (
+          {listings.map((listing, i) => (
             <ListingCard key={listing.id} listing={listing} delay={i * 60} />
           ))}
         </div>

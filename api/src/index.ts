@@ -4,6 +4,7 @@ import { serve } from "@hono/node-server";
 import { streamSSE } from "hono/streaming";
 
 import { listings, suburbs, suburbNames } from "./data.js";
+import { getVaultListings, vaultConfigured } from "./vault.js";
 import { valuate } from "./valuation.js";
 import { saveLead } from "./leads.js";
 import { runConcierge } from "./chat.js";
@@ -43,6 +44,19 @@ app.get("/api/stats", (c) => {
 // Public data the front-end renders (real listings + suburb context).
 app.get("/api/listings", (c) => c.json({ listings }));
 app.get("/api/suburbs", (c) => c.json({ suburbs, names: suburbNames }));
+
+// Live listings from Vault RE (MRI), normalised + cached. `isLive` tells the
+// front-end whether real data came back; when false it keeps its placeholders.
+app.get("/api/vault/listings", async (c) => {
+  if (!vaultConfigured()) {
+    return c.json({ isLive: false, reason: "not_configured", listings: [] });
+  }
+  const data = await getVaultListings();
+  if (!data) {
+    return c.json({ isLive: false, reason: "unavailable", listings: [] });
+  }
+  return c.json({ isLive: true, listings: data });
+});
 
 // --- Instant Home Valuation -------------------------------------------------
 app.post("/api/valuation", async (c) => {
