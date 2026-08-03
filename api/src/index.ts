@@ -210,11 +210,16 @@ app.post("/api/chat", async (c) => {
 
   track("chat");
   return streamSSE(c, async (stream) => {
+    // Collect the write promises rather than firing them off: when this handler
+    // returns, Hono closes the stream, and an un-awaited final write gets
+    // dropped mid-flight (observed: the terminal "done" frame never arriving).
+    // streamSSE still serialises them, so ordering is preserved.
+    const writes: Promise<void>[] = [];
     await runConcierge(validated.history, (event) => {
       if (event.type === "error") track("chat_error");
-      // Fire-and-forget write; streamSSE serialises these in order.
-      void stream.writeSSE({ data: JSON.stringify(event) });
+      writes.push(stream.writeSSE({ data: JSON.stringify(event) }));
     });
+    await Promise.allSettled(writes);
   });
 });
 
