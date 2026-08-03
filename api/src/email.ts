@@ -15,6 +15,7 @@
  */
 import { Resend } from "resend";
 import type { LeadInput } from "./leads.js";
+import { buildBorrowingReportPdf, type BorrowingReportData } from "./report.js";
 
 const apiKey = () => process.env.RESEND_API_KEY ?? "";
 const notifyTo = () => process.env.LEADS_NOTIFY_EMAIL ?? "";
@@ -32,6 +33,8 @@ function resend(): Resend {
 
 export interface NotifiedLead extends LeadInput {
   leadId: number;
+  /** Structured borrowing figures — present on `intent: "report"` submissions. */
+  report?: BorrowingReportData;
 }
 
 /** Notify Manifest of a new enquiry, and (best-effort) auto-reply to the enquirer. Never throws. */
@@ -68,11 +71,23 @@ async function sendAutoReply(lead: NotifiedLead): Promise<void> {
   if (!lead.email) return;
   try {
     if (lead.intent === "report") {
+      // Attach the branded PDF when we have the figures. If rendering fails the
+      // email still goes out with the summary inline — better than nothing.
+      let attachments: { filename: string; content: Buffer }[] | undefined;
+      if (lead.report) {
+        try {
+          const pdf = await buildBorrowingReportPdf({ ...lead.report, name: lead.name });
+          attachments = [{ filename: "Manifest-Borrowing-Capacity-Report.pdf", content: pdf }];
+        } catch (err) {
+          console.error("[email] PDF render failed, sending without attachment", err);
+        }
+      }
       await resend().emails.send({
         from: fromAddress(),
         to: lead.email,
         subject: "Your Borrowing Capacity report — Manifest Real Estate",
         html: reportEmailHtml(lead),
+        attachments,
       });
     } else {
       await resend().emails.send({

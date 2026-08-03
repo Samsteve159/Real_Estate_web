@@ -161,9 +161,36 @@ app.post("/api/lead", async (c) => {
   };
   const id = saveLead(leadInput);
   track("lead");
+
+  // Borrowing-capacity figures for the PDF. Clamped like every other input so a
+  // crafted payload can't inject absurd values into a branded document.
+  const r = (body.report ?? {}) as Record<string, unknown>;
+  const money = (v: unknown) => num(v, 0, 1_000_000_000);
+  const report =
+    intent === "report"
+      ? {
+          grossIncome: money(r.grossIncome),
+          monthlyExpenses: money(r.monthlyExpenses),
+          monthlyDebts: money(r.monthlyDebts),
+          savings: money(r.savings),
+          purchasePrice: money(r.purchasePrice),
+          interestRate: num(r.interestRate, 0, 100),
+          buyerType: str(r.buyerType, LIMITS.str),
+          maxBorrow: money(r.maxBorrow),
+          maxPurchase: money(r.maxPurchase),
+          loanNeeded: money(r.loanNeeded),
+          depositAmount: money(r.depositAmount),
+          lvr: num(r.lvr, 0, 1000),
+          lmi: money(r.lmi),
+          stampDuty: money(r.stampDuty),
+          upfrontCosts: money(r.upfrontCosts),
+          monthlyRepayment: money(r.monthlyRepayment),
+          canService: typeof r.canService === "boolean" ? r.canService : undefined,
+        }
+      : undefined;
   // Fire-and-forget: the lead is already saved, so a slow/failed email never
   // holds up or breaks the response. See email.ts for the no-op-when-unconfigured behaviour.
-  void notifyNewLead({ ...leadInput, leadId: id }).catch((err) => console.error("[email] notify failed", err));
+  void notifyNewLead({ ...leadInput, leadId: id, report }).catch((err) => console.error("[email] notify failed", err));
   return c.json({ ok: true, leadId: id });
 });
 

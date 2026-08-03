@@ -175,7 +175,17 @@ export default function PreBuyingPage() {
           </div>
         </div>
 
-        <ReportRequest summary={reportSummary} />
+        <ReportRequest
+          summary={reportSummary}
+          report={{
+            grossIncome, monthlyExpenses, monthlyDebts, savings, purchasePrice,
+            interestRate, buyerType,
+            maxBorrow: r.maxBorrow, maxPurchase: r.maxPurchase, loanNeeded: r.loanNeeded,
+            depositAmount: r.depositAmount, lvr: r.lvr, lmi: r.lmi,
+            stampDuty: r.stampDuty, upfrontCosts: r.upfrontCosts,
+            monthlyRepayment: r.monthlyRepayment, canService: r.canService,
+          }}
+        />
 
         <p className="reveal text-xs mt-8" style={{ color: "var(--color-dim)", maxWidth: "70ch", lineHeight: 1.6 }}>
           Borrowing power, LMI and repayments are indicative only, every lender assesses income,
@@ -188,7 +198,7 @@ export default function PreBuyingPage() {
 }
 
 /* ---- Email-the-report CTA. Captures the email (+ name) as a lead. ---- */
-function ReportRequest({ summary }: { summary: string }) {
+function ReportRequest({ summary, report }: { summary: string; report: Record<string, unknown> }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -210,6 +220,8 @@ function ReportRequest({ summary }: { summary: string }) {
           name,
           email,
           message: `Requested a ${format} Borrowing Capacity report. ${summary}`,
+          // Structured figures so the server can render the branded PDF.
+          report,
         }),
       });
       const data = await res.json().catch(() => ({}));

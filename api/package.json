@@ -13,11 +13,13 @@
     "better-sqlite3": "^11.10.0",
     "dotenv": "^16.5.0",
     "hono": "^4.7.0",
+    "pdfkit": "^0.19.1",
     "resend": "^6.18.0"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.0",
     "@types/node": "^22.15.0",
+    "@types/pdfkit": "^0.17.6",
     "tsx": "^4.19.0",
     "typescript": "^5.8.0"
   }
