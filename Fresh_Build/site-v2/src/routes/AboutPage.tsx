@@ -99,7 +99,7 @@ export default function AboutPage() {
               <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
               <h3 className="display mb-2" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Akshay Kapoor (AK)</h3>
               <p className="font-display italic mb-5" style={{ color: "var(--color-gold)", fontSize: "0.95rem", lineHeight: 1.4 }}>
-                Clear communication. Genuine service. Trust.
+                Hands-on preparation. An owner's perspective. Manifested, not marketed.
               </p>
               <img
                 src={`${import.meta.env.BASE_URL}akshay-kapoor.jpg`}
@@ -110,9 +110,9 @@ export default function AboutPage() {
               <div className="flex flex-col gap-4" style={{ color: "var(--color-muted)", lineHeight: 1.7 }}>
                 <p>
                   At Manifest, the name <em>is</em> the brief, turning a client's manifestations into
-                  reality. Akshay built his business on three things: clear communication, genuine
-                  service, and trust. Property is his passion, and it shows in how he adapts to what each
-                  client actually needs, rather than running a script.
+                  reality. Akshay's edge is preparation. He will personally line up the trades, tell you
+                  which improvements are worth making and which are not, and get a property to market in
+                  the condition that earns its best price, rather than putting up a sign and hoping.
                 </p>
                 <p>
                   He has worked across the lot, small land, houses, development sites and acreage, and

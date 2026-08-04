@@ -159,7 +159,7 @@ export default function FirstHomeSteps() {
               onMouseEnter={(e) => { e.currentTarget.style.color = "var(--color-text)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.color = "var(--color-muted)"; e.currentTarget.style.borderColor = "var(--color-line)"; }}
             >
-              Talk to a Manifest representative
+              Speak to a RE representative
             </Link>
           </div>
         </div>

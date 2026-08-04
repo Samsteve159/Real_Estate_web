@@ -1,16 +1,13 @@
 import { useReveal } from "../lib/useReveal";
 
 /*
- * Trust / credibility strip, social proof and key differentiators.
- * Numbers and claims are illustrative until Akshay confirms real stats.
+ * Trust / credibility strip: social proof, straight from real client reviews.
+ *
+ * The four illustrative stat tokens (clients guided / years in market / service
+ * lines / "1 call") were removed 2026-08-04 at the owner's request. They were
+ * never verified against real figures, so the section now rests entirely on
+ * quotes Akshay supplied.
  */
-
-const STATS = [
-  { value: "100+",   label: "Clients guided",        note: "buyers, sellers & investors" },
-  { value: "8 yrs",  label: "Melbourne market",      note: "deep suburb-level knowledge" },
-  { value: "4",      label: "Service lines",         note: "sales · acreage · development · leasing" },
-  { value: "1 call", label: "To a real expert",      note: "skip the call centre" },
-];
 
 // Reviews grouped per director. All quotes are REAL, supplied by Akshay
 // (his own 2026-06-26; Rishi's 2026-07-02). Rishi renders first to match the About page.
@@ -66,29 +63,6 @@ export default function TrustBand() {
       id="trust"
     >
       <div className="max-w-7xl mx-auto px-6">
-
-        {/* Stats row */}
-        <div
-          className="reveal border-y mb-20 py-14 grid grid-cols-2 md:grid-cols-4 gap-10"
-          style={{ borderColor: "var(--color-line)" }}
-        >
-          {STATS.map(({ value, label, note }) => (
-            <div key={label} className="flex flex-col gap-1">
-              <p
-                className="display"
-                style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "var(--color-gold)" }}
-              >
-                {value}
-              </p>
-              <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
-                {label}
-              </p>
-              <p className="text-xs" style={{ color: "var(--color-dim)" }}>
-                {note}
-              </p>
-            </div>
-          ))}
-        </div>
 
         {/* Testimonials — one block per director, two reviews each */}
         <div className="reveal mb-14 max-w-2xl">

@@ -130,7 +130,19 @@ export function calculateDuty({ dutiableValue, buyerType, foreignPurchaser = fal
   let duty: number;
   let basis: string;
 
-  if (buyerType === "fhb") {
+  // A foreign purchaser cannot claim the first home buyer exemption/concession:
+  // the SRO requires ALL purchasers to be "Australian citizens or permanent
+  // residents". Applying both the FHB taper and the 8% surcharge understated
+  // duty badly (e.g. $650k FHB + foreign returned $63,357 against the SRO
+  // calculator's $86,070). Fixed 2026-08-04.
+  const fhbEligible = buyerType === "fhb" && !foreignPurchaser;
+
+  if (buyerType === "fhb" && !fhbEligible) {
+    duty = general;
+    basis =
+      "General rate. The first home buyer exemption requires every purchaser to be an " +
+      "Australian citizen or permanent resident, so it does not apply to a foreign purchaser.";
+  } else if (fhbEligible) {
     if (value <= FHB_EXEMPT_CEILING) {
       duty = 0;
       basis = "First home buyer exemption, no duty payable on homes up to $600,000.";
