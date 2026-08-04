@@ -166,7 +166,7 @@ function autoReplyHtml(lead: NotifiedLead): string {
   return shell(
     "Thanks for reaching out",
     `<p style="font-size:14px;line-height:1.6;">Hi ${escapeHtml(firstName)},</p>
-     <p style="font-size:14px;line-height:1.6;">Thanks for getting in touch with Manifest Real Estate. AK will personally review your enquiry and get back to you shortly.</p>
+     <p style="font-size:14px;line-height:1.6;">Thanks for getting in touch with Manifest Real Estate. A RE representative will personally review your enquiry and get back to you shortly.</p>
      <p style="font-size:14px;line-height:1.6;">In the meantime, feel free to browse our <a href="https://manifestre.com.au/listings" style="color:${GOLD};">current listings</a>.</p>`,
   );
 }
