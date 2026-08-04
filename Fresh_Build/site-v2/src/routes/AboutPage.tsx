@@ -99,7 +99,7 @@ export default function AboutPage() {
               <p className="eyebrow mb-2" style={{ color: "var(--color-gold)" }}>Director</p>
               <h3 className="display mb-2" style={{ fontSize: "1.5rem", color: "var(--color-text)" }}>Akshay Kapoor (AK)</h3>
               <p className="font-display italic mb-5" style={{ color: "var(--color-gold)", fontSize: "0.95rem", lineHeight: 1.4 }}>
-                Hands-on preparation. An owner's perspective. Manifested, not marketed.
+                Wishing is easy. Manifesting is work.
               </p>
               <img
                 src={`${import.meta.env.BASE_URL}akshay-kapoor.jpg`}
