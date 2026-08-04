@@ -85,7 +85,7 @@ export default function ListingsPage() {
             Tell us what you're looking for.
           </h2>
           <p style={{ color: "var(--color-muted)", maxWidth: "44ch", lineHeight: 1.65 }}>
-            AK works with a wide network across Melbourne. A quick conversation might surface an off-market property that fits.
+            Manifest works with a wide network across Melbourne. A quick conversation might surface an off-market property that fits.
           </p>
           <Link
             to="/contact"

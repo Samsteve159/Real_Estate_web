@@ -225,7 +225,7 @@ function EnquiryForm({ listing }: { listing: ListingDetail }) {
     return (
       <div className="p-6 border" style={{ borderColor: "var(--color-line-gold)", background: "var(--color-surface)" }}>
         <p className="text-sm" style={{ color: "var(--color-text)", lineHeight: 1.55 }}>
-          <span style={{ color: "var(--color-gold)" }}>◆</span> Thanks {name.split(" ")[0] || "there"} — AK will be in touch about this property shortly.
+          <span style={{ color: "var(--color-gold)" }}>◆</span> Thanks {name.split(" ")[0] || "there"} — a RE representative will be in touch about this property shortly.
         </p>
       </div>
     );
