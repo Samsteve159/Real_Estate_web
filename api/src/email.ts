@@ -37,6 +37,30 @@ export interface NotifiedLead extends LeadInput {
   report?: BorrowingReportData;
 }
 
+/**
+ * The Resend SDK does NOT throw on a rejected send — it resolves with
+ * `{ data: null, error: {...} }`. A bare try/catch therefore swallows every
+ * delivery failure silently, which is how a broken notification pipeline stays
+ * broken without anyone noticing. Funnel every send through here so failures
+ * are always visible in the log.
+ */
+async function send(
+  label: string,
+  leadId: number,
+  payload: Parameters<Resend["emails"]["send"]>[0],
+): Promise<void> {
+  try {
+    const { error } = await resend().emails.send(payload);
+    if (error) {
+      console.error(`[email] ${label} REJECTED for lead #${leadId}:`, error.name, "-", error.message);
+      return;
+    }
+    console.log(`[email] ${label} sent for lead #${leadId}`);
+  } catch (err) {
+    console.error(`[email] ${label} threw for lead #${leadId}`, err);
+  }
+}
+
 /** Notify Manifest of a new enquiry, and (best-effort) auto-reply to the enquirer. Never throws. */
 export async function notifyNewLead(lead: NotifiedLead): Promise<void> {
   if (!emailConfigured()) {
@@ -54,51 +78,44 @@ async function sendAdminNotification(lead: NotifiedLead): Promise<void> {
     console.warn("[email] LEADS_NOTIFY_EMAIL not set — skipping admin notification");
     return;
   }
-  try {
-    await resend().emails.send({
-      from: fromAddress(),
-      to,
-      replyTo: lead.email || undefined,
-      subject: `New ${lead.source} enquiry${lead.intent ? ` — ${lead.intent}` : ""} — ${lead.name ?? "unnamed"}`,
-      html: adminEmailHtml(lead),
-    });
-  } catch (err) {
-    console.error("[email] admin notification failed", err);
-  }
+  await send("admin notification", lead.leadId, {
+    from: fromAddress(),
+    to,
+    replyTo: lead.email || undefined,
+    subject: `New ${lead.source} enquiry${lead.intent ? ` — ${lead.intent}` : ""} — ${lead.name ?? "unnamed"}`,
+    html: adminEmailHtml(lead),
+  });
 }
 
 async function sendAutoReply(lead: NotifiedLead): Promise<void> {
   if (!lead.email) return;
-  try {
-    if (lead.intent === "report") {
-      // Attach the branded PDF when we have the figures. If rendering fails the
-      // email still goes out with the summary inline — better than nothing.
-      let attachments: { filename: string; content: Buffer }[] | undefined;
-      if (lead.report) {
-        try {
-          const pdf = await buildBorrowingReportPdf({ ...lead.report, name: lead.name });
-          attachments = [{ filename: "Manifest-Borrowing-Capacity-Report.pdf", content: pdf }];
-        } catch (err) {
-          console.error("[email] PDF render failed, sending without attachment", err);
-        }
+
+  if (lead.intent === "report") {
+    // Attach the branded PDF when we have the figures. If rendering fails the
+    // email still goes out with the summary inline — better than nothing.
+    let attachments: { filename: string; content: Buffer }[] | undefined;
+    if (lead.report) {
+      try {
+        const pdf = await buildBorrowingReportPdf({ ...lead.report, name: lead.name });
+        attachments = [{ filename: "Manifest-Borrowing-Capacity-Report.pdf", content: pdf }];
+      } catch (err) {
+        console.error("[email] PDF render failed, sending without attachment", err);
       }
-      await resend().emails.send({
-        from: fromAddress(),
-        to: lead.email,
-        subject: "Your Borrowing Capacity report — Manifest Real Estate",
-        html: reportEmailHtml(lead),
-        attachments,
-      });
-    } else {
-      await resend().emails.send({
-        from: fromAddress(),
-        to: lead.email,
-        subject: "Thanks for reaching out — Manifest Real Estate",
-        html: autoReplyHtml(lead),
-      });
     }
-  } catch (err) {
-    console.error("[email] auto-reply failed", err);
+    await send("report auto-reply", lead.leadId, {
+      from: fromAddress(),
+      to: lead.email,
+      subject: "Your Borrowing Capacity report — Manifest Real Estate",
+      html: reportEmailHtml(lead),
+      attachments,
+    });
+  } else {
+    await send("auto-reply", lead.leadId, {
+      from: fromAddress(),
+      to: lead.email,
+      subject: "Thanks for reaching out — Manifest Real Estate",
+      html: autoReplyHtml(lead),
+    });
   }
 }
 
