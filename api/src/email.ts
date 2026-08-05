@@ -4,14 +4,16 @@
  * SQLite and nothing else; nobody is told. This closes that gap.
  *
  * Gracefully no-ops when RESEND_API_KEY isn't set, the same pattern vault.ts
- * uses: build the whole pipeline now, switch it on the moment the account
- * exists. Sign up free at resend.com (3,000 emails/mo free), then set:
- *   RESEND_API_KEY        — from the Resend dashboard
- *   LEADS_NOTIFY_EMAIL     — where enquiries should land, e.g. admin@manifestre.com.au
- *   MAIL_FROM              — optional; defaults to Resend's shared onboarding@resend.dev
- *                             sender (works with no DNS setup). Swap to an
- *                             address on manifestre.com.au once SPF/DKIM are
- *                             added to the domain (see PROJECT_TRACKER.md).
+ * uses. LIVE since 2026-08-05: manifestre.com.au is verified in Resend (DNS at
+ * GoDaddy; Resend's records sit on send.* / resend._domainkey, so the root
+ * M365 records were untouched). Env:
+ *   RESEND_API_KEY        — sending-only key from the Resend dashboard
+ *   LEADS_NOTIFY_EMAIL     — where enquiries land (admin@manifestre.com.au)
+ *   MAIL_FROM              — "Manifest Real Estate <enquiries@manifestre.com.au>".
+ *                             NOTE: the onboarding@resend.dev fallback below only
+ *                             delivers to the account's own address — Resend
+ *                             refuses all other recipients without a verified
+ *                             domain — so always set MAIL_FROM explicitly.
  */
 import { Resend } from "resend";
 import type { LeadInput } from "./leads.js";
