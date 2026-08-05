@@ -75,7 +75,7 @@ export default function ContactPage() {
             <div className="p-8 border h-full flex flex-col justify-center" style={{ background: "var(--color-surface)", borderColor: "var(--color-line-gold)" }}>
               <p className="font-display font-semibold text-2xl mb-2" style={{ color: "var(--color-gold)" }}>Thanks {name.split(" ")[0]} ◆</p>
               <p className="text-sm" style={{ color: "var(--color-muted)", lineHeight: 1.6 }}>
-                Your message is in. A RE representative will be in touch shortly, usually within one business day.
+                Your message is in. A Manifest representative will be in touch shortly, usually within one business day.
               </p>
             </div>
           ) : (

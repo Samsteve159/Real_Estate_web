@@ -110,7 +110,7 @@ export default function PortfolioPage() {
           </h2>
           <p className="text-sm" style={{ color: "var(--color-muted)", maxWidth: "52ch", lineHeight: 1.6 }}>
             Based on lenders typically releasing up to 80% of value less your current debt. Whether that
-            becomes a deposit for the next property depends on serviceability, and a RE representative
+            becomes a deposit for the next property depends on serviceability, and a Manifest representative
             can map the path.
           </p>
           <div className="flex flex-wrap gap-5 pt-1">
@@ -118,7 +118,7 @@ export default function PortfolioPage() {
               Test the next purchase →
             </Link>
             <Link to="/contact" className="text-sm font-medium gold-underline pb-px" style={{ color: "var(--color-gold)" }}>
-              Speak to a RE representative →
+              Speak to a Manifest representative →
             </Link>
           </div>
         </div>
