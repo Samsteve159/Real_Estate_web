@@ -53,7 +53,19 @@ export interface VaultListing {
   status: "For Sale" | "Sold" | "Under Offer";
   imageUrl: string;
   isPlaceholder: false;
+  /** Which Vault vertical the listing came from — the detail endpoint differs per vertical. */
+  vertical: Vertical;
 }
+
+/*
+ * Verticals. Manifest lists across three of Vault's property classes
+ * (2026-08-07 — Akshay flagged land + commercial listings missing from the
+ * site; the original integration scope was residential-for-sale only).
+ * residential/lease, commercial/lease, rural and business all return 0 for
+ * this office today; add here if the business expands into them.
+ */
+export type Vertical = "residential" | "land" | "commercial";
+const VERTICALS: Vertical[] = ["residential", "land", "commercial"];
 
 /** True only when both credentials are present. Callers fall back to mock otherwise. */
 export function vaultConfigured(): boolean {
@@ -75,8 +87,16 @@ export async function getVaultListings(force = false): Promise<VaultListing[] | 
   }
 
   try {
-    const raw = await fetchAllResidentialForSale();
-    const listings = raw.map(normaliseListing).filter((l): l is VaultListing => l !== null);
+    // The three verticals are independent — fetch them in parallel. One failing
+    // vertical fails the whole refresh (throw) so we serve the stale cache
+    // rather than silently showing a partial set as if it were everything.
+    const perVertical = await Promise.all(VERTICALS.map((v) => fetchVerticalForSale(v)));
+    const listings = perVertical
+      .flatMap(({ vertical, items }) => items.map((raw) => normaliseListing(raw, vertical)))
+      .filter((l): l is VaultListing => l !== null);
+    // Active stock first, sold proof last: For Sale, Under Offer, Sold.
+    const rank: Record<VaultListing["status"], number> = { "For Sale": 0, "Under Offer": 1, "Sold": 2 };
+    listings.sort((a, b) => rank[a.status] - rank[b.status]);
     cache = { at: Date.now(), data: listings };
     return listings;
   } catch (err) {
@@ -86,13 +106,21 @@ export async function getVaultListings(force = false): Promise<VaultListing[] | 
   }
 }
 
-async function fetchAllResidentialForSale(): Promise<Record<string, unknown>[]> {
+/*
+ * No `status=` filter on purpose: `published=true` alone also returns
+ * `unconditional` (sold, awaiting settlement) listings, which the owner wants
+ * shown with a SOLD badge (2026-08-07). Anything outside the three statuses we
+ * understand (listing / conditional / unconditional) is dropped in
+ * normaliseListing via allowedStatus() — belt for whatever else Vault keeps
+ * published (settled, withdrawn, …).
+ */
+async function fetchVerticalForSale(vertical: Vertical): Promise<{ vertical: Vertical; items: Record<string, unknown>[] }> {
   const all: Record<string, unknown>[] = [];
 
   for (let page = 1; page <= MAX_PAGES; page++) {
     const url =
-      `${baseUrl()}/properties/residential/sale` +
-      `?published=true&status=listingOrConditional&pagesize=${PAGE_SIZE}&page=${page}`;
+      `${baseUrl()}/properties/${vertical}/sale` +
+      `?published=true&pagesize=${PAGE_SIZE}&page=${page}`;
 
     const res = await fetch(url, {
       method: "GET",
@@ -104,7 +132,7 @@ async function fetchAllResidentialForSale(): Promise<Record<string, unknown>[]> 
     });
 
     if (!res.ok) {
-      throw new Error(`Vault RE ${res.status} on page ${page}: ${await safeText(res)}`);
+      throw new Error(`Vault RE ${res.status} on ${vertical} page ${page}: ${await safeText(res)}`);
     }
 
     const body = (await res.json()) as unknown;
@@ -116,7 +144,7 @@ async function fetchAllResidentialForSale(): Promise<Record<string, unknown>[]> 
     if (items.length < PAGE_SIZE) break;
   }
 
-  return all;
+  return { vertical, items: all };
 }
 
 /** Vault paginates as `{ items, totalItems, totalPages, currentPage }`; tolerate a bare array too. */
@@ -136,9 +164,10 @@ function unwrapPage(body: unknown): { items: Record<string, unknown>[]; totalPag
  * property object, falling back gracefully. Verify against a live item once the
  * access token is in place.
  */
-function normaliseListing(raw: Record<string, unknown>): VaultListing | null {
+function normaliseListing(raw: Record<string, unknown>, vertical: Vertical = "residential"): VaultListing | null {
   const id = str(raw.id) ?? str(raw.propertyId);
   if (!id) return null;
+  if (!allowedStatus(raw)) return null;
 
   const address = (raw.address ?? {}) as Record<string, unknown>;
   const suburbObj = (address.suburb ?? {}) as Record<string, unknown>;
@@ -163,7 +192,18 @@ function normaliseListing(raw: Record<string, unknown>): VaultListing | null {
     status: normaliseStatus(raw),
     imageUrl: proxyPhotoUrl(pickPhotoUrl(raw)),
     isPlaceholder: false,
+    vertical,
   };
+}
+
+/**
+ * Only the statuses we understand make it to the site: an active listing, one
+ * under offer, or one sold awaiting settlement. Everything else Vault might
+ * keep published (settled, withdrawn, prospect …) is dropped.
+ */
+function allowedStatus(raw: Record<string, unknown>): boolean {
+  const s = (str(pickLife(raw).status) ?? str(raw.status) ?? "listing").toLowerCase();
+  return s === "listing" || s === "conditional" || s === "unconditional";
 }
 
 /** Build a clean street line from address parts (nicer casing than Vault's UPPERCASE displayAddress). */
@@ -204,7 +244,11 @@ function normaliseType(raw: Record<string, unknown>): string {
 
 function normaliseStatus(raw: Record<string, unknown>): VaultListing["status"] {
   const s = (str(pickLife(raw).status) ?? str(raw.status) ?? "").toLowerCase();
-  if (s.includes("sold")) return "Sold";
+  // ORDER MATTERS: "unconditional" (= contracts exchanged and unconditional,
+  // i.e. sold awaiting settlement) contains the substring "conditional", so it
+  // must be checked before the under-offer branch or every sold home would
+  // show as "Under Offer".
+  if (s.includes("sold") || s.includes("unconditional") || s.includes("settled")) return "Sold";
   if (s.includes("conditional") || s.includes("offer") || s.includes("under")) return "Under Offer";
   return "For Sale";
 }
@@ -271,22 +315,31 @@ export async function getVaultListingDetail(id: string): Promise<VaultListingDet
   if (cached && Date.now() - cached.at < DETAIL_CACHE_TTL_MS) return cached.data;
 
   try {
-    const res = await fetch(`${baseUrl()}/properties/residential/sale/${encodeURIComponent(id)}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "X-Api-Key": apiKey(),
-        Authorization: `Bearer ${accessToken()}`,
-      },
-    });
+    // The detail URL is per-vertical. The list cache knows each id's vertical,
+    // so usually this is a single request; on a cold cache (direct deep link
+    // after a restart) fall back to trying each vertical until one answers.
+    const known = cache?.data.find((l) => l.id === id)?.vertical;
+    const tryOrder: Vertical[] = known ? [known] : VERTICALS;
 
-    if (res.status === 404) return null;
-    if (!res.ok) throw new Error(`Vault RE ${res.status} on property ${id}: ${await safeText(res)}`);
+    for (const vertical of tryOrder) {
+      const res = await fetch(`${baseUrl()}/properties/${vertical}/sale/${encodeURIComponent(id)}`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "X-Api-Key": apiKey(),
+          Authorization: `Bearer ${accessToken()}`,
+        },
+      });
 
-    const raw = (await res.json()) as Record<string, unknown>;
-    const detail = normaliseListingDetail(raw);
-    if (detail) detailCache.set(id, { at: Date.now(), data: detail });
-    return detail;
+      if (res.status === 404) continue; // not in this vertical — try the next
+      if (!res.ok) throw new Error(`Vault RE ${res.status} on ${vertical} property ${id}: ${await safeText(res)}`);
+
+      const raw = (await res.json()) as Record<string, unknown>;
+      const detail = normaliseListingDetail(raw, vertical);
+      if (detail) detailCache.set(id, { at: Date.now(), data: detail });
+      return detail;
+    }
+    return null; // 404 in every vertical
   } catch (err) {
     console.error("[vault] detail fetch failed", err);
     // Serve a slightly-stale cache rather than nothing, if we have one.
@@ -294,8 +347,8 @@ export async function getVaultListingDetail(id: string): Promise<VaultListingDet
   }
 }
 
-function normaliseListingDetail(raw: Record<string, unknown>): VaultListingDetail | null {
-  const base = normaliseListing(raw);
+function normaliseListingDetail(raw: Record<string, unknown>, vertical: Vertical = "residential"): VaultListingDetail | null {
+  const base = normaliseListing(raw, vertical);
   if (!base) return null;
 
   const description =

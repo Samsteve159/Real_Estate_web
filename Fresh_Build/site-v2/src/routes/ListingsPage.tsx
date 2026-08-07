@@ -147,9 +147,10 @@ function ListingCard({ listing, delay }: { listing: Listing; delay: number }) {
           className="flex gap-5 text-xs mb-4 pb-4 border-b"
           style={{ borderColor: "var(--color-line)", color: "var(--color-dim)" }}
         >
-          <span>{listing.bedrooms} bd</span>
-          <span>{listing.bathrooms} ba</span>
-          <span>{listing.parking} pk</span>
+          {/* Land/commercial listings have no bed/bath counts — hide zeros rather than show "0 bd". */}
+          {listing.bedrooms > 0 && <span>{listing.bedrooms} bd</span>}
+          {listing.bathrooms > 0 && <span>{listing.bathrooms} ba</span>}
+          {listing.parking > 0 && <span>{listing.parking} pk</span>}
           <span>{listing.propertyType}</span>
         </div>
         <p className="font-semibold" style={{ color: "var(--color-gold)" }}>{listing.price}</p>

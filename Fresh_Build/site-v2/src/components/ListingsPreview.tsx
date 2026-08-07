@@ -177,15 +177,22 @@ function ListingCard({ listing, delay }: { listing: Listing; delay: number }) {
           className="flex items-center gap-5 text-xs mb-5 pb-5 border-b"
           style={{ borderColor: "var(--color-line)", color: "var(--color-dim)" }}
         >
-          <span className="flex items-center gap-1.5">
-            <BedIcon /> {listing.bedrooms}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <BathIcon /> {listing.bathrooms}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <CarIcon /> {listing.parking}
-          </span>
+          {/* Land/commercial listings have no bed/bath counts — hide zeros. */}
+          {listing.bedrooms > 0 && (
+            <span className="flex items-center gap-1.5">
+              <BedIcon /> {listing.bedrooms}
+            </span>
+          )}
+          {listing.bathrooms > 0 && (
+            <span className="flex items-center gap-1.5">
+              <BathIcon /> {listing.bathrooms}
+            </span>
+          )}
+          {listing.parking > 0 && (
+            <span className="flex items-center gap-1.5">
+              <CarIcon /> {listing.parking}
+            </span>
+          )}
           <span>{listing.propertyType}</span>
         </div>
 

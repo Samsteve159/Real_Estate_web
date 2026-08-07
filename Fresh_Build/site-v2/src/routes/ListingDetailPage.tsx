@@ -141,9 +141,10 @@ export default function ListingDetailPage() {
               className="flex flex-wrap gap-x-8 gap-y-3 text-sm mb-8 pb-8 border-b"
               style={{ borderColor: "var(--color-line)", color: "var(--color-text)" }}
             >
-              <MetaItem label="Bedrooms" value={listing.bedrooms} />
-              <MetaItem label="Bathrooms" value={listing.bathrooms} />
-              <MetaItem label="Parking" value={listing.parking} />
+              {/* Land/commercial listings have no bed/bath counts — hide zeros. */}
+              {listing.bedrooms > 0 && <MetaItem label="Bedrooms" value={listing.bedrooms} />}
+              {listing.bathrooms > 0 && <MetaItem label="Bathrooms" value={listing.bathrooms} />}
+              {listing.parking > 0 && <MetaItem label="Parking" value={listing.parking} />}
               {listing.landSize && <MetaItem label="Land size" value={listing.landSize} />}
             </div>
 
