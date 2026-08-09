@@ -5,18 +5,31 @@
  * 2 GB, where Puppeteer would be a ~300 MB resident browser per render. PDFKit
  * draws directly, costs a few MB, and renders in milliseconds.
  *
- * Design follows Fresh_Build/Assets/sample-borrowing-capacity-report.html:
- * navy letterhead, gold rule, figure table, indicative-only disclaimer.
+ * Design (owner-approved 2026-08-09, draft in
+ * Fresh_Build/Assets/report-redesign-draft.mts): site branding, not the earlier
+ * navy — near-black #0a0a0b letterhead with the white badge logo and both
+ * directors' photos (circular, gold ring), site gold #c2a267 accents, warm
+ * neutrals in the body. Body stays white for print-friendliness.
  * Helvetica (a PDF built-in) stands in for Raleway so we ship no font binaries.
  */
 import PDFDocument from "pdfkit";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const NAVY = "#003970";
-const NAVY_DEEP = "#002a52";
-const GOLD = "#b8924f";
-const INK = "#1c2430";
-const MUTED = "#5a6675";
-const LINE = "#e4e8ee";
+// api/src → repo root → the site's public assets (logo + director photos).
+// These are committed to git, so they exist on the server checkout too.
+const PUB = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../Fresh_Build/site-v2/public");
+
+/* Brand tokens — lifted from site-v2/src/index.css */
+const BG = "#0a0a0b";           // letterhead, near-black (site --color-bg)
+const GOLD = "#c2a267";         // site gold
+const GOLD_DIM = "#9a7f4f";
+const TEXT_ON_DARK = "#f5f5f6";
+const MUTED_ON_DARK = "#a1a1aa";
+const INK = "#141416";          // body ink on white
+const MUTED = "#6b6b70";        // neutral gray (was blue-gray in the navy design)
+const LINE = "#e7e4dd";         // warm hairline
+const ZEBRA = "#f7f6f3";        // warm zebra row
 
 export interface BorrowingReportData {
   name?: string;
@@ -52,6 +65,22 @@ function aud(n?: number): string {
   return "$" + Math.round(n).toLocaleString("en-AU");
 }
 
+/** Circular-cropped photo with a gold ring; top-aligned like the site's headshots. */
+function circlePhoto(doc: PDFKit.PDFDocument, file: string, cx: number, cy: number, r: number): void {
+  try {
+    doc.save();
+    doc.circle(cx, cy, r).clip();
+    // No `valign`: PDFKit's default is top-aligned, which matches the site's object-top headshots.
+    doc.image(path.join(PUB, file), cx - r, cy - r, { cover: [r * 2, r * 2], align: "center" });
+    doc.restore();
+    doc.circle(cx, cy, r).lineWidth(1.3).stroke(GOLD);
+  } catch (err) {
+    // A missing/corrupt asset must never cost a customer their report.
+    doc.restore();
+    console.error(`[report] could not embed ${file}`, err);
+  }
+}
+
 /** Renders the report and resolves to a PDF buffer. */
 export async function buildBorrowingReportPdf(data: BorrowingReportData): Promise<Buffer> {
   const doc = new PDFDocument({ size: "A4", margin: 0 });
@@ -63,22 +92,37 @@ export async function buildBorrowingReportPdf(data: BorrowingReportData): Promis
   const M = 56; // content margin
   const contentW = W - M * 2;
 
-  /* ---- Letterhead ---- */
-  doc.rect(0, 0, W, 148).fill(NAVY_DEEP);
-  doc.rect(0, 0, W, 148).fillOpacity(0.35).fill(NAVY).fillOpacity(1);
+  /* ---- Letterhead: near-black, site gold ---- */
+  doc.rect(0, 0, W, 148).fill(BG);
 
-  doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(15)
-    .text("MANIFEST", M, 40, { characterSpacing: 3 });
-  doc.font("Helvetica").fontSize(6.5).fillColor(GOLD)
-    .text("REAL ESTATE", M, 60, { characterSpacing: 4.6 });
+  // White badge logo, top-left (sized per owner feedback 2026-08-09).
+  try {
+    doc.image(path.join(PUB, "manifest-logo-white.png"), M, 20, { height: 58 });
+  } catch (err) {
+    console.error("[report] could not embed logo", err);
+  }
 
-  doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(21)
-    .text("Borrowing Capacity Report", M, 88);
-  doc.font("Helvetica").fontSize(9.5).fillColor("#c9d4e2")
+  // Directors, top-right: circular headshots with gold rings + names.
+  const r = 21;
+  const cxAk = W - M - r;         // Akshay rightmost
+  const cxRi = cxAk - r * 2 - 12; // Rishi to his left (matches About-page order)
+  const cy = 46;
+  circlePhoto(doc, "rishi-vohra.jpg", cxRi, cy, r);
+  circlePhoto(doc, "akshay-kapoor.jpg", cxAk, cy, r);
+  doc.font("Helvetica").fontSize(6).fillColor(MUTED_ON_DARK);
+  doc.text("Rishi Vohra", cxRi - 34, cy + r + 5, { width: 68, align: "center" });
+  doc.text("Akshay Kapoor", cxAk - 34, cy + r + 5, { width: 68, align: "center" });
+  doc.fontSize(5.6).fillColor(GOLD_DIM);
+  doc.text("DIRECTOR", cxRi - 34, cy + r + 13, { width: 68, align: "center", characterSpacing: 1 });
+  doc.text("DIRECTOR", cxAk - 34, cy + r + 13, { width: 68, align: "center", characterSpacing: 1 });
+
+  doc.fillColor(TEXT_ON_DARK).font("Helvetica-Bold").fontSize(21)
+    .text("Borrowing Capacity Report", M, 92);
+  doc.font("Helvetica").fontSize(9.5).fillColor(MUTED_ON_DARK)
     .text(
       `Prepared for ${data.name || "you"}  ·  ${new Date().toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}`,
       M,
-      116,
+      120,
     );
 
   // Gold rule under the letterhead
@@ -87,24 +131,25 @@ export async function buildBorrowingReportPdf(data: BorrowingReportData): Promis
   let y = 190;
 
   /* ---- Headline figure ---- */
-  doc.fillColor(MUTED).font("Helvetica").fontSize(8)
+  doc.fillColor(GOLD_DIM).font("Helvetica-Bold").fontSize(8)
     .text("INDICATIVE BORROWING POWER", M, y, { characterSpacing: 1.6 });
   y += 16;
-  doc.fillColor(NAVY).font("Helvetica-Bold").fontSize(32).text(aud(data.maxBorrow), M, y);
+  doc.fillColor(INK).font("Helvetica-Bold").fontSize(32).text(aud(data.maxBorrow), M, y);
   y += 40;
   doc.fillColor(MUTED).font("Helvetica").fontSize(9.5)
     .text(`Suggesting a maximum purchase price of about ${aud(data.maxPurchase)}, including your savings.`, M, y, { width: contentW });
   y += 34;
 
-  /* ---- Verdict banner ---- */
+  /* ---- Verdict banner (warm neutrals + gold edge) ---- */
   if (data.canService != null && data.purchasePrice) {
     const ok = data.canService;
-    const bg = ok ? "#eef6f1" : "#fdf3f1";
-    const fg = ok ? "#2b6249" : "#9c3b30";
+    const bg = ok ? "#f2f0ea" : "#f7efe9";
+    const fg = ok ? "#4d5c3f" : "#8a4a33";
     const msg = ok
       ? `On these numbers, a purchase at ${aud(data.purchasePrice)} looks serviceable.`
       : `On these numbers, a purchase at ${aud(data.purchasePrice)} looks like a stretch.`;
     doc.roundedRect(M, y, contentW, 40, 2).fill(bg);
+    doc.rect(M, y, 3, 40).fill(GOLD);
     doc.fillColor(fg).font("Helvetica-Bold").fontSize(10).text(msg, M + 16, y + 15, { width: contentW - 32 });
     y += 60;
   }
@@ -148,8 +193,8 @@ export async function buildBorrowingReportPdf(data: BorrowingReportData): Promis
       footY + 14,
       { width: contentW, lineGap: 1.5 },
     );
-  doc.fillColor(NAVY).font("Helvetica-Bold").fontSize(8)
-    .text("Manifest Real Estate", M, doc.page.height - 42);
+  doc.fillColor(GOLD_DIM).font("Helvetica-Bold").fontSize(8)
+    .text("MANIFEST REAL ESTATE", M, doc.page.height - 42, { characterSpacing: 1.4 });
   doc.fillColor(MUTED).font("Helvetica").fontSize(8)
     .text("admin@manifestre.com.au  ·  manifestre.com.au", M, doc.page.height - 42, {
       width: contentW,
@@ -161,7 +206,7 @@ export async function buildBorrowingReportPdf(data: BorrowingReportData): Promis
 }
 
 function section(doc: PDFKit.PDFDocument, label: string, x: number, y: number, w: number): number {
-  doc.fillColor(NAVY).font("Helvetica-Bold").fontSize(8).text(label, x, y, { characterSpacing: 1.4 });
+  doc.fillColor(GOLD_DIM).font("Helvetica-Bold").fontSize(8).text(label, x, y, { characterSpacing: 1.4 });
   doc.rect(x, y + 14, w, 1).fill(GOLD);
   return y + 24;
 }
@@ -178,7 +223,7 @@ function table(
   const rowH = 22;
   rows.forEach(([label, value], i) => {
     const ry = y + i * rowH;
-    if (i % 2 === 1) doc.rect(x, ry - 4, w, rowH).fill("#f7f9fb");
+    if (i % 2 === 1) doc.rect(x, ry - 4, w, rowH).fill(ZEBRA);
     doc.fillColor(MUTED).font("Helvetica").fontSize(9.5).text(label, x + 8, ry, { width: w * 0.6 });
     doc
       .fillColor(INK)
