@@ -57,8 +57,8 @@ async function build(data: Data): Promise<Buffer> {
   /* ---- Letterhead: near-black, site gold ---- */
   doc.rect(0, 0, W, 148).fill(BG);
 
-  // White badge logo, top-left
-  doc.image(`${PUB}/manifest-logo-white.png`, M, 26, { height: 44 });
+  // White badge logo, top-left (owner asked for it slightly bigger, 2026-08-09)
+  doc.image(`${PUB}/manifest-logo-white.png`, M, 20, { height: 58 });
 
   // Directors, top-right: circular headshots with gold rings + names
   const r = 21;
