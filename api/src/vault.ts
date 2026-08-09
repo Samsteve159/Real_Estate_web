@@ -197,13 +197,15 @@ function normaliseListing(raw: Record<string, unknown>, vertical: Vertical = "re
 }
 
 /**
- * Only the statuses we understand make it to the site: an active listing, one
- * under offer, or one sold awaiting settlement. Everything else Vault might
- * keep published (settled, withdrawn, prospect …) is dropped.
+ * Only active stock makes it to the site: a live listing or one under offer.
+ * Sold properties (`unconditional`) were shown briefly with a SOLD badge
+ * (2026-08-07) and removed again at Akshay's request (2026-08-09) — add
+ * "unconditional" back here if that ever reverses. Everything else Vault might
+ * keep published (settled, withdrawn, prospect …) is dropped too.
  */
 function allowedStatus(raw: Record<string, unknown>): boolean {
   const s = (str(pickLife(raw).status) ?? str(raw.status) ?? "listing").toLowerCase();
-  return s === "listing" || s === "conditional" || s === "unconditional";
+  return s === "listing" || s === "conditional";
 }
 
 /** Build a clean street line from address parts (nicer casing than Vault's UPPERCASE displayAddress). */
