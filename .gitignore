@@ -10,3 +10,4 @@ data/vault-photos/
 *.log
 .DS_Store
 .claude/settings.local.json
+private/
