@@ -85,6 +85,14 @@ Low and predictable — this is light maintenance, not an ongoing commitment:
 3. **Typecheck + build**: `cd Fresh_Build/site-v2 && npx tsc --noEmit && npm run build`.
 4. **Redeploy** the site: `rsync -az --delete -e "ssh -i ~/.ssh/manifest_vps" dist/ manifest@97.74.94.97:/srv/manifest/site-dist/`.
    Static-only, so **no service restart and no downtime** — the API keeps running.
+5. **Confirm on the live site**, with DNS pinned to the server rather than
+   trusting your resolver (a stale cache pointing at the retired Cloudflare IPs
+   returns a 404 page that looks exactly like a broken deploy):
+   `curl --resolve manifestre.com.au:443:97.74.94.97 https://manifestre.com.au/tools/stamp-duty`
+
+> **This is a live site now** (since 2026-08-12). Duty figures shown here are
+> used by real buyers, so verify against the SRO calculator before deploying,
+> not after.
 5. Update the dated comment label in the file (e.g. the `2024–25` note in `preBuying.ts`)
    so it's obvious which year's figures are loaded.
 

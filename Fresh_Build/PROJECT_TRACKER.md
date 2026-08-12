@@ -1,10 +1,26 @@
 # Manifest Overhaul — Project Tracker
 
 Living status doc. Updated as we go. Plan: `~/.claude/plans/we-need-to-to-sequential-deer.md`.
-Last updated: **2026-07-25**.
+Last updated: **2026-08-12**.
+
+## 🚀 LIVE — https://manifestre.com.au (2026-08-12)
+The new site is **in production**, replacing the old one. Serving from the
+GoDaddy VPS at **97.74.94.97** over HTTPS (Let's Encrypt, auto-renewing), with
+**21 live Vault listings**, the **6 client tools**, the **AI valuation and
+concierge**, and **enquiry email flowing to `admin@manifestre.com.au`** with
+branded auto-replies and the Borrowing Capacity PDF from
+`enquiries@manifestre.com.au`.
+
+Day-to-day facts worth knowing before touching anything:
+- **Deploys hit real customers now.** Static swaps are safe and instant; an API
+  restart briefly drops in-flight requests, so do it deliberately.
+- **Verify with DNS pinned to 97.74.94.97**, never the system resolver.
+- **Rollback is weak** and shrinking. Fix forward.
+- Listings mirror Vault within 10 minutes; if a listing looks wrong on the
+  site, the fix is almost always in the CRM.
 
 ## ⭐ V2 LOCKED IN (2026-07-03)
-Akshay **locked in the deployed V2** (`Fresh_Build/site-v2/`, live on GitHub Pages) as the chosen build — no more backtracking to V1 (`Fresh_Build/site/` is now archived reference only). Active work now: (1) **Anthropic Workspace "bucket"** setup → chatbot + valuation live; (2) **Vault RE integration — LIVE 2026-07-25.** `vault.ts` client + `/api/vault/listings` + front-end wiring built; MRI provisioned the `X-Api-Key` and Akshay generated the per-office Access Token → **14 real Manifest listings now flow to the site.** Remaining: listing-detail page ⬜ + self-host photos + GoDaddy hosting so it works on the live URL.
+Akshay **locked in V2** (`Fresh_Build/site-v2/`) as the chosen build — no more backtracking to V1 (`Fresh_Build/site/` is now archived reference only). Everything in this section has since shipped: the Anthropic Workspace, the Vault RE integration (now residential + land + commercial), the listing-detail page, self-hosted photos, and production hosting.
 
 ## Status legend
 ✅ done · 🟡 in progress · ⛔ blocked (waiting on owner/third party) · ⬜ not started
@@ -102,7 +118,30 @@ Akshay pre-paid **AUD 20** for API tokens (chatbot + instant valuation); he reim
 | Report delivery by email | ✅ built **incl. real PDF**, ⬜ needs the same Resend account | The "email me my report" CTA sends a branded HTML email **with a generated PDF attached** (`api/src/report.ts`, PDFKit — chosen over headless Chrome because Puppeteer would cost ~300 MB resident per render on a 1 vCPU / 2 GB box). `POST /api/lead` accepts a structured `report` object, clamped through the same guards as every other input; if rendering ever fails the email still goes out without the attachment. **Verified 2026-08-03**: both variants render as valid A4 PDFs (navy letterhead, gold rule, headline figure, serviceability banner, figures + inputs tables, disclaimer). |
 | DNS records on `manifestre.com.au` | ✅ **2026-08-05 — customer email fully LIVE** | Root domain verified in Resend (Tokyo region; Resend's rows sit on `send.*`/`resend._domainkey`, root M365 rows untouched). `MAIL_FROM=Manifest Real Estate <enquiries@manifestre.com.au>` local + server. Proved end-to-end with **lead #8**: report email + generated PDF delivered to a real Gmail, admin notification delivered. DNS itself now lives at **GoDaddy nameservers** — see the 2026-08-05 changelog for the full takeover story. |
 
-### 2. Hosting — ✅ SERVER BOUGHT + DEPLOYED (2026-08-03), NOT live
+### 2. Hosting — 🚀 **LIVE at https://manifestre.com.au (2026-08-12)**
+
+> **The cutover is done.** `manifestre.com.au` and `www.` serve the new build
+> over HTTPS from **97.74.94.97**. Single root `A` record (the two Cloudflare
+> stopgap IPs are gone), `www` CNAME follows the root, **Let's Encrypt**
+> certificate for both hostnames (expires 2026-11-10, `certbot.timer` active),
+> HTTP 301s to HTTPS, and the staging `X-Robots-Tag: noindex` header was
+> **removed** so the site is indexable.
+>
+> **Verified on the live domain:** all 8 sampled routes + `www` 200 ·
+> `/api/health` · 21 live Vault listings · AI valuation · **lead #12 with the
+> report PDF and both emails delivered**.
+>
+> **Production hardening added at cutover:** `ALLOWED_ORIGINS` (CORS was `*`,
+> letting any site bill Claude calls to Manifest) · `STATS_TOKEN` (`/api/stats`
+> was publicly leaking lead counts) · **certbot installed** (it was missing
+> entirely, and would have failed the SSL step minutes after the flip) ·
+> **nightly leads-DB backup** at 3am, 14 snapshots retained.
+>
+> **⚠️ Rollback is weak.** It depends on the abandoned Cloudflare zone still
+> answering, which can stop at any time. **Fix forward on the server** rather
+> than reverting DNS. Full story: `docs/DNS-INCIDENT-2026-08-05-AND-GOLIVE-RUNBOOK.md`.
+
+<details><summary>Pre-launch history (server bought + deployed 2026-08-03, kept for reference)</summary>
 **GoDaddy VPS purchased and fully deployed.** `manifest-prod`, **97.74.94.97**,
 Ubuntu 24.04.4 LTS, 1 vCPU / 1.9 GB RAM / 38 GB disk, Singapore region, monthly
 term (no lock-in). Admin user `manifest`, passwordless sudo, **key-based SSH**
@@ -132,25 +171,30 @@ estimate. Survives restart + reboot (both services `enabled`).
 is **http://97.74.94.97** (plain HTTP — no SSL yet, since Let's Encrypt needs a
 domain pointed at the box). See [[manifest-re-do-not-go-live]].
 
-**Remaining before go-live (updated 2026-08-05):** (a) ~~Resend/email~~ ✅ done —
-customer email fully live; (b) **Akshay's sign-off** (he's reviewing on
-http://97.74.94.97); (c) optional: staging subdomain `new.manifestre.com.au` +
-Let's Encrypt for a padlocked review link — now unblocked since DNS is ours at
-GoDaddy; (d) the flip itself, **now trivial**: edit the 2 root A records in
-GoDaddy DNS (13.248.243.5 / 76.223.105.230 → 97.74.94.97, `www` CNAME follows
-automatically). Old site stays reachable at manifestre.godaddysites.com as
-rollback. (e) ~~PDF redesign~~ ✅ **shipped 2026-08-09** (`cfe1e30`) — the
-black-theme design is live in `api/src/report.ts` and verified through the real
-pipeline (lead #9 delivered to Gmail from the production server).
+**~~Remaining before go-live~~ ✅ ALL DONE — launched 2026-08-12.** (a) Resend
+and customer email; (b) Akshay's sign-off; (c) the padlock, delivered directly
+on the production domain rather than a staging subdomain; (d) the DNS flip;
+(e) the black-theme PDF redesign (`cfe1e30`).
 
-**Redeploy loop (in use since 2026-08-03).** Build locally, then
+</details>
+
+**Redeploy loop — now touching a LIVE site, so treat it accordingly.**
+Front-end: build locally, then
 `rsync -az --delete -e "ssh -i ~/.ssh/manifest_vps" dist/ manifest@97.74.94.97:/srv/manifest/site-dist/`.
-Static swaps need **no service restart** and cause no downtime. Restarting the
-API *does* drop in-flight requests: on 2026-08-03 the owner hit the concierge at
-10:01:45 while a deploy stopped the service at 10:01:44, producing a bogus
-"chatbot is broken" report (nginx logged `connect() failed (111: Connection
-refused)`; `NRestarts=0`, no crash, no OOM). **Avoid API restarts while someone
-is reviewing**, or add a reconnect retry to `streamChat`.
+Static swaps need **no service restart** and cause no downtime.
+API: `git pull` on the server, then `sudo systemctl restart manifest-api`.
+**An API restart drops in-flight requests**, which on 2026-08-03 produced a
+bogus "chatbot is broken" report when the owner hit the concierge in the
+one-second restart window (nginx logged `connect() failed (111: Connection
+refused)`; `NRestarts=0`, no crash, no OOM). Now that real customers are on the
+site, **restart deliberately and off-peak**, or add a reconnect retry to
+`streamChat`.
+
+**Verify production changes with DNS pinned to the server**, never through the
+system resolver:
+`curl --resolve manifestre.com.au:443:97.74.94.97 https://manifestre.com.au/…`
+A stale resolver cache pointing at the retired Cloudflare IPs returns a 404
+page that looks exactly like a broken deploy. This bit us twice.
 
 ### 2b. Hosting — options as priced 2026-07-28 (kept for reference)
 - **The gate.** Valuation, concierge, all forms and live Vault listings need the Hono `api/` hosted. They no-op on the static Pages preview by design.
@@ -160,27 +204,57 @@ is reviewing**, or add a reconnect retry to `streamChat`.
 - Capacity check: 4–5 Manifest-shaped sites (React + small Node API) ≈ 800–900 MB of 2 GB — fits. WordPress sites do not; those want 4 GB.
 - Buy-sheet artifact for Akshay: https://claude.ai/code/artifact/0f103fca-ed52-4dd1-ad40-375a899cd360 (private by default — hit Share before sending).
 
-### 3. Deploy sequence once a server exists
-Install Node + nginx → deploy static build + `api/` under systemd → nginx reverse-proxy `/api` → Let's Encrypt SSL → **staging subdomain** (`new.manifestre.com.au`) for Akshay's review → single DNS flip. Old WordPress stays live as rollback throughout.
+### 3. ~~Deploy sequence~~ ✅ executed 2026-08-12
+Node + nginx → static build + `api/` under systemd → reverse-proxy `/api` →
+**Let's Encrypt on the production domain** → single DNS flip. The staging
+subdomain was skipped: Akshay reviewed on the raw IP, so the padlock landed
+directly on the real domain. Full account, including the four pre-flight gaps
+found, in `docs/DNS-INCIDENT-2026-08-05-AND-GOLIVE-RUNBOOK.md`.
 
-### 4. Still outstanding elsewhere
+### 4. Still outstanding (post-launch)
+**Operational, now that customers are on it:**
+- **Nobody is watching the site.** No uptime monitoring or alerting: if it goes
+  down at 2am, the first report will come from Akshay. A free external monitor
+  hitting `/api/health` would close this.
+- **Backups are on the same machine as the data.** The nightly leads snapshot
+  lives in `/srv/manifest/backups`, so it survives a bad deploy but not a lost
+  server. Off-box copies would fix that.
+- **The Anthropic spend cap matters now** that valuation and concierge are
+  publicly reachable. `ALLOWED_ORIGINS` stops other sites billing us, and the
+  per-IP rate limits stop bursts, but a real budget alert is worth having.
+- Consider a reconnect retry in `streamChat` so an API restart shows
+  "reconnecting" rather than an error.
+
+**Product:**
 - **Real assets to swap:** Akshay's hero footage (`hero.mp4`) and/or a real B&W skyline photo; white/mono logo SVG if available.
 - **Milestone 3 (separate from the website):** newsletter + monthly market-update engine via the content-engine agent.
 - **Auto-invoicing script** (`Fresh_Build/tools/invoice.mjs`) — needs an `sk-ant-admin…` key.
 - Optional: visual QA pass of the 6 tools + mega-menu + floating bot.
+- Open with Akshay: whether to bring back a "recently sold" section (sold
+  listings were shown briefly, then hidden at his request 2026-08-09).
 
 ## Open questions for owner
-- ~~**Hosting provider + term**~~ — ✅ **resolved**: GoDaddy VPS bought on a **monthly** term (no 3-yr lock), deployed 2026-08-03.
-- **Who owns the Resend account** — per the ownership rule it should be Manifest/Akshay's, since the ESP will hold client PII (names, emails, phones, addresses). Currently unowned; nobody is emailed until it exists.
-- **Where enquiry emails should land** — one `LEADS_NOTIFY_EMAIL` currently receives **every** form (contact, listing enquiry, valuation, concierge, report). Needs an address Akshay actually watches. Open design question: should **listing** enquiries instead route to that listing's agent? Vault already gives us `contactStaff[]` with their email, so it is a small change if wanted.
-- **Whether Akshay authorises the DNS records** on `manifestre.com.au` — access exists, permission should be explicit. Note this is now a **hard blocker on all enquiry email**, not a nice-to-have (see §1). Using the `send.` subdomain means nothing his live site depends on is touched.
-- **Auto-reply wording** — it currently promises "AK will personally review your enquiry", which reads oddly now Rishi is also a director and the rest of the site says "a RE representative".
-- Production account ownership specifics (Anthropic billing, hosting, ESP) — confirm all under Manifest/Akshay.
+**Resolved:**
+- ~~Hosting provider + term~~ ✅ GoDaddy VPS, **monthly** term, deployed 2026-08-03.
+- ~~Who owns the Resend account~~ ✅ created under **admin@manifestre.com.au**, so it is Manifest's, not Sameer's.
+- ~~Where enquiry emails land~~ ✅ **admin@manifestre.com.au**, live and delivering.
+- ~~DNS authorisation~~ ✅ done. In the end the whole zone moved to GoDaddy nameservers and the site went live on it.
+- ~~Auto-reply wording~~ ✅ now "A Manifest representative", matching the site.
+
+**Still open:**
+- **Should listing enquiries route to that listing's agent** rather than all landing in `admin@`? Vault already gives us `contactStaff[]` with their email, so it is a small change. Worth asking now that real enquiries are arriving.
+- **Uptime monitoring and alerting** — nobody is watching the live site (see §4).
+- **Off-box backups** — nightly leads snapshots currently sit on the same server as the data.
+- **Anthropic budget alerting** now that valuation and concierge are publicly reachable.
+- **A "recently sold" section?** Sold listings were shown briefly with a SOLD badge, then hidden at Akshay's request (2026-08-09).
+- **Services agreement** (Sameer × Akshay) is drafted with fee blanks and awaiting a solicitor review before signing. Lives in git-ignored `private/`, deliberately never committed.
 - Excel: what is it meant to calculate? (audit once received).
 - **Who owns calculator maintenance** (tax brackets, stamp-duty schedule, APRA buffer) after handover — see `Fresh_Build/docs/MAINTENANCE.md`. Recommend codebase-maintainer-owned on an annual/post-budget cadence; Akshay to confirm.
+- **Production account ownership** — Resend is Manifest's, the domain and VPS are Manifest's, but **Anthropic billing and GitHub still run on Sameer's org** with reimbursement. Worth settling now the site is live.
 
 ## Changelog
 
+- **2026-08-12 🚀 THE SITE WENT LIVE** — `manifestre.com.au` + `www.` now serve the new build over HTTPS from 97.74.94.97. Sequence: removed the staging `X-Robots-Tag: noindex` and reloaded nginx → owner edited the root `A` record to a single `97.74.94.97` and deleted the second → **certbot issued a Let's Encrypt certificate for both hostnames** with `--redirect` (expires 2026-11-10, `certbot.timer` active) → verification. `server_name` had to move from `_` to the real hostnames first, or certbot could not patch the block; `default_server` was kept so the bare IP still serves. **Verified on the live domain:** 8 sampled routes + `www` 200 · HTTP 301 → HTTPS · `/api/health` · 21 live Vault listings · AI valuation ($1.12M–$1.27M) · **lead #12 delivered the report PDF and both emails** · no `X-Robots-Tag` on responses · MX and Resend records untouched throughout. **One scare, already a documented lesson:** post-flip checks showed `/api/*` returning 404 HTML, which was a **stale DNS cache pointing at the retired Cloudflare IPs**; pinning the test to 97.74.94.97 showed everything healthy. Real visitors with fresh DNS were always fine. **Rollback is now weak** (depends on the abandoned Cloudflare zone still answering) so prefer fixing forward. Docs, memory and the runbook updated; `.env.example` now marks `ALLOWED_ORIGINS` and `STATS_TOKEN` as production-required rather than optional.
 - **2026-08-12 (go-live pre-flight: full system check + four loose ends closed)** — Everything verified end to end on the server ahead of the cutover. **Working:** all 8 sampled routes 200 · `/api/health` · 21 live Vault listings (all For Sale) · listing detail · self-hosted photo proxy (1.68 MB PNG served) with the **SSRF host guard still rejecting non-Vault URLs (404)** · AI valuation ($1.12M–$1.25M in ~8s, real comparables + rationale) · AI concierge SSE streaming and **citing the newly added land listings** · lead capture + report PDF + both emails (leads #10, #11) · **all 5 stamp-duty anchors pass incl. the FHB-foreign $86,070 fix** · rate limiter exact (60 through / 10 × 429 with `Retry-After`) · **11 leads present and readable** · deployed bundle hash matches a fresh local build (`index-B6iinvMj.js`), no hardcoded IP, no GitHub-Pages base path, no mixed-content URLs · services `enabled` for boot · 602 MB/1.9 GB RAM, 9% disk. **Four gaps found and fixed:** (1) **certbot was not installed** at all, despite the runbook assuming it — now 2.9.0 + nginx plugin; (2) **`/api/stats` was public**, leaking lead counts — now gated by `STATS_TOKEN` (401 verified); (3) **CORS was `*`**, letting any site bill Claude calls to Manifest — now locked via `ALLOWED_ORIGINS` (foreign origin gets no header, ours does); (4) **no backup of the leads DB** — added `api/scripts/backup-leads.mjs` + nightly 3am cron, keeping 14 daily snapshots. It uses SQLite's **online backup API, not `cp`**, because the DB runs in **WAL mode**: a file copy grabs a near-empty `leads.db` while the rows sit in `leads.db-wal`, a backup that looks fine and restores empty. First snapshot verified restorable with all 11 leads. Also set `server_name` to the production hostnames (was `_`) so certbot can patch the block; `default_server` kept so the bare IP still serves. **Confirmed the old site sends no HSTS**, so the flip-to-certificate window degrades to plain HTTP rather than a browser security error. **Still to do at cutover: remove the `X-Robots-Tag: noindex` header** (see runbook).
 
 - **2026-08-09 (sold listings hidden · black-theme PDF shipped · services agreement drafted)** — (1) **Sold properties removed from the site** at Akshay's request — the SOLD-badge treatment added two days earlier is gone; `allowedStatus()` now keeps `listing`/`conditional` only, with a comment recording how to reverse it. Verified live: **21 listings, all For Sale, zero Sold**. (2) **Report PDF redesigned and shipped** (`cfe1e30`) — owner asked for "Manifest branding rather than the blue stuff" plus the directors' photos: near-black `#0a0a0b` letterhead, white badge logo (58pt after a "slightly bigger" round), Rishi + Akshay circular with gold rings and DIRECTOR labels, site gold `#c2a267`, warm neutrals replacing the blue-grays. Assets resolve from `site-v2/public` via `import.meta.url` (works locally and on the server checkout) and every image embed degrades gracefully rather than costing a customer their report. **Verified through the live pipeline**: lead #9's email + new PDF delivered to Gmail from production. (3) **Services agreement drafted** (Sameer × Akshay) — build fee blank for negotiation, **$260 + GST/month** anchored $30 under Vault's listed *Website Plus* ($290 + GST/mo, $1,350 setup), 6-month lock-in then 30-day notice, Developer owns IP with Akshay licensed while paying, 1 change + 1 one-hour call per month, AI usage included to A$50/mo. Lives in **git-ignored `private/`** — deliberately never committed, the repo is public. **Flagged to owner:** Vault discounts $40/mo when packaged with their CRM (which Akshay has), so his effective alternative is ~$250 — $260 does not undercut it.

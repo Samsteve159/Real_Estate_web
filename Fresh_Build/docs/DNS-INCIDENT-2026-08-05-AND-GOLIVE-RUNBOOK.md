@@ -3,6 +3,37 @@
 Two documents in one, deliberately: the incident is *why* the runbook looks the
 way it does. Read both before touching DNS for this domain again.
 
+> ## ✅ EXECUTED 2026-08-12. The site is live.
+>
+> The runbook below was followed and worked. What actually happened:
+>
+> - **Pre-flight found four gaps the runbook had assumed away.** Most
+>   importantly **certbot was not installed at all**, which would have failed
+>   the SSL step minutes after the flip. Also fixed: `/api/stats` was publicly
+>   readable, CORS was `*`, and nothing was backing up the leads database.
+>   *Lesson: Phase 0 must verify tools exist, not assume them.*
+> - **Order used:** remove `X-Robots-Tag` and reload → owner edited the single
+>   root A record to `97.74.94.97` and deleted the second → certbot for both
+>   hostnames with `--redirect` → verification.
+> - **Result:** both hostnames on HTTPS (Let's Encrypt, expires 2026-11-10,
+>   `certbot.timer` active), HTTP 301s to HTTPS, all sampled routes 200,
+>   API/listings/valuation working, and lead #12 delivered the report PDF plus
+>   both emails on the live domain.
+> - **The pinned-verification rule proved itself again.** Post-flip checks
+>   showed `/api/*` returning 404 HTML. That was a **stale DNS cache pointing
+>   at the old Cloudflare IPs**, which now serve an error page. Testing pinned
+>   to `97.74.94.97` showed everything healthy. Had the rule not been in the
+>   runbook, that would have looked like a broken deploy and might have
+>   triggered a needless rollback.
+> - **`server_name` had to change from `_` to the real hostnames** before
+>   certbot would patch the block. `default_server` was kept so the bare IP
+>   still serves.
+>
+> **Rollback is now weak.** It depends on the abandoned Cloudflare zone still
+> answering for the domain, which can stop at any time. Prefer fixing forward
+> on the server. The old GoDaddy site-builder page is no longer served at the
+> domain at all.
+
 ---
 
 ## Part 1 — Incident log: ~2h outage of the old site
