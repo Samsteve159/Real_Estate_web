@@ -11,3 +11,6 @@ data/vault-photos/
 .DS_Store
 .claude/settings.local.json
 private/
+
+# Server-side backup snapshots (nightly, kept 14 days)
+backups/
